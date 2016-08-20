@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pagotransferencia</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Estatustransferencia</th>
+                <td>{{ pagotransferencium.estatustransferencia }}</td>
+            </tr>
+            <tr>
+                <th>Bancobeneficiado</th>
+                <td>{{ pagotransferencium.bancobeneficiado }}</td>
+            </tr>
+            <tr>
+                <th>Cuentabeneficiada</th>
+                <td>{{ pagotransferencium.cuentabeneficiada }}</td>
+            </tr>
+            <tr>
+                <th>Fechatransferencia</th>
+                <td>{% if pagotransferencium.fechatransferencia %}{{ pagotransferencium.fechatransferencia|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Idpagotransferencia</th>
+                <td>{{ pagotransferencium.idpagotransferencia }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('pagotransferencia_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('pagotransferencia_edit', { 'id': pagotransferencium.idpagotransferencia }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

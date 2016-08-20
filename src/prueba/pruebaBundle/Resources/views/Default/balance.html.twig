@@ -1,0 +1,43 @@
+{% extends "::base.html.twig" %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+      header.container-fluid{
+        background-image: url({{asset('public/images/almacen1.jpg')}});
+        background-position: 50% 0%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 600px;
+        color: white;
+      }
+    </style>
+{% endblock %}
+{% block body %}
+    <header class="container-fluid">
+        {# para mostrar el mensaje de que se borro el dato #}
+        {% for flashMessage in app.session.flashbag.get('Mensaje') %}
+            <span class="alert-warning" >
+                {{flashMessage}}
+            </span>
+        {% endfor%}
+        <div class="bs-docs-section">
+            <div class="row">
+                <div class="col-lg-4 col-lg-offset-1 center-block">
+                    <div class="well bs-component">
+                        <form class="form-signin" method="post" action="" >
+                            <h2 class="form-signin-heading">::Seguridad::</h2>
+                            <label  class="sr-only">Login</label>
+                            <input  id="login" name="login" class="form-control" placeholder="Login"   >
+                            <label for="inputPassword" class="sr-only">Password</label>
+                            <input type="password" id="pass" name="pass" class="form-control" placeholder="Password"  >
+
+                            <div class="invalid-form-error-message"></div>
+                            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+{% endblock %}

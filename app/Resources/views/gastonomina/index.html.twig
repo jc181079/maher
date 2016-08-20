@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Gastonomina list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Conceptogastonomina</th>
+                <th>Montogastonomina</th>
+                <th>Idgastonomina</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for gastonomina in gastonominas %}
+            <tr>
+                <td><a href="{{ path('gastonomina_show', { 'id': gastonomina.idgastonomina }) }}">{{ gastonomina.conceptogastonomina }}</a></td>
+                <td>{{ gastonomina.montogastonomina }}</td>
+                <td>{{ gastonomina.idgastonomina }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('gastonomina_show', { 'id': gastonomina.idgastonomina }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('gastonomina_edit', { 'id': gastonomina.idgastonomina }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('gastonomina_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

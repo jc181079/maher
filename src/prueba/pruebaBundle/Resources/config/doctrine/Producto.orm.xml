@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="prueba\pruebaBundle\Entity\Producto" table="producto">
+    <indexes>
+      <index name="fk_producto_und_idx" columns="idund"/>
+    </indexes>
+    <id name="idproducto" type="integer" column="idproducto">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nombreproducto" type="string" column="nombreproducto" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">denominacion del producto</option>
+      </options>
+    </field>
+    <field name="marca" type="string" column="marca" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">nombre de la marca comercial del producto</option>
+      </options>
+    </field>
+    <field name="referencia" type="string" column="referencia" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">codigo recomendado por el usuario a traves de la orden de compra o factura del proveedor</option>
+      </options>
+    </field>
+    <field name="familia" type="string" column="familia" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">grupo del producto alcoholico/ no alcoholico</option>
+      </options>
+    </field>
+    <field name="stockmaximo" type="integer" column="stockmaximo" nullable="true">
+      <options>
+        <option name="unsigned"/>
+        <option name="comment">cantidad de producto maximo en el almacen</option>
+      </options>
+    </field>
+    <field name="stockminimo" type="integer" column="stockminimo" nullable="true">
+      <options>
+        <option name="unsigned"/>
+        <option name="comment">cantidad de producto minimo en el almacen</option>
+      </options>
+    </field>
+    <field name="preciocosto" type="float" column="preciocosto" precision="10" scale="0" nullable="true">
+      <options>
+        <option name="comment">precio de costo del producto</option>
+      </options>
+    </field>
+    <field name="precioventa" type="float" column="precioventa" precision="10" scale="0" nullable="true">
+      <options>
+        <option name="comment">precio de venta por unidad, modificable por el usuario</option>
+      </options>
+    </field>
+    <many-to-one field="idund" target-entity="Und" fetch="LAZY">
+      <join-columns>
+        <join-column name="idund" referenced-column-name="idund"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

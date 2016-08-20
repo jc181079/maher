@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="prueba\pruebaBundle\Entity\Pagotransferencia" table="pagotransferencia">
+    <indexes>
+      <index name="fk_pagotransferencia_pagos1_idx" columns="idpagos"/>
+    </indexes>
+    <id name="idpagotransferencia" type="integer" column="idpagotransferencia">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="estatustransferencia" type="string" column="estatustransferencia" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Confirmada----------&gt;banco
+No confirmada------&gt;cuenta por cobrar</option>
+      </options>
+    </field>
+    <field name="bancobeneficiado" type="string" column="bancobeneficiado" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">nombre del banco de maher</option>
+      </options>
+    </field>
+    <field name="cuentabeneficiada" type="string" column="cuentabeneficiada" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">numero de cuenta de la cuenta beneficiada de maher</option>
+      </options>
+    </field>
+    <field name="fechatransferencia" type="date" column="fechatransferencia" nullable="true"/>
+    <many-to-one field="idpagos" target-entity="Pagos" fetch="LAZY">
+      <join-columns>
+        <join-column name="idpagos" referenced-column-name="idpagos"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Seguridad list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombreusuario</th>
+                <th>Login</th>
+                <th>Pass</th>
+                <th>Tipousuario</th>
+                <th>Idseguridad</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for seguridad in seguridads %}
+            <tr>
+                <td><a href="{{ path('seguridad_show', { 'id': seguridad.idseguridad }) }}">{{ seguridad.nombreusuario }}</a></td>
+                <td>{{ seguridad.login }}</td>
+                <td>{{ seguridad.pass }}</td>
+                <td>{{ seguridad.tipousuario }}</td>
+                <td>{{ seguridad.idseguridad }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('seguridad_show', { 'id': seguridad.idseguridad }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('seguridad_edit', { 'id': seguridad.idseguridad }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('seguridad_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

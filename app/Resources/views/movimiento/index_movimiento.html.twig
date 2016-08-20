@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Movimiento list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Cantidad</th>
+                <th>Fechamovimiento</th>
+                <th>Tipomovimiento</th>
+                <th>Conceptomovimiento</th>
+                <th>Idmovimiento</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for movimiento in movimientos %}
+            <tr>
+                <td><a href="{{ path('movimiento_show', { 'id': movimiento.idmovimiento }) }}">{{ movimiento.cantidad }}</a></td>
+                <td>{% if movimiento.fechamovimiento %}{{ movimiento.fechamovimiento|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ movimiento.tipomovimiento }}</td>
+                <td>{{ movimiento.conceptomovimiento }}</td>
+                <td>{{ movimiento.idmovimiento }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('movimiento_show', { 'id': movimiento.idmovimiento }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('movimiento_edit', { 'id': movimiento.idmovimiento }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('movimiento_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

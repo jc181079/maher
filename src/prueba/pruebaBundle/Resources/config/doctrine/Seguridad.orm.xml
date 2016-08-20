@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="prueba\pruebaBundle\Entity\Seguridad" table="seguridad">
+    <id name="idseguridad" type="integer" column="idseguridad">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nombreusuario" type="string" column="nombreusuario" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="login" type="string" column="login" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="pass" type="string" column="pass" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="tipousuario" type="string" column="tipousuario" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Administrador
+Cliente</option>
+      </options>
+    </field>
+  </entity>
+</doctrine-mapping>

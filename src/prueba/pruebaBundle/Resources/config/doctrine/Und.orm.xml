@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="prueba\pruebaBundle\Entity\Und" table="und">
+    <id name="idund" type="integer" column="idund">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nombreund" type="string" column="nombreund" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="valor" type="integer" column="valor" nullable="true">
+      <options>
+        <option name="unsigned"/>
+        <option name="comment">cantidad de la unidad, ej. caja = 36</option>
+      </options>
+    </field>
+  </entity>
+</doctrine-mapping>

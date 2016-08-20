@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pagos</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Montopagado</th>
+                <td>{{ pago.montopagado }}</td>
+            </tr>
+            <tr>
+                <th>Tipopago</th>
+                <td>{{ pago.tipopago }}</td>
+            </tr>
+            <tr>
+                <th>Observacion</th>
+                <td>{{ pago.observacion }}</td>
+            </tr>
+            <tr>
+                <th>Fechapago</th>
+                <td>{% if pago.fechapago %}{{ pago.fechapago|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Idpagos</th>
+                <td>{{ pago.idpagos }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('pagos_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('pagos_edit', { 'id': pago.idpagos }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

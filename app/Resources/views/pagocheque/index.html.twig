@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pagocheque list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fechapago</th>
+                <th>Estatuspagocheque</th>
+                <th>Observacionpagocheque</th>
+                <th>Idpagocheque</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pagocheque in pagocheques %}
+            <tr>
+                <td><a href="{{ path('pagocheque_show', { 'id': pagocheque.idpagocheque }) }}">{{ pagocheque.fechapago }}</a></td>
+                <td>{{ pagocheque.estatuspagocheque }}</td>
+                <td>{{ pagocheque.observacionpagocheque }}</td>
+                <td>{{ pagocheque.idpagocheque }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('pagocheque_show', { 'id': pagocheque.idpagocheque }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('pagocheque_edit', { 'id': pagocheque.idpagocheque }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('pagocheque_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Cuentacredito</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Estatuscredito</th>
+                <td>{{ cuentacredito.estatuscredito }}</td>
+            </tr>
+            <tr>
+                <th>Cuentacreditomonto</th>
+                <td>{{ cuentacredito.cuentacreditomonto }}</td>
+            </tr>
+            <tr>
+                <th>Cuentacreditofecha</th>
+                <td>{% if cuentacredito.cuentacreditofecha %}{{ cuentacredito.cuentacreditofecha|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Idcuentacredito</th>
+                <td>{{ cuentacredito.idcuentacredito }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('cuentacredito_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('cuentacredito_edit', { 'id': cuentacredito.idcuentacredito }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Inventario</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Cantidad</th>
+                <td>{{ inventario.cantidad }}</td>
+            </tr>
+            <tr>
+                <th>Observacion</th>
+                <td>{{ inventario.observacion }}</td>
+            </tr>
+            <tr>
+                <th>Idinventario</th>
+                <td>{{ inventario.idinventario }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('inventario_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('inventario_edit', { 'id': inventario.idinventario }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

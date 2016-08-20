@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+{% use "::navbar.html.twig" %}
+{% block body %}
+    {% block navbar %}
+        {{ parent() }}
+    {% endblock %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de PRODUCTOS</strong></h1>
+            <p>aqui podra administrar los diferentes productos distribuidos por la empresa</p>
+            <footer>
+                <a class="btn btn-default" href="{{ path('producto_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+    </div>
+    <div class="container">
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr class="active">
+                    <th>Nombre del producto</th>
+                    <th>Marca</th>
+                    <th>Referencia</th>
+                    <th>Familia</th>                
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {# condicional que muestra mensaje de que no hay registros almacenados #}
+                {% if productos %}
+                    {% for producto in productos %}
+                        <tr>
+                            <td><a href="{{ path('producto_show', { 'id': producto.idproducto }) }}">{{ producto.nombreproducto }}</a></td>
+                            <td>{{ producto.marca }}</td>
+                            <td>{{ producto.referencia }}</td>
+                            <td>{{ producto.familia }}</td>
+                            <td>
+                                <ul>
+                                    <li>
+                                        <a href="{{ path('producto_show', { 'id': producto.idproducto }) }}">show</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('producto_edit', { 'id': producto.idproducto }) }}">edit</a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr >
+                        <td colspan="5"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                    </tr>
+                {% endif%}    
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

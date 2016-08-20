@@ -1,0 +1,40 @@
+<?php
+
+namespace prueba\pruebaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Ruta
+ *
+ * @ORM\Table(name="ruta")
+ * @ORM\Entity
+ */
+class Ruta
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombreruta", type="string", length=45, nullable=true)
+     */
+    private $nombreruta;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="detalleruta", type="text", nullable=true)
+     */
+    private $detalleruta;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idruta", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idruta;
+
+
+}
+

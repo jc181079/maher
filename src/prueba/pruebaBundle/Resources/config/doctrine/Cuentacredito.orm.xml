@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="prueba\pruebaBundle\Entity\Cuentacredito" table="cuentacredito">
+    <indexes>
+      <index name="fk_cuentacredito_pagos1_idx" columns="idpagos"/>
+    </indexes>
+    <id name="idcuentacredito" type="integer" column="idcuentacredito">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="estatuscredito" type="string" column="estatuscredito" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Debe
+Pagada</option>
+      </options>
+    </field>
+    <field name="cuentacreditomonto" type="float" column="cuentacreditomonto" precision="10" scale="0" nullable="true">
+      <options>
+        <option name="comment">monto que adeuda</option>
+      </options>
+    </field>
+    <field name="cuentacreditofecha" type="date" column="cuentacreditofecha" nullable="true"/>
+    <many-to-one field="idpagos" target-entity="Pagos" fetch="LAZY">
+      <join-columns>
+        <join-column name="idpagos" referenced-column-name="idpagos"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

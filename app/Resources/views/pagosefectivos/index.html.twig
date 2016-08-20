@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pagosefectivos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Pagosefectivomonto</th>
+                <th>Fechapagoefectivo</th>
+                <th>Idpagosefectivos</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pagosefectivo in pagosefectivos %}
+            <tr>
+                <td><a href="{{ path('pagosefectivos_show', { 'id': pagosefectivo.idpagosefectivos }) }}">{{ pagosefectivo.pagosefectivomonto }}</a></td>
+                <td>{% if pagosefectivo.fechapagoefectivo %}{{ pagosefectivo.fechapagoefectivo|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ pagosefectivo.idpagosefectivos }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('pagosefectivos_show', { 'id': pagosefectivo.idpagosefectivos }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('pagosefectivos_edit', { 'id': pagosefectivo.idpagosefectivos }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('pagosefectivos_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

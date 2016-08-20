@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% use "::navbar.html.twig" %}
+{% block body %}
+    <h1>Inventario list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Cantidad</th>
+                <th>Observacion</th>
+                <th>Idinventario</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for inventario in inventarios %}
+            <tr>
+                <td><a href="{{ path('inventario_show', { 'id': inventario.idinventario }) }}">{{ inventario.cantidad }}</a></td>
+                <td>{{ inventario.observacion }}</td>
+                <td>{{ inventario.idinventario }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('inventario_show', { 'id': inventario.idinventario }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('inventario_edit', { 'id': inventario.idinventario }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('inventario_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

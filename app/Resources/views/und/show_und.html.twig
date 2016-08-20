@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block body %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de Unidades de Medida</strong></h1>
+            <p>Consulta</p>
+            <footer class="comment">
+                <a class="btn btn-default" href="{{ path('und_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+    </div>
+
+    <div class="container">
+       <div class="row">
+        <div class="col-md-4">
+            <table class="table table-bordered table-responsive">
+                <tbody>
+                    <tr>
+                        <th class="active">Unidad de medida:</th>
+                        <td>{{ und.nombreund }}</td>
+                    </tr>
+                    <tr>
+                        <th class="active">Valor:</th>
+                        <td>{{ und.valor }}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+       </div>
+       <span class=""></span>
+       <div class="row">
+           <footer>
+               <div class="container thumbnail">
+                   <div class="btn-group btn-group-justified" role="group">
+                       <a class="btn btn-default" href="{{ path('und_index') }}"><span class="glyphicon glyphicon-arrow-left"></span> Volver atras</a>
+
+                       <a class="btn btn-info" href="{{ path('und_edit', { 'id': und.idund }) }}"><span class="glyphicon glyphicon-edit"></span> Modificar Registro</a>
+                       <!--
+                       {{ form_start(delete_form) }}
+                       <input type="submit" value="Delete">
+                       {{ form_end(delete_form) }}
+                       -->
+                   </div>
+               </div>
+           </footer>
+       </div>
+    </div>
+    
+                
+
+    
+{% endblock %}

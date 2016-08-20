@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pagos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Montopagado</th>
+                <th>Tipopago</th>
+                <th>Observacion</th>
+                <th>Fechapago</th>
+                <th>Idpagos</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pago in pagos %}
+            <tr>
+                <td><a href="{{ path('pagos_show', { 'id': pago.idpagos }) }}">{{ pago.montopagado }}</a></td>
+                <td>{{ pago.tipopago }}</td>
+                <td>{{ pago.observacion }}</td>
+                <td>{% if pago.fechapago %}{{ pago.fechapago|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ pago.idpagos }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('pagos_show', { 'id': pago.idpagos }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('pagos_edit', { 'id': pago.idpagos }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('pagos_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

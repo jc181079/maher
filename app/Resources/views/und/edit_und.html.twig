@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block body %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de Unidades de Medida</strong></h1>
+            <p>Modificacion del registro</p>
+            
+        </div>
+    </div>
+    {% for flashMessage in app.session.flashbag.get('Mensaje') %}
+        <span class="alert-warning" >
+            {{flashMessage}}
+        </span>
+    {% endfor%}
+    <div class="container">
+        <div class="thumbnail">
+            {{ form_start(edit_form) }}
+            {{ form_widget(edit_form) }}           
+                <div class="col-md-6">
+                    <div class="btn-group">
+                        <a class="btn btn-info" href="{{ path('und_index') }}">Volver atras sin guardar cambios</a>
+                        <input class="btn btn-primary" type="submit" value="Edit" /> 
+                    </div>
+                </div>            
+            {{ form_end(edit_form) }}
+            <div class="row">
+            {{ form_start(delete_form) }}
+                <input class="btn btn-danger" type="submit" value="Eliminar Registro">
+            {{ form_end(delete_form) }}
+            </div>
+            
+        </div>        
+    </div>
+
+    
+
+    
+            
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Dia list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Diafecha</th>
+                <th>Activo</th>
+                <th>Iddia</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for dium in dias %}
+            <tr>
+                <td><a href="{{ path('dia_show', { 'id': dium.iddia }) }}">{{ dium.diafecha }}</a></td>
+                <td>{% if dium.activo %}Yes{% else %}No{% endif %}</td>
+                <td>{{ dium.iddia }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('dia_show', { 'id': dium.iddia }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('dia_edit', { 'id': dium.iddia }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('dia_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

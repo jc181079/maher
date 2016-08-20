@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Gastosoperativos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Conceptogasto</th>
+                <th>Facturagasto</th>
+                <th>Montogasto</th>
+                <th>Observacion</th>
+                <th>Idgastosoperativos</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for gastosoperativo in gastosoperativos %}
+            <tr>
+                <td><a href="{{ path('gastosoperativos_show', { 'id': gastosoperativo.idgastosoperativos }) }}">{{ gastosoperativo.conceptogasto }}</a></td>
+                <td>{{ gastosoperativo.facturagasto }}</td>
+                <td>{{ gastosoperativo.montogasto }}</td>
+                <td>{{ gastosoperativo.observacion }}</td>
+                <td>{{ gastosoperativo.idgastosoperativos }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('gastosoperativos_show', { 'id': gastosoperativo.idgastosoperativos }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('gastosoperativos_edit', { 'id': gastosoperativo.idgastosoperativos }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('gastosoperativos_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

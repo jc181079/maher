@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+    <div class="container">
+        <header><h1>.:Registro de un nuevo producto</h1></header>
+        <div class="jumbotron">
+            <div class="form-group">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <input class="btn btn-success" type="submit" value="Guardar" />
+                {{ form_end(form) }}  
+            </div>
+            
+        </div>        
+        <footer>
+            <a class="btn btn-default" href="{{ path('producto_index') }}">Volver atras</a>
+        </footer>
+    </div>
+{% endblock %}

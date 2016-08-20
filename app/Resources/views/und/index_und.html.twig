@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+{% use "::navbar.html.twig" %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block body %}
+    {% block navbar %}
+        {{ parent() }}
+    {% endblock %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de Unidades de Medida</strong></h1>
+            <p>aqui podra administrar las diferentes unidades de medidas manejadas por los productos distribuidos por la empresa</p>
+            <footer>
+                <a class="btn btn-default" href="{{ path('und_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+    </div>
+    <div class="container">
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr class="active">
+                    <th>Unidad de medida</th>
+                    <th>Valor</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {# condicional que muestra mensaje de que no hay registros almacenados #}
+                {% if unds %}
+                    {% for und in unds %}
+                        <tr>
+                            <td><a href="{{ path('und_show', { 'id': und.idund }) }}">{{ und.nombreund }}</a></td>
+                            <td>{{ und.valor }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-info" href="{{ path('und_show', { 'id': und.idund }) }}">Consultar</a>
+
+                                    <a class="btn btn-success" href="{{ path('und_edit', { 'id': und.idund }) }}">Modificar</a>
+                                </div>   
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr >
+                        <td colspan="5"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                    </tr>
+                {% endif%}
+            </tbody>
+        </table>
+    </div>        
+
+    
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %} 

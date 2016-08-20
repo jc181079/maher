@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <header><h1>.:Registro de una nueva unidad de medida</h1></header>
+        <div class="jumbotron">
+            <div class="form-group">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <input class="btn btn-success" type="submit" value="Create" />
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+
+    <ul>
+        <li>
+            <a class="btn btn-default" href="{{ path('und_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}

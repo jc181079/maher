@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Und</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Nombreund</th>
+                <td>{{ und.nombreund }}</td>
+            </tr>
+            <tr>
+                <th>Valor</th>
+                <td>{{ und.valor }}</td>
+            </tr>
+            <tr>
+                <th>Idund</th>
+                <td>{{ und.idund }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('und_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('und_edit', { 'id': und.idund }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

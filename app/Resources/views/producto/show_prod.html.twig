@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block body %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de PRODUCTOS</strong></h1>
+            <p>Consulta</p>
+            <footer class="comment">
+                <a class="btn btn-default" href="{{ path('producto_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+    </div>
+    {% for xp in xproducto %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-bordered table-responsive">
+                    <tbody>
+                        <tr>
+                            <th>Nombre del producto</th>
+                            <td>{{ xp.nombreproducto }}</td>
+                        </tr>
+                        <tr>
+                            <th>Marca</th>
+                            <td>{{ xp.marca }}</td>
+                        </tr>
+                        <tr>
+                            <th>Referencia</th>
+                            <td>{{ xp.referencia }}</td>
+                        </tr>
+                        <tr>
+                            <th>Familia</th>
+                            <td>{{ xp.familia }}</td>
+                        </tr>
+                        <tr>
+                            <th>Stock maximo</th>
+                            <td>{{ xp.stockmaximo }}</td>
+                        </tr>
+                        <tr>
+                            <th>Stockminimo</th>
+                            <td>{{ xp.stockminimo }}</td>
+                        </tr>
+                        <tr>
+                            <th>Precio de costo</th>
+                            <td>{{ 'Bs. '~xp.preciocosto|number_format(2,'.',',') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Precio de venta</th>
+                            <td>{{ 'Bs. '~xp.precioventa|number_format(2,'.',',') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Unidad de Medida</th>
+                            <td>{{ xp.nombreund }}</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+                        
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="row">
+        <footer>
+            <div class="container thumbnail">
+                <div class="btn-group btn-group-justified" role="group">
+                    <a class="btn btn-default" href="{{ path('producto_index') }}">Volver atras</a>
+
+                    <a class="btn btn-info" href="{{ path('producto_edit', { 'id': producto.idproducto }) }}">Modificar registro</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+   
+           
+        
+            {{ form_start(delete_form) }}
+                <!--input type="submit" value="Delete"-->
+            {{ form_end(delete_form) }}
+      
+{% endblock %}

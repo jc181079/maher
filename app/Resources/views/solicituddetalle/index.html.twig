@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Solicituddetalle list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Idsolicituddetalle</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for solicituddetalle in solicituddetalles %}
+            <tr>
+                <td><a href="{{ path('solicituddetalle_show', { 'id': solicituddetalle.idsolicituddetalle }) }}">{{ solicituddetalle.idsolicituddetalle }}</a></td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('solicituddetalle_show', { 'id': solicituddetalle.idsolicituddetalle }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('solicituddetalle_edit', { 'id': solicituddetalle.idsolicituddetalle }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('solicituddetalle_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

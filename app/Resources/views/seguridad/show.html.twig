@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Seguridad</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Nombreusuario</th>
+                <td>{{ seguridad.nombreusuario }}</td>
+            </tr>
+            <tr>
+                <th>Login</th>
+                <td>{{ seguridad.login }}</td>
+            </tr>
+            <tr>
+                <th>Pass</th>
+                <td>{{ seguridad.pass }}</td>
+            </tr>
+            <tr>
+                <th>Tipousuario</th>
+                <td>{{ seguridad.tipousuario }}</td>
+            </tr>
+            <tr>
+                <th>Idseguridad</th>
+                <td>{{ seguridad.idseguridad }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('seguridad_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('seguridad_edit', { 'id': seguridad.idseguridad }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

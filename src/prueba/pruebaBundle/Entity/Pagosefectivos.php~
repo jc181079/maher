@@ -1,0 +1,50 @@
+<?php
+
+namespace prueba\pruebaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Pagosefectivos
+ *
+ * @ORM\Table(name="pagosefectivos", indexes={@ORM\Index(name="fk_pagosefectivos_pagos1_idx", columns={"idpagos"})})
+ * @ORM\Entity
+ */
+class Pagosefectivos
+{
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pagosefectivomonto", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $pagosefectivomonto;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fechapagoefectivo", type="date", nullable=true)
+     */
+    private $fechapagoefectivo;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idpagosefectivos", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idpagosefectivos;
+
+    /**
+     * @var \prueba\pruebaBundle\Entity\Pagos
+     *
+     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Pagos")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idpagos", referencedColumnName="idpagos")
+     * })
+     */
+    private $idpagos;
+
+
+}
+

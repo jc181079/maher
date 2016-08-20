@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pagosefectivos</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Pagosefectivomonto</th>
+                <td>{{ pagosefectivo.pagosefectivomonto }}</td>
+            </tr>
+            <tr>
+                <th>Fechapagoefectivo</th>
+                <td>{% if pagosefectivo.fechapagoefectivo %}{{ pagosefectivo.fechapagoefectivo|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Idpagosefectivos</th>
+                <td>{{ pagosefectivo.idpagosefectivos }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('pagosefectivos_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('pagosefectivos_edit', { 'id': pagosefectivo.idpagosefectivos }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

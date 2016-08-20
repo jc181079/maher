@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pagotransferencia list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Estatustransferencia</th>
+                <th>Bancobeneficiado</th>
+                <th>Cuentabeneficiada</th>
+                <th>Fechatransferencia</th>
+                <th>Idpagotransferencia</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pagotransferencium in pagotransferencias %}
+            <tr>
+                <td><a href="{{ path('pagotransferencia_show', { 'id': pagotransferencium.idpagotransferencia }) }}">{{ pagotransferencium.estatustransferencia }}</a></td>
+                <td>{{ pagotransferencium.bancobeneficiado }}</td>
+                <td>{{ pagotransferencium.cuentabeneficiada }}</td>
+                <td>{% if pagotransferencium.fechatransferencia %}{{ pagotransferencium.fechatransferencia|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ pagotransferencium.idpagotransferencia }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('pagotransferencia_show', { 'id': pagotransferencium.idpagotransferencia }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('pagotransferencia_edit', { 'id': pagotransferencium.idpagotransferencia }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('pagotransferencia_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

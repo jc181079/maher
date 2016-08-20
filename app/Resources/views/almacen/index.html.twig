@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Almacen list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombrealmacen</th>
+                <th>Idalmacen</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for almacen in almacens %}
+            <tr>
+                <td><a href="{{ path('almacen_show', { 'id': almacen.idalmacen }) }}">{{ almacen.nombrealmacen }}</a></td>
+                <td>{{ almacen.idalmacen }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('almacen_show', { 'id': almacen.idalmacen }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('almacen_edit', { 'id': almacen.idalmacen }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('almacen_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

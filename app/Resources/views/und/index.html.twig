@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Und list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombreund</th>
+                <th>Valor</th>
+                <th>Idund</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for und in unds %}
+            <tr>
+                <td><a href="{{ path('und_show', { 'id': und.idund }) }}">{{ und.nombreund }}</a></td>
+                <td>{{ und.valor }}</td>
+                <td>{{ und.idund }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('und_show', { 'id': und.idund }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('und_edit', { 'id': und.idund }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('und_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

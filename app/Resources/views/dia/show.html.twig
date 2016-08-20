@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Dia</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Diafecha</th>
+                <td>{% if dium.diafecha %}{{ dium.diafecha|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Activo</th>
+                <td>{% if dium.activo %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Iddia</th>
+                <td>{{ dium.iddia }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('dia_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('dia_edit', { 'id': dium.iddia }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

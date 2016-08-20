@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">  
+        <header><h1>.:Registro de un nuevo MOVIMIENTO DE ALMACEN</h1></header>
+        <div class="jumbotron">            
+            <div class="form-inline">
+                {{ form_start(form) }}
+                <div class="form-group">
+                    <label for="fm">Cantidad</label>
+                    {{ form_widget(form.cantidad) }}
+                </div>
+                <div class="form-group">
+                    <label for="fm">Fecha del movimiento</label>
+                    {{ form_widget(form.fechamovimiento) }}
+                </div>
+                <div class="form-group">
+                    <label for="fm">tipo de movimiento</label>
+                    {{ form_widget(form.tipomovimiento) }}
+                </div>
+                <div class="form-group">
+                    <label for="fm">concepto de movimiento</label>
+                    {{ form_widget(form.conceptomovimiento) }}
+                </div>
+                <div class="form-group">
+                    <label for="fm">Producto a mover</label>
+                    {{ form_widget(form.idproducto) }}
+                </div>
+                <div class="form-group">
+                    <label for="fm">almacena a ser afectado</label>
+                    {{ form_widget(form.idalmacen) }}
+                </div>
+                <input class="btn btn-success" type="submit" value="Guardar" />
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+<footer>
+    <a class="btn btn-default" href="{{ path('movimiento_index') }}">Volver atras</a>
+</footer>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('public/js/bootstrap-datepicker.js') }}" ></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+         $('.js-datepicker').datepicker({
+             format: 'yyyy-mm-dd'
+         });
+     });
+          
+    </script>
+{% endblock %}

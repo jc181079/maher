@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Ruta list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombreruta</th>
+                <th>Detalleruta</th>
+                <th>Idruta</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for rutum in rutas %}
+            <tr>
+                <td><a href="{{ path('ruta_show', { 'id': rutum.idruta }) }}">{{ rutum.nombreruta }}</a></td>
+                <td>{{ rutum.detalleruta }}</td>
+                <td>{{ rutum.idruta }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('ruta_show', { 'id': rutum.idruta }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('ruta_edit', { 'id': rutum.idruta }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ruta_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,78 @@
+<?php
+
+namespace prueba\pruebaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Clientes
+ *
+ * @ORM\Table(name="clientes", indexes={@ORM\Index(name="fk_clientes_ruta1_idx", columns={"idruta"})})
+ * @ORM\Entity
+ */
+class Clientes
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombrecliente", type="string", length=45, nullable=true)
+     */
+    private $nombrecliente;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="rif", type="string", length=10, nullable=true)
+     */
+    private $rif;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipocliente", type="string", length=45, nullable=true)
+     */
+    private $tipocliente;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="telefonocliente", type="string", length=45, nullable=true)
+     */
+    private $telefonocliente;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="direccioncliente", type="text", nullable=true)
+     */
+    private $direccioncliente;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contactocliente", type="string", length=45, nullable=true)
+     */
+    private $contactocliente;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idclientes", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idclientes;
+
+    /**
+     * @var \prueba\pruebaBundle\Entity\Ruta
+     *
+     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Ruta")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idruta", referencedColumnName="idruta")
+     * })
+     */
+    private $idruta;
+
+
+}
+

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Gastonomina</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Conceptogastonomina</th>
+                <td>{{ gastonomina.conceptogastonomina }}</td>
+            </tr>
+            <tr>
+                <th>Montogastonomina</th>
+                <td>{{ gastonomina.montogastonomina }}</td>
+            </tr>
+            <tr>
+                <th>Idgastonomina</th>
+                <td>{{ gastonomina.idgastonomina }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('gastonomina_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('gastonomina_edit', { 'id': gastonomina.idgastonomina }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

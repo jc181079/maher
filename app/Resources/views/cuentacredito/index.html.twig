@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Cuentacredito list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Estatuscredito</th>
+                <th>Cuentacreditomonto</th>
+                <th>Cuentacreditofecha</th>
+                <th>Idcuentacredito</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cuentacredito in cuentacreditos %}
+            <tr>
+                <td><a href="{{ path('cuentacredito_show', { 'id': cuentacredito.idcuentacredito }) }}">{{ cuentacredito.estatuscredito }}</a></td>
+                <td>{{ cuentacredito.cuentacreditomonto }}</td>
+                <td>{% if cuentacredito.cuentacreditofecha %}{{ cuentacredito.cuentacreditofecha|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ cuentacredito.idcuentacredito }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('cuentacredito_show', { 'id': cuentacredito.idcuentacredito }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('cuentacredito_edit', { 'id': cuentacredito.idcuentacredito }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('cuentacredito_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

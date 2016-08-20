@@ -1,0 +1,54 @@
+<?php
+
+namespace prueba\pruebaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Seguridad
+ *
+ * @ORM\Table(name="seguridad")
+ * @ORM\Entity
+ */
+class Seguridad
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombreusuario", type="string", length=45, nullable=true)
+     */
+    private $nombreusuario;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="login", type="string", length=45, nullable=true)
+     */
+    private $login;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="pass", type="string", length=45, nullable=true)
+     */
+    private $pass;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipousuario", type="string", length=45, nullable=true)
+     */
+    private $tipousuario;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idseguridad", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idseguridad;
+
+
+}
+

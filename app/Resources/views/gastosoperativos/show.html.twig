@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Gastosoperativos</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Conceptogasto</th>
+                <td>{{ gastosoperativo.conceptogasto }}</td>
+            </tr>
+            <tr>
+                <th>Facturagasto</th>
+                <td>{{ gastosoperativo.facturagasto }}</td>
+            </tr>
+            <tr>
+                <th>Montogasto</th>
+                <td>{{ gastosoperativo.montogasto }}</td>
+            </tr>
+            <tr>
+                <th>Observacion</th>
+                <td>{{ gastosoperativo.observacion }}</td>
+            </tr>
+            <tr>
+                <th>Idgastosoperativos</th>
+                <td>{{ gastosoperativo.idgastosoperativos }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('gastosoperativos_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('gastosoperativos_edit', { 'id': gastosoperativo.idgastosoperativos }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

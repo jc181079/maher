@@ -21,8 +21,9 @@ class DefaultController extends Controller
     public function panelAction(Request $request)
     {
        $session = $request->getSession();
-       if ($session->has('tipousuario')) {
-          return $this->render('pruebaBundle:Default:index.html.twig'); 
+       
+       if ($session->get('tipousuario')=='Administrador' or $session->get('tipousuario')=='Empleado') {
+          return $this->render('pruebaBundle:Default:dashboard.html.twig'); 
        }else {
            $this->get('session')->getFlashBag()->add(
                             'Mensaje',
@@ -30,5 +31,14 @@ class DefaultController extends Controller
                             );            
         }
     return $this->redirect($this->generateUrl('inicio'));    
+    }
+    /**
+     * @Route("/md5/{numero}", name="md5")
+     */
+    public function md5Action($numero){
+        if ($numero>0){
+           return $this->render('pruebaBundle:Default:md5.html.twig',array('md5'=>md5($numero))); 
+        }
+        
     }
 }

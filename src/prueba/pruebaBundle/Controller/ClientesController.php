@@ -24,13 +24,37 @@ class ClientesController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+         $em = $this->getDoctrine()->getManager();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+           /*
+            * aqui se mostraran todos los clientes siempre que el usuario sea de tipo Administrador o Empleado
+            * la permisologia es una variable que le va indicar a la plantilla twig si muestra o no 
+            * las oociones de eliminar o modificar
+            */
+            $clientes = $em->getRepository('pruebaBundle:Clientes')->findAll();
 
-        $clientes = $em->getRepository('pruebaBundle:Clientes')->findAll();
-
-        return $this->render('clientes/index.html.twig', array(
-            'clientes' => $clientes,
-        ));
+            return $this->render('clientes/index.html.twig', array(
+                        'clientes' => $clientes,
+                        'permisologia'=>'1',
+            ));
+        } elseif($session->get('tipousuario') == 'Cliente'){
+            /*
+             * aqui se mostra solo la informacion del cliente que se logueo no podra modificar su nombre
+             * que asi es que se busca, en este caso la permisologia es 0 asi que no podra elimianar
+             * ni modificar
+             */
+            $clientes = $em->getRepository('pruebaBundle:Clientes')->findBy(array('nombrecliente'=>$session->get('nombreusuario')));
+            return $this->render('clientes/index.html.twig', array(
+                        'clientes' => $clientes,
+                        'permisologia'=>'0',
+            ));
+        }else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**

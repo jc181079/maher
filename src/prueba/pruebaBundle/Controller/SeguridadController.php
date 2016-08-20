@@ -151,10 +151,10 @@ class SeguridadController extends Controller
             $consulta = $em->getRepository('pruebaBundle:Seguridad')->findBy(array('login' => $request->get('login'),'pass'=> md5($request->get('pass'))));
             if ($consulta){
                 $session = $request->getSession();
-                $session->set('idseguridad',$consulta->get('idseguridad')); // se guarda la id del usuario que se logio
-                $session->set('nombreusuario',$consulta->get('nombreusuario')); // se guarda el nombre del usuario
-                $session->set('login',$consulta->get('login')); // se guarda el tipo del usuario
-                $session->set('tipousuario',$consulta->get('tipousuario')); // se guarda el tipo del usuario
+                $session->set('idseguridad',$consulta[0]->getIdseguridad()); // se guarda la id del usuario que se logio
+                $session->set('nombreusuario',$consulta[0]->getNombreusuario()); // se guarda el nombre del usuario
+                $session->set('login',$consulta[0]->getLogin()); // se guarda el tipo del usuario
+                $session->set('tipousuario',$consulta[0]->getTipousuario()); // se guarda el tipo del usuario
                 return $this->redirect($this->generateUrl('panel'));
             }else {
                 $this->get('session')->getFlashBag()->add(

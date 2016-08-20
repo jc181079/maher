@@ -19,24 +19,32 @@ class AlmacenController extends Controller
     /**
      * Lists all Almacen entities.
      *
-     * @Route("/", name="almacen_index")
+     * @Route("/almacen", name="almacen_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $em = $this->getDoctrine()->getManager();
 
-        $almacens = $em->getRepository('pruebaBundle:Almacen')->findAll();
+            $almacens = $em->getRepository('pruebaBundle:Almacen')->findAll();
 
-        return $this->render('almacen/index_alm.html.twig', array(
-            'almacens' => $almacens,
-        ));
+            return $this->render('almacen/index_alm.html.twig', array(
+                        'almacens' => $almacens,
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
      * Creates a new Almacen entity.
      *
-     * @Route("/new", name="almacen_new")
+     * @Route("/almacen/new", name="almacen_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -62,10 +70,10 @@ class AlmacenController extends Controller
     /**
      * Finds and displays a Almacen entity.
      *
-     * @Route("/{id}", name="almacen_show")
+     * @Route("/almacen/show/{id}", name="almacen_show")
      * @Method("GET")
      */
-    public function showAction(Almacen $almacen)
+    public function showAction(Almacen $almacen,Request $request)
     {
         $deleteForm = $this->createDeleteForm($almacen);
 
@@ -78,7 +86,7 @@ class AlmacenController extends Controller
     /**
      * Displays a form to edit an existing Almacen entity.
      *
-     * @Route("/{id}/edit", name="almacen_edit")
+     * @Route("/almacen/edit/{id}", name="almacen_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Almacen $almacen)
@@ -105,7 +113,7 @@ class AlmacenController extends Controller
     /**
      * Deletes a Almacen entity.
      *
-     * @Route("/{id}", name="almacen_delete")
+     * @Route("/almacen/delete/{id}", name="almacen_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, Almacen $almacen)

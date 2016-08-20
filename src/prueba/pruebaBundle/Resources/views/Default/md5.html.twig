@@ -15,10 +15,12 @@
 {% block body %}
     <header class="container-fluid">
         {# para mostrar el mensaje de que se borro el dato #}
-        {% for codigo in md5 %}
-            <span class="alert-warning" >
-                clave md5 = {{codigo}}
+        
+        xxx<span class="alert-warning" >
+                clave md5 = {{md5}}
             </span>
+        {% for codigo in md5 %}
+            
         {% endfor%}
         
     </header>

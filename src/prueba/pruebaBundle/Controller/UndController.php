@@ -22,15 +22,23 @@ class UndController extends Controller
      * @Route("/", name="und_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $em = $this->getDoctrine()->getManager();
 
-        $unds = $em->getRepository('pruebaBundle:Und')->findAll();
+            $unds = $em->getRepository('pruebaBundle:Und')->findAll();
 
-        return $this->render('und/index_und.html.twig', array(
-            'unds' => $unds,
-        ));
+            return $this->render('und/index_und.html.twig', array(
+                        'unds' => $unds,
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -41,22 +49,30 @@ class UndController extends Controller
      */
     public function newAction(Request $request)
     {
-        $und = new Und();
-        $form = $this->createForm('prueba\pruebaBundle\Form\UndType', $und);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $und = new Und();
+            $form = $this->createForm('prueba\pruebaBundle\Form\UndType', $und);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($und);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($und);
+                $em->flush();
 
-            return $this->redirectToRoute('und_show', array('id' => $und->getIdund()));
+                return $this->redirectToRoute('und_show', array('id' => $und->getIdund()));
+            }
+
+            return $this->render('und/new_und.html.twig', array(
+                        'und' => $und,
+                        'form' => $form->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('und/new_und.html.twig', array(
-            'und' => $und,
-            'form' => $form->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -67,12 +83,20 @@ class UndController extends Controller
      */
     public function showAction(Und $und)
     {
-        $deleteForm = $this->createDeleteForm($und);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($und);
 
-        return $this->render('und/show_und.html.twig', array(
-            'und' => $und,
-            'delete_form' => $deleteForm->createView(),
-        ));
+            return $this->render('und/show_und.html.twig', array(
+                        'und' => $und,
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -83,31 +107,38 @@ class UndController extends Controller
      */
     public function editAction(Request $request, Und $und)
     {
-        $deleteForm = $this->createDeleteForm($und);
-        $editForm = $this->createForm('prueba\pruebaBundle\Form\UndType', $und);
-        $editForm->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($und);
+            $editForm = $this->createForm('prueba\pruebaBundle\Form\UndType', $und);
+            $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($und);
-            $em->flush();
-            //-------------------------- MENSAJE DE MODIFICACION SATISFACTORIA
-            //--- se tiene que tener una session abierta para poder observar 
-            //--- dicho mensaje en la hoja de actualizacion
+            if ($editForm->isSubmitted() && $editForm->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($und);
+                $em->flush();
+                //-------------------------- MENSAJE DE MODIFICACION SATISFACTORIA
+                //--- se tiene que tener una session abierta para poder observar 
+                //--- dicho mensaje en la hoja de actualizacion
+                $this->get('session')->getFlashBag()->add(
+                        'Atencion!', "El registro se ha modificado correctamente"
+                );
+                //------------------------- FIN MENSAJE
+
+                return $this->redirectToRoute('und_edit', array('id' => $und->getIdund()));
+            }
+
+            return $this->render('und/edit_und.html.twig', array(
+                        'und' => $und,
+                        'edit_form' => $editForm->createView(),
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
             $this->get('session')->getFlashBag()->add(
-              'Atencion!',
-              "El registro se ha modificado correctamente"
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
             );
-            //------------------------- FIN MENSAJE
-
-            return $this->redirectToRoute('und_edit', array('id' => $und->getIdund()));
         }
-
-        return $this->render('und/edit_und.html.twig', array(
-            'und' => $und,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -118,16 +149,24 @@ class UndController extends Controller
      */
     public function deleteAction(Request $request, Und $und)
     {
-        $form = $this->createDeleteForm($und);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $form = $this->createDeleteForm($und);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($und);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($und);
+                $em->flush();
+            }
+
+            return $this->redirectToRoute('und_index');
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->redirectToRoute('und_index');
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -139,10 +178,18 @@ class UndController extends Controller
      */
     private function createDeleteForm(Und $und)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('und_delete', array('id' => $und->getIdund())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            return $this->createFormBuilder()
+                            ->setAction($this->generateUrl('und_delete', array('id' => $und->getIdund())))
+                            ->setMethod('DELETE')
+                            ->getForm()
+            ;
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 }

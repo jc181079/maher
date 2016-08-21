@@ -22,15 +22,23 @@ class PagosefectivosController extends Controller
      * @Route("/", name="pagosefectivos_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $em = $this->getDoctrine()->getManager();
 
-        $pagosefectivos = $em->getRepository('pruebaBundle:Pagosefectivos')->findAll();
+            $pagosefectivos = $em->getRepository('pruebaBundle:Pagosefectivos')->findAll();
 
-        return $this->render('pagosefectivos/index.html.twig', array(
-            'pagosefectivos' => $pagosefectivos,
-        ));
+            return $this->render('pagosefectivos/index.html.twig', array(
+                        'pagosefectivos' => $pagosefectivos,
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -41,22 +49,30 @@ class PagosefectivosController extends Controller
      */
     public function newAction(Request $request)
     {
-        $pagosefectivo = new Pagosefectivos();
-        $form = $this->createForm('prueba\pruebaBundle\Form\PagosefectivosType', $pagosefectivo);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $pagosefectivo = new Pagosefectivos();
+            $form = $this->createForm('prueba\pruebaBundle\Form\PagosefectivosType', $pagosefectivo);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($pagosefectivo);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($pagosefectivo);
+                $em->flush();
 
-            return $this->redirectToRoute('pagosefectivos_show', array('id' => $pagosefectivo->getId()));
+                return $this->redirectToRoute('pagosefectivos_show', array('id' => $pagosefectivo->getId()));
+            }
+
+            return $this->render('pagosefectivos/new.html.twig', array(
+                        'pagosefectivo' => $pagosefectivo,
+                        'form' => $form->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('pagosefectivos/new.html.twig', array(
-            'pagosefectivo' => $pagosefectivo,
-            'form' => $form->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -67,12 +83,20 @@ class PagosefectivosController extends Controller
      */
     public function showAction(Pagosefectivos $pagosefectivo)
     {
-        $deleteForm = $this->createDeleteForm($pagosefectivo);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($pagosefectivo);
 
-        return $this->render('pagosefectivos/show.html.twig', array(
-            'pagosefectivo' => $pagosefectivo,
-            'delete_form' => $deleteForm->createView(),
-        ));
+            return $this->render('pagosefectivos/show.html.twig', array(
+                        'pagosefectivo' => $pagosefectivo,
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -83,23 +107,31 @@ class PagosefectivosController extends Controller
      */
     public function editAction(Request $request, Pagosefectivos $pagosefectivo)
     {
-        $deleteForm = $this->createDeleteForm($pagosefectivo);
-        $editForm = $this->createForm('prueba\pruebaBundle\Form\PagosefectivosType', $pagosefectivo);
-        $editForm->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($pagosefectivo);
+            $editForm = $this->createForm('prueba\pruebaBundle\Form\PagosefectivosType', $pagosefectivo);
+            $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($pagosefectivo);
-            $em->flush();
+            if ($editForm->isSubmitted() && $editForm->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($pagosefectivo);
+                $em->flush();
 
-            return $this->redirectToRoute('pagosefectivos_edit', array('id' => $pagosefectivo->getId()));
+                return $this->redirectToRoute('pagosefectivos_edit', array('id' => $pagosefectivo->getId()));
+            }
+
+            return $this->render('pagosefectivos/edit.html.twig', array(
+                        'pagosefectivo' => $pagosefectivo,
+                        'edit_form' => $editForm->createView(),
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('pagosefectivos/edit.html.twig', array(
-            'pagosefectivo' => $pagosefectivo,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -110,16 +142,24 @@ class PagosefectivosController extends Controller
      */
     public function deleteAction(Request $request, Pagosefectivos $pagosefectivo)
     {
-        $form = $this->createDeleteForm($pagosefectivo);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $form = $this->createDeleteForm($pagosefectivo);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($pagosefectivo);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($pagosefectivo);
+                $em->flush();
+            }
+
+            return $this->redirectToRoute('pagosefectivos_index');
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->redirectToRoute('pagosefectivos_index');
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -131,10 +171,18 @@ class PagosefectivosController extends Controller
      */
     private function createDeleteForm(Pagosefectivos $pagosefectivo)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('pagosefectivos_delete', array('id' => $pagosefectivo->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            return $this->createFormBuilder()
+                            ->setAction($this->generateUrl('pagosefectivos_delete', array('id' => $pagosefectivo->getId())))
+                            ->setMethod('DELETE')
+                            ->getForm()
+            ;
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 }

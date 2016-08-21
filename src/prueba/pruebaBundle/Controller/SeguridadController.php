@@ -22,15 +22,23 @@ class SeguridadController extends Controller
      * @Route("/seguridad/", name="seguridad_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $em = $this->getDoctrine()->getManager();
 
-        $seguridads = $em->getRepository('pruebaBundle:Seguridad')->findAll();
+            $seguridads = $em->getRepository('pruebaBundle:Seguridad')->findAll();
 
-        return $this->render('seguridad/index.html.twig', array(
-            'seguridads' => $seguridads,
-        ));
+            return $this->render('seguridad/index.html.twig', array(
+                        'seguridads' => $seguridads,
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -41,22 +49,30 @@ class SeguridadController extends Controller
      */
     public function newAction(Request $request)
     {
-        $seguridad = new Seguridad();
-        $form = $this->createForm('prueba\pruebaBundle\Form\SeguridadType', $seguridad);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $seguridad = new Seguridad();
+            $form = $this->createForm('prueba\pruebaBundle\Form\SeguridadType', $seguridad);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($seguridad);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($seguridad);
+                $em->flush();
 
-            return $this->redirectToRoute('seguridad_show', array('id' => $seguridad->getId()));
+                return $this->redirectToRoute('seguridad_show', array('id' => $seguridad->getId()));
+            }
+
+            return $this->render('seguridad/new.html.twig', array(
+                        'seguridad' => $seguridad,
+                        'form' => $form->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('seguridad/new.html.twig', array(
-            'seguridad' => $seguridad,
-            'form' => $form->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -67,12 +83,20 @@ class SeguridadController extends Controller
      */
     public function showAction(Seguridad $seguridad)
     {
-        $deleteForm = $this->createDeleteForm($seguridad);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($seguridad);
 
-        return $this->render('seguridad/show.html.twig', array(
-            'seguridad' => $seguridad,
-            'delete_form' => $deleteForm->createView(),
-        ));
+            return $this->render('seguridad/show.html.twig', array(
+                        'seguridad' => $seguridad,
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -83,23 +107,31 @@ class SeguridadController extends Controller
      */
     public function editAction(Request $request, Seguridad $seguridad)
     {
-        $deleteForm = $this->createDeleteForm($seguridad);
-        $editForm = $this->createForm('prueba\pruebaBundle\Form\SeguridadType', $seguridad);
-        $editForm->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($seguridad);
+            $editForm = $this->createForm('prueba\pruebaBundle\Form\SeguridadType', $seguridad);
+            $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($seguridad);
-            $em->flush();
+            if ($editForm->isSubmitted() && $editForm->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($seguridad);
+                $em->flush();
 
-            return $this->redirectToRoute('seguridad_edit', array('id' => $seguridad->getId()));
+                return $this->redirectToRoute('seguridad_edit', array('id' => $seguridad->getId()));
+            }
+
+            return $this->render('seguridad/edit.html.twig', array(
+                        'seguridad' => $seguridad,
+                        'edit_form' => $editForm->createView(),
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('seguridad/edit.html.twig', array(
-            'seguridad' => $seguridad,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -110,16 +142,24 @@ class SeguridadController extends Controller
      */
     public function deleteAction(Request $request, Seguridad $seguridad)
     {
-        $form = $this->createDeleteForm($seguridad);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $form = $this->createDeleteForm($seguridad);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($seguridad);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($seguridad);
+                $em->flush();
+            }
+
+            return $this->redirectToRoute('seguridad_index');
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->redirectToRoute('seguridad_index');
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -131,11 +171,19 @@ class SeguridadController extends Controller
      */
     private function createDeleteForm(Seguridad $seguridad)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('seguridad_delete', array('id' => $seguridad->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            return $this->createFormBuilder()
+                            ->setAction($this->generateUrl('seguridad_delete', array('id' => $seguridad->getId())))
+                            ->setMethod('DELETE')
+                            ->getForm()
+            ;
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
     
     /**

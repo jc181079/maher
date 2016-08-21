@@ -23,15 +23,23 @@ class ProductoController extends Controller
      * @Route("/", name="producto_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $em = $this->getDoctrine()->getManager();
 
-        $productos = $em->getRepository('pruebaBundle:Producto')->findAll();
+            $productos = $em->getRepository('pruebaBundle:Producto')->findAll();
 
-        return $this->render('producto/index_prod.html.twig', array(
-            'productos' => $productos,
-        ));
+            return $this->render('producto/index_prod.html.twig', array(
+                        'productos' => $productos,
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -42,22 +50,30 @@ class ProductoController extends Controller
      */
     public function newAction(Request $request)
     {
-        $producto = new Producto();
-        $form = $this->createForm('prueba\pruebaBundle\Form\ProductoType', $producto);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $producto = new Producto();
+            $form = $this->createForm('prueba\pruebaBundle\Form\ProductoType', $producto);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($producto);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($producto);
+                $em->flush();
 
-            return $this->redirectToRoute('producto_show', array('id' => $producto->getIdproducto()));
+                return $this->redirectToRoute('producto_show', array('id' => $producto->getIdproducto()));
+            }
+
+            return $this->render('producto/new_prod.html.twig', array(
+                        'producto' => $producto,
+                        'form' => $form->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('producto/new_prod.html.twig', array(
-            'producto' => $producto,
-            'form' => $form->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -68,34 +84,39 @@ class ProductoController extends Controller
      */
     public function showAction(Producto $producto,$id)
     {
-        $deleteForm = $this->createDeleteForm($producto);// codigo original
-        
-        //------------------- CODIGO DE CONSULTA PERSONALIZADO
-        $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery(
-        'select p.nombreproducto,p.marca,
-               p.referencia,p.familia,
-               p.stockminimo,p.stockmaximo,
-               p.preciocosto,p.precioventa,
-               u.nombreund
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($producto); // codigo original
+            //------------------- CODIGO DE CONSULTA PERSONALIZADO
+            $em = $this->getDoctrine()->getManager();
+            $query = $em->createQuery(
+                       'select p.nombreproducto,p.marca,
+                               p.referencia,p.familia,
+                               p.stockminimo,p.stockmaximo,
+                               p.preciocosto,p.precioventa,
+                               u.nombreund
 
-        from pruebaBundle:producto p inner join pruebaBundle:und u with
-        p.idund=u.idund
-        
-        where p.idproducto='.$id.''
-        
-                
-                );
+                        from pruebaBundle:producto p inner join pruebaBundle:und u with
+                        p.idund=u.idund
+
+                        where p.idproducto=' . $id . ''
+            );
             $xproducto = $query->getResult();
-        
-        //-------------------- FIN CODIGO PERSONALIZADO
-        
 
-        return $this->render('producto/show_prod.html.twig', array(
-            'xproducto' => $xproducto,
-            'producto' => $producto,
-            'delete_form' => $deleteForm->createView(),
-        ));
+            //-------------------- FIN CODIGO PERSONALIZADO
+
+
+            return $this->render('producto/show_prod.html.twig', array(
+                        'xproducto' => $xproducto,
+                        'producto' => $producto,
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -106,23 +127,31 @@ class ProductoController extends Controller
      */
     public function editAction(Request $request, Producto $producto)
     {
-        $deleteForm = $this->createDeleteForm($producto);
-        $editForm = $this->createForm('prueba\pruebaBundle\Form\ProductoType', $producto);
-        $editForm->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($producto);
+            $editForm = $this->createForm('prueba\pruebaBundle\Form\ProductoType', $producto);
+            $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($producto);
-            $em->flush();
+            if ($editForm->isSubmitted() && $editForm->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($producto);
+                $em->flush();
 
-            return $this->redirectToRoute('producto_edit', array('id' => $producto->getIdproducto()));
+                return $this->redirectToRoute('producto_edit', array('id' => $producto->getIdproducto()));
+            }
+
+            return $this->render('producto/edit_prod.html.twig', array(
+                        'producto' => $producto,
+                        'edit_form' => $editForm->createView(),
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('producto/edit_prod.html.twig', array(
-            'producto' => $producto,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -133,16 +162,24 @@ class ProductoController extends Controller
      */
     public function deleteAction(Request $request, Producto $producto)
     {
-        $form = $this->createDeleteForm($producto);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $form = $this->createDeleteForm($producto);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($producto);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($producto);
+                $em->flush();
+            }
+
+            return $this->redirectToRoute('producto_index');
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->redirectToRoute('producto_index');
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -154,10 +191,18 @@ class ProductoController extends Controller
      */
     private function createDeleteForm(Producto $producto)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('producto_delete', array('id' => $producto->getIdproducto())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            return $this->createFormBuilder()
+                            ->setAction($this->generateUrl('producto_delete', array('id' => $producto->getIdproducto())))
+                            ->setMethod('DELETE')
+                            ->getForm()
+            ;
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 }

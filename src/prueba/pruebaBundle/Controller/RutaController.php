@@ -22,15 +22,23 @@ class RutaController extends Controller
      * @Route("/", name="ruta_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $em = $this->getDoctrine()->getManager();
 
-        $rutas = $em->getRepository('pruebaBundle:Ruta')->findAll();
+            $rutas = $em->getRepository('pruebaBundle:Ruta')->findAll();
 
-        return $this->render('ruta/index.html.twig', array(
-            'rutas' => $rutas,
-        ));
+            return $this->render('ruta/index.html.twig', array(
+                        'rutas' => $rutas,
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -41,22 +49,30 @@ class RutaController extends Controller
      */
     public function newAction(Request $request)
     {
-        $rutum = new Ruta();
-        $form = $this->createForm('prueba\pruebaBundle\Form\RutaType', $rutum);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $rutum = new Ruta();
+            $form = $this->createForm('prueba\pruebaBundle\Form\RutaType', $rutum);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($rutum);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($rutum);
+                $em->flush();
 
-            return $this->redirectToRoute('ruta_show', array('id' => $rutum->getId()));
+                return $this->redirectToRoute('ruta_show', array('id' => $rutum->getId()));
+            }
+
+            return $this->render('ruta/new.html.twig', array(
+                        'rutum' => $rutum,
+                        'form' => $form->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('ruta/new.html.twig', array(
-            'rutum' => $rutum,
-            'form' => $form->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -67,12 +83,20 @@ class RutaController extends Controller
      */
     public function showAction(Ruta $rutum)
     {
-        $deleteForm = $this->createDeleteForm($rutum);
+       $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($rutum);
 
-        return $this->render('ruta/show.html.twig', array(
-            'rutum' => $rutum,
-            'delete_form' => $deleteForm->createView(),
-        ));
+            return $this->render('ruta/show.html.twig', array(
+                        'rutum' => $rutum,
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -83,23 +107,31 @@ class RutaController extends Controller
      */
     public function editAction(Request $request, Ruta $rutum)
     {
-        $deleteForm = $this->createDeleteForm($rutum);
-        $editForm = $this->createForm('prueba\pruebaBundle\Form\RutaType', $rutum);
-        $editForm->handleRequest($request);
+       $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($rutum);
+            $editForm = $this->createForm('prueba\pruebaBundle\Form\RutaType', $rutum);
+            $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($rutum);
-            $em->flush();
+            if ($editForm->isSubmitted() && $editForm->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($rutum);
+                $em->flush();
 
-            return $this->redirectToRoute('ruta_edit', array('id' => $rutum->getId()));
+                return $this->redirectToRoute('ruta_edit', array('id' => $rutum->getId()));
+            }
+
+            return $this->render('ruta/edit.html.twig', array(
+                        'rutum' => $rutum,
+                        'edit_form' => $editForm->createView(),
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('ruta/edit.html.twig', array(
-            'rutum' => $rutum,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -110,16 +142,24 @@ class RutaController extends Controller
      */
     public function deleteAction(Request $request, Ruta $rutum)
     {
-        $form = $this->createDeleteForm($rutum);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $form = $this->createDeleteForm($rutum);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($rutum);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($rutum);
+                $em->flush();
+            }
+
+            return $this->redirectToRoute('ruta_index');
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->redirectToRoute('ruta_index');
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -131,10 +171,19 @@ class RutaController extends Controller
      */
     private function createDeleteForm(Ruta $rutum)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('ruta_delete', array('id' => $rutum->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            return $this->createFormBuilder()
+                            ->setAction($this->generateUrl('ruta_delete', array('id' => $rutum->getId())))
+                            ->setMethod('DELETE')
+                            ->getForm()
+            ;
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
+
 }

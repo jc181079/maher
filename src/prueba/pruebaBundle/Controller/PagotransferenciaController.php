@@ -22,15 +22,23 @@ class PagotransferenciaController extends Controller
      * @Route("/", name="pagotransferencia_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $em = $this->getDoctrine()->getManager();
 
-        $pagotransferencias = $em->getRepository('pruebaBundle:Pagotransferencia')->findAll();
+            $pagotransferencias = $em->getRepository('pruebaBundle:Pagotransferencia')->findAll();
 
-        return $this->render('pagotransferencia/index.html.twig', array(
-            'pagotransferencias' => $pagotransferencias,
-        ));
+            return $this->render('pagotransferencia/index.html.twig', array(
+                        'pagotransferencias' => $pagotransferencias,
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -41,22 +49,30 @@ class PagotransferenciaController extends Controller
      */
     public function newAction(Request $request)
     {
-        $pagotransferencium = new Pagotransferencia();
-        $form = $this->createForm('prueba\pruebaBundle\Form\PagotransferenciaType', $pagotransferencium);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $pagotransferencium = new Pagotransferencia();
+            $form = $this->createForm('prueba\pruebaBundle\Form\PagotransferenciaType', $pagotransferencium);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($pagotransferencium);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($pagotransferencium);
+                $em->flush();
 
-            return $this->redirectToRoute('pagotransferencia_show', array('id' => $pagotransferencium->getId()));
+                return $this->redirectToRoute('pagotransferencia_show', array('id' => $pagotransferencium->getId()));
+            }
+
+            return $this->render('pagotransferencia/new.html.twig', array(
+                        'pagotransferencium' => $pagotransferencium,
+                        'form' => $form->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('pagotransferencia/new.html.twig', array(
-            'pagotransferencium' => $pagotransferencium,
-            'form' => $form->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -67,12 +83,20 @@ class PagotransferenciaController extends Controller
      */
     public function showAction(Pagotransferencia $pagotransferencium)
     {
-        $deleteForm = $this->createDeleteForm($pagotransferencium);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($pagotransferencium);
 
-        return $this->render('pagotransferencia/show.html.twig', array(
-            'pagotransferencium' => $pagotransferencium,
-            'delete_form' => $deleteForm->createView(),
-        ));
+            return $this->render('pagotransferencia/show.html.twig', array(
+                        'pagotransferencium' => $pagotransferencium,
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -83,23 +107,31 @@ class PagotransferenciaController extends Controller
      */
     public function editAction(Request $request, Pagotransferencia $pagotransferencium)
     {
-        $deleteForm = $this->createDeleteForm($pagotransferencium);
-        $editForm = $this->createForm('prueba\pruebaBundle\Form\PagotransferenciaType', $pagotransferencium);
-        $editForm->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($pagotransferencium);
+            $editForm = $this->createForm('prueba\pruebaBundle\Form\PagotransferenciaType', $pagotransferencium);
+            $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($pagotransferencium);
-            $em->flush();
+            if ($editForm->isSubmitted() && $editForm->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($pagotransferencium);
+                $em->flush();
 
-            return $this->redirectToRoute('pagotransferencia_edit', array('id' => $pagotransferencium->getId()));
+                return $this->redirectToRoute('pagotransferencia_edit', array('id' => $pagotransferencium->getId()));
+            }
+
+            return $this->render('pagotransferencia/edit.html.twig', array(
+                        'pagotransferencium' => $pagotransferencium,
+                        'edit_form' => $editForm->createView(),
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('pagotransferencia/edit.html.twig', array(
-            'pagotransferencium' => $pagotransferencium,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -110,7 +142,9 @@ class PagotransferenciaController extends Controller
      */
     public function deleteAction(Request $request, Pagotransferencia $pagotransferencium)
     {
-        $form = $this->createDeleteForm($pagotransferencium);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+ $form = $this->createDeleteForm($pagotransferencium);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -120,6 +154,13 @@ class PagotransferenciaController extends Controller
         }
 
         return $this->redirectToRoute('pagotransferencia_index');
+} else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
+       
     }
 
     /**
@@ -131,10 +172,18 @@ class PagotransferenciaController extends Controller
      */
     private function createDeleteForm(Pagotransferencia $pagotransferencium)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('pagotransferencia_delete', array('id' => $pagotransferencium->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            return $this->createFormBuilder()
+                            ->setAction($this->generateUrl('pagotransferencia_delete', array('id' => $pagotransferencium->getId())))
+                            ->setMethod('DELETE')
+                            ->getForm()
+            ;
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 }

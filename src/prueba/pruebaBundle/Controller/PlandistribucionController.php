@@ -22,15 +22,23 @@ class PlandistribucionController extends Controller
      * @Route("/", name="plandistribucion_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $em = $this->getDoctrine()->getManager();
 
-        $plandistribucions = $em->getRepository('pruebaBundle:Plandistribucion')->findAll();
+            $plandistribucions = $em->getRepository('pruebaBundle:Plandistribucion')->findAll();
 
-        return $this->render('plandistribucion/index.html.twig', array(
-            'plandistribucions' => $plandistribucions,
-        ));
+            return $this->render('plandistribucion/index.html.twig', array(
+                        'plandistribucions' => $plandistribucions,
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -41,22 +49,30 @@ class PlandistribucionController extends Controller
      */
     public function newAction(Request $request)
     {
-        $plandistribucion = new Plandistribucion();
-        $form = $this->createForm('prueba\pruebaBundle\Form\PlandistribucionType', $plandistribucion);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $plandistribucion = new Plandistribucion();
+            $form = $this->createForm('prueba\pruebaBundle\Form\PlandistribucionType', $plandistribucion);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($plandistribucion);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($plandistribucion);
+                $em->flush();
 
-            return $this->redirectToRoute('plandistribucion_show', array('id' => $plandistribucion->getId()));
+                return $this->redirectToRoute('plandistribucion_show', array('id' => $plandistribucion->getId()));
+            }
+
+            return $this->render('plandistribucion/new.html.twig', array(
+                        'plandistribucion' => $plandistribucion,
+                        'form' => $form->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('plandistribucion/new.html.twig', array(
-            'plandistribucion' => $plandistribucion,
-            'form' => $form->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -67,12 +83,20 @@ class PlandistribucionController extends Controller
      */
     public function showAction(Plandistribucion $plandistribucion)
     {
-        $deleteForm = $this->createDeleteForm($plandistribucion);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($plandistribucion);
 
-        return $this->render('plandistribucion/show.html.twig', array(
-            'plandistribucion' => $plandistribucion,
-            'delete_form' => $deleteForm->createView(),
-        ));
+            return $this->render('plandistribucion/show.html.twig', array(
+                        'plandistribucion' => $plandistribucion,
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -83,23 +107,31 @@ class PlandistribucionController extends Controller
      */
     public function editAction(Request $request, Plandistribucion $plandistribucion)
     {
-        $deleteForm = $this->createDeleteForm($plandistribucion);
-        $editForm = $this->createForm('prueba\pruebaBundle\Form\PlandistribucionType', $plandistribucion);
-        $editForm->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($plandistribucion);
+            $editForm = $this->createForm('prueba\pruebaBundle\Form\PlandistribucionType', $plandistribucion);
+            $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($plandistribucion);
-            $em->flush();
+            if ($editForm->isSubmitted() && $editForm->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($plandistribucion);
+                $em->flush();
 
-            return $this->redirectToRoute('plandistribucion_edit', array('id' => $plandistribucion->getId()));
+                return $this->redirectToRoute('plandistribucion_edit', array('id' => $plandistribucion->getId()));
+            }
+
+            return $this->render('plandistribucion/edit.html.twig', array(
+                        'plandistribucion' => $plandistribucion,
+                        'edit_form' => $editForm->createView(),
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('plandistribucion/edit.html.twig', array(
-            'plandistribucion' => $plandistribucion,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -110,16 +142,24 @@ class PlandistribucionController extends Controller
      */
     public function deleteAction(Request $request, Plandistribucion $plandistribucion)
     {
-        $form = $this->createDeleteForm($plandistribucion);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $form = $this->createDeleteForm($plandistribucion);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($plandistribucion);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($plandistribucion);
+                $em->flush();
+            }
+
+            return $this->redirectToRoute('plandistribucion_index');
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->redirectToRoute('plandistribucion_index');
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -131,10 +171,19 @@ class PlandistribucionController extends Controller
      */
     private function createDeleteForm(Plandistribucion $plandistribucion)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('plandistribucion_delete', array('id' => $plandistribucion->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            return $this->createFormBuilder()
+                            ->setAction($this->generateUrl('plandistribucion_delete', array('id' => $plandistribucion->getId())))
+                            ->setMethod('DELETE')
+                            ->getForm()
+            ;
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
+
 }

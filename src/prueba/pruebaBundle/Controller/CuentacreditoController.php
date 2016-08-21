@@ -22,7 +22,7 @@ class CuentacreditoController extends Controller
      * @Route("/", name="cuentacredito_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {

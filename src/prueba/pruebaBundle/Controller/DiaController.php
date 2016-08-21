@@ -24,13 +24,21 @@ class DiaController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $em = $this->getDoctrine()->getManager();
 
-        $dias = $em->getRepository('pruebaBundle:Dia')->findAll();
+            $dias = $em->getRepository('pruebaBundle:Dia')->findAll();
 
-        return $this->render('dia/index.html.twig', array(
-            'dias' => $dias,
-        ));
+            return $this->render('dia/index.html.twig', array(
+                        'dias' => $dias,
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -41,22 +49,30 @@ class DiaController extends Controller
      */
     public function newAction(Request $request)
     {
-        $dium = new Dia();
-        $form = $this->createForm('prueba\pruebaBundle\Form\DiaType', $dium);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $dium = new Dia();
+            $form = $this->createForm('prueba\pruebaBundle\Form\DiaType', $dium);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($dium);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($dium);
+                $em->flush();
 
-            return $this->redirectToRoute('dia_show', array('id' => $dium->getId()));
+                return $this->redirectToRoute('dia_show', array('id' => $dium->getId()));
+            }
+
+            return $this->render('dia/new.html.twig', array(
+                        'dium' => $dium,
+                        'form' => $form->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('dia/new.html.twig', array(
-            'dium' => $dium,
-            'form' => $form->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -67,12 +83,20 @@ class DiaController extends Controller
      */
     public function showAction(Dia $dium)
     {
-        $deleteForm = $this->createDeleteForm($dium);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($dium);
 
-        return $this->render('dia/show.html.twig', array(
-            'dium' => $dium,
-            'delete_form' => $deleteForm->createView(),
-        ));
+            return $this->render('dia/show.html.twig', array(
+                        'dium' => $dium,
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -83,23 +107,31 @@ class DiaController extends Controller
      */
     public function editAction(Request $request, Dia $dium)
     {
-        $deleteForm = $this->createDeleteForm($dium);
-        $editForm = $this->createForm('prueba\pruebaBundle\Form\DiaType', $dium);
-        $editForm->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($dium);
+            $editForm = $this->createForm('prueba\pruebaBundle\Form\DiaType', $dium);
+            $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($dium);
-            $em->flush();
+            if ($editForm->isSubmitted() && $editForm->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($dium);
+                $em->flush();
 
-            return $this->redirectToRoute('dia_edit', array('id' => $dium->getId()));
+                return $this->redirectToRoute('dia_edit', array('id' => $dium->getId()));
+            }
+
+            return $this->render('dia/edit.html.twig', array(
+                        'dium' => $dium,
+                        'edit_form' => $editForm->createView(),
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('dia/edit.html.twig', array(
-            'dium' => $dium,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -110,16 +142,24 @@ class DiaController extends Controller
      */
     public function deleteAction(Request $request, Dia $dium)
     {
-        $form = $this->createDeleteForm($dium);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $form = $this->createDeleteForm($dium);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($dium);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($dium);
+                $em->flush();
+            }
+
+            return $this->redirectToRoute('dia_index');
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->redirectToRoute('dia_index');
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -131,10 +171,18 @@ class DiaController extends Controller
      */
     private function createDeleteForm(Dia $dium)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('dia_delete', array('id' => $dium->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            return $this->createFormBuilder()
+                            ->setAction($this->generateUrl('dia_delete', array('id' => $dium->getId())))
+                            ->setMethod('DELETE')
+                            ->getForm()
+            ;
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 }

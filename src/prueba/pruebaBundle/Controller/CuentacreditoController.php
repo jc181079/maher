@@ -24,13 +24,21 @@ class CuentacreditoController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $em = $this->getDoctrine()->getManager();
 
-        $cuentacreditos = $em->getRepository('pruebaBundle:Cuentacredito')->findAll();
+            $cuentacreditos = $em->getRepository('pruebaBundle:Cuentacredito')->findAll();
 
-        return $this->render('cuentacredito/index.html.twig', array(
-            'cuentacreditos' => $cuentacreditos,
-        ));
+            return $this->render('cuentacredito/index.html.twig', array(
+                        'cuentacreditos' => $cuentacreditos,
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -41,22 +49,30 @@ class CuentacreditoController extends Controller
      */
     public function newAction(Request $request)
     {
-        $cuentacredito = new Cuentacredito();
-        $form = $this->createForm('prueba\pruebaBundle\Form\CuentacreditoType', $cuentacredito);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $cuentacredito = new Cuentacredito();
+            $form = $this->createForm('prueba\pruebaBundle\Form\CuentacreditoType', $cuentacredito);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($cuentacredito);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($cuentacredito);
+                $em->flush();
 
-            return $this->redirectToRoute('cuentacredito_show', array('id' => $cuentacredito->getId()));
+                return $this->redirectToRoute('cuentacredito_show', array('id' => $cuentacredito->getId()));
+            }
+
+            return $this->render('cuentacredito/new.html.twig', array(
+                        'cuentacredito' => $cuentacredito,
+                        'form' => $form->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('cuentacredito/new.html.twig', array(
-            'cuentacredito' => $cuentacredito,
-            'form' => $form->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -67,12 +83,20 @@ class CuentacreditoController extends Controller
      */
     public function showAction(Cuentacredito $cuentacredito)
     {
-        $deleteForm = $this->createDeleteForm($cuentacredito);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($cuentacredito);
 
-        return $this->render('cuentacredito/show.html.twig', array(
-            'cuentacredito' => $cuentacredito,
-            'delete_form' => $deleteForm->createView(),
-        ));
+            return $this->render('cuentacredito/show.html.twig', array(
+                        'cuentacredito' => $cuentacredito,
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -83,23 +107,31 @@ class CuentacreditoController extends Controller
      */
     public function editAction(Request $request, Cuentacredito $cuentacredito)
     {
-        $deleteForm = $this->createDeleteForm($cuentacredito);
-        $editForm = $this->createForm('prueba\pruebaBundle\Form\CuentacreditoType', $cuentacredito);
-        $editForm->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($cuentacredito);
+            $editForm = $this->createForm('prueba\pruebaBundle\Form\CuentacreditoType', $cuentacredito);
+            $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($cuentacredito);
-            $em->flush();
+            if ($editForm->isSubmitted() && $editForm->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($cuentacredito);
+                $em->flush();
 
-            return $this->redirectToRoute('cuentacredito_edit', array('id' => $cuentacredito->getId()));
+                return $this->redirectToRoute('cuentacredito_edit', array('id' => $cuentacredito->getId()));
+            }
+
+            return $this->render('cuentacredito/edit.html.twig', array(
+                        'cuentacredito' => $cuentacredito,
+                        'edit_form' => $editForm->createView(),
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('cuentacredito/edit.html.twig', array(
-            'cuentacredito' => $cuentacredito,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -110,16 +142,24 @@ class CuentacreditoController extends Controller
      */
     public function deleteAction(Request $request, Cuentacredito $cuentacredito)
     {
-        $form = $this->createDeleteForm($cuentacredito);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $form = $this->createDeleteForm($cuentacredito);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($cuentacredito);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($cuentacredito);
+                $em->flush();
+            }
+
+            return $this->redirectToRoute('cuentacredito_index');
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->redirectToRoute('cuentacredito_index');
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -131,10 +171,18 @@ class CuentacreditoController extends Controller
      */
     private function createDeleteForm(Cuentacredito $cuentacredito)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('cuentacredito_delete', array('id' => $cuentacredito->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            return $this->createFormBuilder()
+                            ->setAction($this->generateUrl('cuentacredito_delete', array('id' => $cuentacredito->getId())))
+                            ->setMethod('DELETE')
+                            ->getForm()
+            ;
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 }

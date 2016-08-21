@@ -22,7 +22,7 @@ class ClientesController extends Controller
      * @Route("/", name="clientes_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $session = $request->getSession();
          $em = $this->getDoctrine()->getManager();
@@ -65,22 +65,30 @@ class ClientesController extends Controller
      */
     public function newAction(Request $request)
     {
-        $cliente = new Clientes();
-        $form = $this->createForm('prueba\pruebaBundle\Form\ClientesType', $cliente);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $cliente = new Clientes();
+            $form = $this->createForm('prueba\pruebaBundle\Form\ClientesType', $cliente);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($cliente);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($cliente);
+                $em->flush();
 
-            return $this->redirectToRoute('clientes_show', array('id' => $cliente->getId()));
+                return $this->redirectToRoute('clientes_show', array('id' => $cliente->getId()));
+            }
+
+            return $this->render('clientes/new.html.twig', array(
+                        'cliente' => $cliente,
+                        'form' => $form->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('clientes/new.html.twig', array(
-            'cliente' => $cliente,
-            'form' => $form->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -91,12 +99,20 @@ class ClientesController extends Controller
      */
     public function showAction(Clientes $cliente)
     {
-        $deleteForm = $this->createDeleteForm($cliente);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($cliente);
 
-        return $this->render('clientes/show.html.twig', array(
-            'cliente' => $cliente,
-            'delete_form' => $deleteForm->createView(),
-        ));
+            return $this->render('clientes/show.html.twig', array(
+                        'cliente' => $cliente,
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -107,23 +123,31 @@ class ClientesController extends Controller
      */
     public function editAction(Request $request, Clientes $cliente)
     {
-        $deleteForm = $this->createDeleteForm($cliente);
-        $editForm = $this->createForm('prueba\pruebaBundle\Form\ClientesType', $cliente);
-        $editForm->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($cliente);
+            $editForm = $this->createForm('prueba\pruebaBundle\Form\ClientesType', $cliente);
+            $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($cliente);
-            $em->flush();
+            if ($editForm->isSubmitted() && $editForm->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($cliente);
+                $em->flush();
 
-            return $this->redirectToRoute('clientes_edit', array('id' => $cliente->getId()));
+                return $this->redirectToRoute('clientes_edit', array('id' => $cliente->getId()));
+            }
+
+            return $this->render('clientes/edit.html.twig', array(
+                        'cliente' => $cliente,
+                        'edit_form' => $editForm->createView(),
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('clientes/edit.html.twig', array(
-            'cliente' => $cliente,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -134,16 +158,24 @@ class ClientesController extends Controller
      */
     public function deleteAction(Request $request, Clientes $cliente)
     {
-        $form = $this->createDeleteForm($cliente);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $form = $this->createDeleteForm($cliente);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($cliente);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($cliente);
+                $em->flush();
+            }
+
+            return $this->redirectToRoute('clientes_index');
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->redirectToRoute('clientes_index');
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -155,10 +187,18 @@ class ClientesController extends Controller
      */
     private function createDeleteForm(Clientes $cliente)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('clientes_delete', array('id' => $cliente->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            return $this->createFormBuilder()
+                            ->setAction($this->generateUrl('clientes_delete', array('id' => $cliente->getId())))
+                            ->setMethod('DELETE')
+                            ->getForm()
+            ;
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 }

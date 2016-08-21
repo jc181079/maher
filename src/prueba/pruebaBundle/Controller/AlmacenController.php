@@ -19,7 +19,7 @@ class AlmacenController extends Controller
     /**
      * Lists all Almacen entities.
      *
-     * @Route("/almacen", name="almacen_index")
+     * @Route("/", name="almacen_index")
      * @Method("GET")
      */
     public function indexAction(Request $request)
@@ -44,90 +44,122 @@ class AlmacenController extends Controller
     /**
      * Creates a new Almacen entity.
      *
-     * @Route("/almacen/new", name="almacen_new")
+     * @Route("/new", name="almacen_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
     {
-        $almacen = new Almacen();
-        $form = $this->createForm('prueba\pruebaBundle\Form\AlmacenType', $almacen);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $almacen = new Almacen();
+            $form = $this->createForm('prueba\pruebaBundle\Form\AlmacenType', $almacen);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($almacen);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($almacen);
+                $em->flush();
 
-            return $this->redirectToRoute('almacen_show', array('id' => $almacen->getIdalmacen()));
+                return $this->redirectToRoute('almacen_show', array('id' => $almacen->getIdalmacen()));
+            }
+
+            return $this->render('almacen/new_alm.html.twig', array(
+                        'almacen' => $almacen,
+                        'form' => $form->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('almacen/new_alm.html.twig', array(
-            'almacen' => $almacen,
-            'form' => $form->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
      * Finds and displays a Almacen entity.
      *
-     * @Route("/almacen/show/{id}", name="almacen_show")
+     * @Route("/show/{id}", name="almacen_show")
      * @Method("GET")
      */
     public function showAction(Almacen $almacen,Request $request)
     {
-        $deleteForm = $this->createDeleteForm($almacen);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($almacen);
 
-        return $this->render('almacen/show_alm.html.twig', array(
-            'almacen' => $almacen,
-            'delete_form' => $deleteForm->createView(),
-        ));
+            return $this->render('almacen/show_alm.html.twig', array(
+                        'almacen' => $almacen,
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
      * Displays a form to edit an existing Almacen entity.
      *
-     * @Route("/almacen/edit/{id}", name="almacen_edit")
+     * @Route("/edit/{id}", name="almacen_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Almacen $almacen)
     {
-        $deleteForm = $this->createDeleteForm($almacen);
-        $editForm = $this->createForm('prueba\pruebaBundle\Form\AlmacenType', $almacen);
-        $editForm->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $deleteForm = $this->createDeleteForm($almacen);
+            $editForm = $this->createForm('prueba\pruebaBundle\Form\AlmacenType', $almacen);
+            $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($almacen);
-            $em->flush();
+            if ($editForm->isSubmitted() && $editForm->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($almacen);
+                $em->flush();
 
-            return $this->redirectToRoute('almacen_edit', array('id' => $almacen->getIdalmacen()));
+                return $this->redirectToRoute('almacen_edit', array('id' => $almacen->getIdalmacen()));
+            }
+
+            return $this->render('almacen/edit_alm.html.twig', array(
+                        'almacen' => $almacen,
+                        'edit_form' => $editForm->createView(),
+                        'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->render('almacen/edit_alm.html.twig', array(
-            'almacen' => $almacen,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
      * Deletes a Almacen entity.
      *
-     * @Route("/almacen/delete/{id}", name="almacen_delete")
+     * @Route("/delete/{id}", name="almacen_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, Almacen $almacen)
     {
-        $form = $this->createDeleteForm($almacen);
-        $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $form = $this->createDeleteForm($almacen);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($almacen);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($almacen);
+                $em->flush();
+            }
+
+            return $this->redirectToRoute('almacen_index');
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
         }
-
-        return $this->redirectToRoute('almacen_index');
+        return $this->redirect($this->generateUrl('inicio'));
     }
 
     /**
@@ -139,10 +171,18 @@ class AlmacenController extends Controller
      */
     private function createDeleteForm(Almacen $almacen)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('almacen_delete', array('id' => $almacen->getIdalmacen())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            return $this->createFormBuilder()
+                            ->setAction($this->generateUrl('almacen_delete', array('id' => $almacen->getIdalmacen())))
+                            ->setMethod('DELETE')
+                            ->getForm()
+            ;
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+            );
+        }
+        return $this->redirect($this->generateUrl('inicio'));
     }
 }

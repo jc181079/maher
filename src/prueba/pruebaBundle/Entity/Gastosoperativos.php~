@@ -1,0 +1,64 @@
+<?php
+
+namespace prueba\pruebaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Gastosoperativos
+ *
+ * @ORM\Table(name="gastosoperativos", indexes={@ORM\Index(name="fk_gastosoperativos_plandistribucion1_idx", columns={"idplandistribucion"})})
+ * @ORM\Entity
+ */
+class Gastosoperativos
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="conceptogasto", type="string", length=45, nullable=true)
+     */
+    private $conceptogasto;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="facturagasto", type="string", length=45, nullable=true)
+     */
+    private $facturagasto;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montogasto", type="string", length=45, nullable=true)
+     */
+    private $montogasto;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="observacion", type="text", nullable=true)
+     */
+    private $observacion;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idgastosoperativos", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idgastosoperativos;
+
+    /**
+     * @var \prueba\pruebaBundle\Entity\Plandistribucion
+     *
+     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Plandistribucion")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idplandistribucion", referencedColumnName="idplandistribucion")
+     * })
+     */
+    private $idplandistribucion;
+
+
+}
+

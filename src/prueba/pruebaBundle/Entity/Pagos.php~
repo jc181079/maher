@@ -1,0 +1,64 @@
+<?php
+
+namespace prueba\pruebaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Pagos
+ *
+ * @ORM\Table(name="pagos", indexes={@ORM\Index(name="fk_pagosefectivo_solicitud1_idx", columns={"idsolicitud"})})
+ * @ORM\Entity
+ */
+class Pagos
+{
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="montopagado", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $montopagado;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipopago", type="string", length=45, nullable=true)
+     */
+    private $tipopago;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="observacion", type="text", nullable=true)
+     */
+    private $observacion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fechapago", type="date", nullable=true)
+     */
+    private $fechapago;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idpagos", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idpagos;
+
+    /**
+     * @var \prueba\pruebaBundle\Entity\Solicitud
+     *
+     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Solicitud")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idsolicitud", referencedColumnName="idsolicitud")
+     * })
+     */
+    private $idsolicitud;
+
+
+}
+

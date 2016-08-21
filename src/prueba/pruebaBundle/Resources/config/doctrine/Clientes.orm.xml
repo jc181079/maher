@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="prueba\pruebaBundle\Entity\Clientes" table="clientes">
+    <indexes>
+      <index name="fk_clientes_ruta1_idx" columns="idruta"/>
+    </indexes>
+    <id name="idclientes" type="integer" column="idclientes">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nombrecliente" type="string" column="nombrecliente" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="rif" type="string" column="rif" length="10" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="tipocliente" type="string" column="tipocliente" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Legal o Ilegal</option>
+      </options>
+    </field>
+    <field name="telefonocliente" type="string" column="telefonocliente" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="direccioncliente" type="text" column="direccioncliente" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="contactocliente" type="string" column="contactocliente" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">nombre del cliente o persona encargada</option>
+      </options>
+    </field>
+    <many-to-one field="idruta" target-entity="Ruta" fetch="LAZY">
+      <join-columns>
+        <join-column name="idruta" referenced-column-name="idruta"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

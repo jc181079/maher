@@ -1,0 +1,64 @@
+<?php
+
+namespace prueba\pruebaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Pagotransferencia
+ *
+ * @ORM\Table(name="pagotransferencia", indexes={@ORM\Index(name="fk_pagotransferencia_pagos1_idx", columns={"idpagos"})})
+ * @ORM\Entity
+ */
+class Pagotransferencia
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="estatustransferencia", type="string", length=45, nullable=true)
+     */
+    private $estatustransferencia;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="bancobeneficiado", type="string", length=45, nullable=true)
+     */
+    private $bancobeneficiado;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cuentabeneficiada", type="string", length=45, nullable=true)
+     */
+    private $cuentabeneficiada;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fechatransferencia", type="date", nullable=true)
+     */
+    private $fechatransferencia;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idpagotransferencia", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idpagotransferencia;
+
+    /**
+     * @var \prueba\pruebaBundle\Entity\Pagos
+     *
+     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Pagos")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idpagos", referencedColumnName="idpagos")
+     * })
+     */
+    private $idpagos;
+
+
+}
+

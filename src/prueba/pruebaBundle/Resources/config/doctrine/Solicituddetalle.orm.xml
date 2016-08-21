@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="prueba\pruebaBundle\Entity\Solicituddetalle" table="solicituddetalle">
+    <indexes>
+      <index name="fk_solicituddetalle_solicitud1_idx" columns="idsolicitud"/>
+      <index name="fk_solicituddetalle_producto1_idx" columns="idproducto"/>
+    </indexes>
+    <id name="idsolicituddetalle" type="integer" column="idsolicituddetalle">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <many-to-one field="idsolicitud" target-entity="Solicitud" fetch="LAZY">
+      <join-columns>
+        <join-column name="idsolicitud" referenced-column-name="idsolicitud"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idproducto" target-entity="Producto" fetch="LAZY">
+      <join-columns>
+        <join-column name="idproducto" referenced-column-name="idproducto"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

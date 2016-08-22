@@ -134,7 +134,7 @@ class ClientesController extends Controller
                 $em->persist($cliente);
                 $em->flush();
 
-                return $this->redirectToRoute('clientes_edit', array('id' => $cliente->getId()));
+                return $this->redirectToRoute('clientes_edit', array('id' => $cliente->getIdclientes()));
             }
 
             return $this->render('clientes/edit.html.twig', array(

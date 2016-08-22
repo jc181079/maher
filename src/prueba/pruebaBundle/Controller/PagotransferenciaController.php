@@ -60,7 +60,7 @@ class PagotransferenciaController extends Controller
                 $em->persist($pagotransferencium);
                 $em->flush();
 
-                return $this->redirectToRoute('pagotransferencia_show', array('id' => $pagotransferencium->getId()));
+                return $this->redirectToRoute('pagotransferencia_show', array('id' => $pagotransferencium->getIdpagotransferencia()));
             }
 
             return $this->render('pagotransferencia/new.html.twig', array(

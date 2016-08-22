@@ -60,7 +60,7 @@ class SeguridadController extends Controller
                 $em->persist($seguridad);
                 $em->flush();
 
-                return $this->redirectToRoute('seguridad_show', array('id' => $seguridad->getId()));
+                return $this->redirectToRoute('seguridad_show', array('id' => $seguridad->getIdseguridad()));
             }
 
             return $this->render('seguridad/new.html.twig', array(
@@ -118,7 +118,7 @@ class SeguridadController extends Controller
                 $em->persist($seguridad);
                 $em->flush();
 
-                return $this->redirectToRoute('seguridad_edit', array('id' => $seguridad->getId()));
+                return $this->redirectToRoute('seguridad_edit', array('id' => $seguridad->getIdseguridad()));
             }
 
             return $this->render('seguridad/edit.html.twig', array(

@@ -60,7 +60,7 @@ class DiaController extends Controller
                 $em->persist($dium);
                 $em->flush();
 
-                return $this->redirectToRoute('dia_show', array('id' => $dium->getId()));
+                return $this->redirectToRoute('dia_show', array('id' => $dium->getIddia()));
             }
 
             return $this->render('dia/new.html.twig', array(

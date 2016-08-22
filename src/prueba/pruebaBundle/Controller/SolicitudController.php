@@ -60,7 +60,7 @@ class SolicitudController extends Controller
                 $em->persist($solicitud);
                 $em->flush();
 
-                return $this->redirectToRoute('solicitud_show', array('id' => $solicitud->getId()));
+                return $this->redirectToRoute('solicitud_show', array('id' => $solicitud->getIdsolicitud()));
             }
 
             return $this->render('solicitud/new.html.twig', array(

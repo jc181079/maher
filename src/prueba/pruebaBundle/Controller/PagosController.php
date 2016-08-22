@@ -60,7 +60,7 @@ class PagosController extends Controller
                 $em->persist($pago);
                 $em->flush();
 
-                return $this->redirectToRoute('pagos_show', array('id' => $pago->getId()));
+                return $this->redirectToRoute('pagos_show', array('id' => $pago->getIdpagos()));
             }
 
             return $this->render('pagos/new.html.twig', array(

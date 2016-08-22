@@ -60,7 +60,7 @@ class CuentacreditoController extends Controller
                 $em->persist($cuentacredito);
                 $em->flush();
 
-                return $this->redirectToRoute('cuentacredito_show', array('id' => $cuentacredito->getId()));
+                return $this->redirectToRoute('cuentacredito_show', array('id' => $cuentacredito->getIdcuentacredito()));
             }
 
             return $this->render('cuentacredito/new.html.twig', array(

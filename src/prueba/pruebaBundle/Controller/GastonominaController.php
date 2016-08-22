@@ -60,7 +60,7 @@ class GastonominaController extends Controller
                 $em->persist($gastonomina);
                 $em->flush();
 
-                return $this->redirectToRoute('gastonomina_show', array('id' => $gastonomina->getId()));
+                return $this->redirectToRoute('gastonomina_show', array('id' => $gastonomina->getIdgastonomina()));
             }
 
             return $this->render('gastonomina/new.html.twig', array(

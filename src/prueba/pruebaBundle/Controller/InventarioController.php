@@ -60,7 +60,7 @@ class InventarioController extends Controller
                 $em->persist($inventario);
                 $em->flush();
 
-                return $this->redirectToRoute('inventario_show', array('id' => $inventario->getId()));
+                return $this->redirectToRoute('inventario_show', array('id' => $inventario->getIdinventario()));
             }
 
             return $this->render('inventario/new_inv.html.twig', array(

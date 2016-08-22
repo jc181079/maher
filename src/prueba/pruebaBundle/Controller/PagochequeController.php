@@ -60,7 +60,7 @@ class PagochequeController extends Controller
                 $em->persist($pagocheque);
                 $em->flush();
 
-                return $this->redirectToRoute('pagocheque_show', array('id' => $pagocheque->getId()));
+                return $this->redirectToRoute('pagocheque_show', array('id' => $pagocheque->getIdpagocheque()));
             }
 
             return $this->render('pagocheque/new.html.twig', array(

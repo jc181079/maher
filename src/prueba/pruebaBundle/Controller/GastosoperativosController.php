@@ -60,7 +60,7 @@ class GastosoperativosController extends Controller
                 $em->persist($gastosoperativo);
                 $em->flush();
 
-                return $this->redirectToRoute('gastosoperativos_show', array('id' => $gastosoperativo->getId()));
+                return $this->redirectToRoute('gastosoperativos_show', array('id' => $gastosoperativo->getIdgastosoperativos()));
             }
 
             return $this->render('gastosoperativos/new.html.twig', array(

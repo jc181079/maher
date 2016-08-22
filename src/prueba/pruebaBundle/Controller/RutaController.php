@@ -60,7 +60,7 @@ class RutaController extends Controller
                 $em->persist($rutum);
                 $em->flush();
 
-                return $this->redirectToRoute('ruta_show', array('id' => $rutum->getId()));
+                return $this->redirectToRoute('ruta_show', array('id' => $rutum->getIdruta()));
             }
 
             return $this->render('ruta/new.html.twig', array(

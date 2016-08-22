@@ -60,7 +60,7 @@ class PlandistribucionController extends Controller
                 $em->persist($plandistribucion);
                 $em->flush();
 
-                return $this->redirectToRoute('plandistribucion_show', array('id' => $plandistribucion->getId()));
+                return $this->redirectToRoute('plandistribucion_show', array('id' => $plandistribucion->getIdplandistribucion()));
             }
 
             return $this->render('plandistribucion/new.html.twig', array(

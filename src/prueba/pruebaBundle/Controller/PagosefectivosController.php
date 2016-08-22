@@ -60,7 +60,7 @@ class PagosefectivosController extends Controller
                 $em->persist($pagosefectivo);
                 $em->flush();
 
-                return $this->redirectToRoute('pagosefectivos_show', array('id' => $pagosefectivo->getId()));
+                return $this->redirectToRoute('pagosefectivos_show', array('id' => $pagosefectivo->getIdpagosefectivos()));
             }
 
             return $this->render('pagosefectivos/new.html.twig', array(

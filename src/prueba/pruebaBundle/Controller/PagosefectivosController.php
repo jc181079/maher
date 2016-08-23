@@ -118,7 +118,7 @@ class PagosefectivosController extends Controller
                 $em->persist($pagosefectivo);
                 $em->flush();
 
-                return $this->redirectToRoute('pagosefectivos_edit', array('id' => $pagosefectivo->getId()));
+                return $this->redirectToRoute('pagosefectivos_edit', array('id' => $pagosefectivo->getIdpagosefectivos()));
             }
 
             return $this->render('pagosefectivos/edit.html.twig', array(
@@ -174,7 +174,7 @@ class PagosefectivosController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             return $this->createFormBuilder()
-                            ->setAction($this->generateUrl('pagosefectivos_delete', array('id' => $pagosefectivo->getId())))
+                            ->setAction($this->generateUrl('pagosefectivos_delete', array('id' => $pagosefectivo->getIdpagosefectivos())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;

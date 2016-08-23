@@ -118,7 +118,7 @@ class CuentacreditoController extends Controller
                 $em->persist($cuentacredito);
                 $em->flush();
 
-                return $this->redirectToRoute('cuentacredito_edit', array('id' => $cuentacredito->getId()));
+                return $this->redirectToRoute('cuentacredito_edit', array('id' => $cuentacredito->getIdcuentacredito()));
             }
 
             return $this->render('cuentacredito/edit.html.twig', array(
@@ -151,6 +151,13 @@ class CuentacreditoController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($cuentacredito);
                 $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                        'Mensaje', "El registro fue eliminado satisfactoriamente."
+                );
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                        'Alerta', "El registro no pudo ser eliminado, puede que el registro este relacionado."
+                );
             }
 
             return $this->redirectToRoute('cuentacredito_index');
@@ -174,7 +181,7 @@ class CuentacreditoController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             return $this->createFormBuilder()
-                            ->setAction($this->generateUrl('cuentacredito_delete', array('id' => $cuentacredito->getId())))
+                            ->setAction($this->generateUrl('cuentacredito_delete', array('id' => $cuentacredito->getIdcuentacredito())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;

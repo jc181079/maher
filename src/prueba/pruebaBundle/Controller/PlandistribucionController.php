@@ -118,7 +118,7 @@ class PlandistribucionController extends Controller
                 $em->persist($plandistribucion);
                 $em->flush();
 
-                return $this->redirectToRoute('plandistribucion_edit', array('id' => $plandistribucion->getId()));
+                return $this->redirectToRoute('plandistribucion_edit', array('id' => $plandistribucion->getIdplandistribucion()));
             }
 
             return $this->render('plandistribucion/edit.html.twig', array(
@@ -174,7 +174,7 @@ class PlandistribucionController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             return $this->createFormBuilder()
-                            ->setAction($this->generateUrl('plandistribucion_delete', array('id' => $plandistribucion->getId())))
+                            ->setAction($this->generateUrl('plandistribucion_delete', array('id' => $plandistribucion->getIdplandistribucion())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;

@@ -174,7 +174,7 @@ class SeguridadController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             return $this->createFormBuilder()
-                            ->setAction($this->generateUrl('seguridad_delete', array('id' => $seguridad->getId())))
+                            ->setAction($this->generateUrl('seguridad_delete', array('id' => $seguridad->getIdseguridad())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;

@@ -118,7 +118,7 @@ class RutaController extends Controller
                 $em->persist($rutum);
                 $em->flush();
 
-                return $this->redirectToRoute('ruta_edit', array('id' => $rutum->getId()));
+                return $this->redirectToRoute('ruta_edit', array('id' => $rutum->getIdruta()));
             }
 
             return $this->render('ruta/edit.html.twig', array(
@@ -174,7 +174,7 @@ class RutaController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             return $this->createFormBuilder()
-                            ->setAction($this->generateUrl('ruta_delete', array('id' => $rutum->getId())))
+                            ->setAction($this->generateUrl('ruta_delete', array('id' => $rutum->getIdruta())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;

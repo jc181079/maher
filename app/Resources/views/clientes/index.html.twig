@@ -1,49 +1,78 @@
 {% extends 'base.html.twig' %}
-
+{% use "::navbar.html.twig" %}
 {% block body %}
-    <h1>Clientes list</h1>
+    {% block navbar %}
+        {{ parent() }}
+    {% endblock %}
+     <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de CLIENTES</strong></h1>
+            <p>aqui podra administrar las diferentes clientes por la empresa</p>
+            <footer>
+                <a class="btn btn-default" href="{{ path('clientes_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+     </div>
+     {% if app.session.flashbag.get('Mensaje') %}      
+         {% for flashMessage in app.session.flashbag.get('Mensaje') %}
+             <div class="alert alert-success" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+     {% if app.session.flashbag.get('Alerta') %}      
+         {% for flashMessage in app.session.flashbag.get('Alerta') %}
+             <div class="alert alert-danger" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
 
-    <table>
+   <div class="container">
+         <table class="table table-bordered table-responsive">
         <thead>
             <tr>
-                <th>Nombrecliente</th>
+                <th>Nombre del cliente</th>
                 <th>Rif</th>
-                <th>Tipocliente</th>
-                <th>Telefonocliente</th>
-                <th>Direccioncliente</th>
-                <th>Contactocliente</th>
-                <th>Idclientes</th>
+                <th>Tipo de cliente</th>
+                <th>Telefono del cliente</th>
+                <th>Direccion del cliente</th>
+                <th>Contacto cliente</th>                
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for cliente in clientes %}
-            <tr>
-                <td><a href="{{ path('clientes_show', { 'id': cliente.idclientes }) }}">{{ cliente.nombrecliente }}</a></td>
-                <td>{{ cliente.rif }}</td>
-                <td>{{ cliente.tipocliente }}</td>
-                <td>{{ cliente.telefonocliente }}</td>
-                <td>{{ cliente.direccioncliente }}</td>
-                <td>{{ cliente.contactocliente }}</td>
-                <td>{{ cliente.idclientes }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('clientes_show', { 'id': cliente.idclientes }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('clientes_edit', { 'id': cliente.idclientes }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
+            {% if clientes %}    
+                {% for cliente in clientes %}
+                    <tr>
+                        <td><a href="{{ path('clientes_show', { 'id': cliente.idclientes }) }}">{{ cliente.nombrecliente }}</a></td>
+                        <td>{{ cliente.rif }}</td>
+                        <td>{{ cliente.tipocliente }}</td>
+                        <td>{{ cliente.telefonocliente }}</td>
+                        <td>{{ cliente.direccioncliente }}</td>
+                        <td>{{ cliente.contactocliente }}</td>                        
+                        <td>
+                            <ul>
+                                <li>
+                                    <a href="{{ path('clientes_show', { 'id': cliente.idclientes }) }}">show</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('clientes_edit', { 'id': cliente.idclientes }) }}">edit</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr >
+                    <td colspan="7"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                </tr>
+            {% endif%}
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('clientes_new') }}">Create a new entry</a>
-        </li>
-    </ul>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
 {% endblock %}

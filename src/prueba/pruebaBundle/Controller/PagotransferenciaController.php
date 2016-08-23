@@ -118,7 +118,7 @@ class PagotransferenciaController extends Controller
                 $em->persist($pagotransferencium);
                 $em->flush();
 
-                return $this->redirectToRoute('pagotransferencia_edit', array('id' => $pagotransferencium->getId()));
+                return $this->redirectToRoute('pagotransferencia_edit', array('id' => $pagotransferencium->getIdpagotransferencia()));
             }
 
             return $this->render('pagotransferencia/edit.html.twig', array(
@@ -175,7 +175,7 @@ class PagotransferenciaController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             return $this->createFormBuilder()
-                            ->setAction($this->generateUrl('pagotransferencia_delete', array('id' => $pagotransferencium->getId())))
+                            ->setAction($this->generateUrl('pagotransferencia_delete', array('id' => $pagotransferencium->getIdpagotransferencia())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;

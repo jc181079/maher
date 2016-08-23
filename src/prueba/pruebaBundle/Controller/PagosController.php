@@ -118,7 +118,7 @@ class PagosController extends Controller
                 $em->persist($pago);
                 $em->flush();
 
-                return $this->redirectToRoute('pagos_edit', array('id' => $pago->getId()));
+                return $this->redirectToRoute('pagos_edit', array('id' => $pago->getIdpagos()));
             }
 
             return $this->render('pagos/edit.html.twig', array(
@@ -174,7 +174,7 @@ class PagosController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             return $this->createFormBuilder()
-                            ->setAction($this->generateUrl('pagos_delete', array('id' => $pago->getId())))
+                            ->setAction($this->generateUrl('pagos_delete', array('id' => $pago->getIdpagos())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;

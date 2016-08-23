@@ -118,7 +118,7 @@ class InventarioController extends Controller
                 $em->persist($inventario);
                 $em->flush();
 
-                return $this->redirectToRoute('inventario_edit', array('id' => $inventario->getId()));
+                return $this->redirectToRoute('inventario_edit', array('id' => $inventario->getIdinventario()));
             }
 
             return $this->render('inventario/edit_inv.html.twig', array(
@@ -174,7 +174,7 @@ class InventarioController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             return $this->createFormBuilder()
-                            ->setAction($this->generateUrl('inventario_delete', array('id' => $inventario->getId())))
+                            ->setAction($this->generateUrl('inventario_delete', array('id' => $inventario->getIdinventario())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;

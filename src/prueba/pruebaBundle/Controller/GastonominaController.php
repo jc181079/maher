@@ -118,7 +118,7 @@ class GastonominaController extends Controller
                 $em->persist($gastonomina);
                 $em->flush();
 
-                return $this->redirectToRoute('gastonomina_edit', array('id' => $gastonomina->getId()));
+                return $this->redirectToRoute('gastonomina_edit', array('id' => $gastonomina->getIdgastonomina()));
             }
 
             return $this->render('gastonomina/edit.html.twig', array(
@@ -174,7 +174,7 @@ class GastonominaController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             return $this->createFormBuilder()
-                            ->setAction($this->generateUrl('gastonomina_delete', array('id' => $gastonomina->getId())))
+                            ->setAction($this->generateUrl('gastonomina_delete', array('id' => $gastonomina->getIdgastonomina())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;

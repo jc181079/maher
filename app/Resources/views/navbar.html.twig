@@ -67,14 +67,16 @@
                             <ul class="dropdown-menu">
                                 <li><a href="{{ path('und_index') }}">Unidad de Medidas</a></li>
                                 <li><a href="{{ path('producto_index') }}">Productos</a></li>
-                                <li><a href="{{ path('almacen_index') }}">Almacen</a></li>
-                                <li><a href="{{ path('movimiento_index') }}">Movimiento</a></li>
+                                <li><a href="{{ path('almacen_index') }}">Almacen</a></li>                                
                                 <li role="separator" class="divider"></li>
                                 <li class="dropdown-header">Clientes</li>
-                                <li><a href="#">Rutas</a></li>
-                                <li><a href="#">Clientes</a></li>
+                                <li><a href="{{ path('ruta_index') }}">Rutas</a></li>
+                                <li><a href="{{ path('clientes_index') }}">Clientes</a></li>
                                 <li class="dropdown-header">Proveedores</li>
-                                <li><a href="#">Proveedores</a></li>                                
+                                <li><a href="#">Proveedores</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li class="dropdown-header">Movimiento de almacen</li>
+                                <li><a href="{{ path('movimiento_index') }}">Movimiento</a></li>
                             </ul>
                         </li>
                     </ul>

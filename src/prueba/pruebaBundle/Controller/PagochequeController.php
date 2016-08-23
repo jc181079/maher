@@ -118,7 +118,7 @@ class PagochequeController extends Controller
                 $em->persist($pagocheque);
                 $em->flush();
 
-                return $this->redirectToRoute('pagocheque_edit', array('id' => $pagocheque->getId()));
+                return $this->redirectToRoute('pagocheque_edit', array('id' => $pagocheque->getIdpagocheque()));
             }
 
             return $this->render('pagocheque/edit.html.twig', array(
@@ -174,7 +174,7 @@ class PagochequeController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             return $this->createFormBuilder()
-                            ->setAction($this->generateUrl('pagocheque_delete', array('id' => $pagocheque->getId())))
+                            ->setAction($this->generateUrl('pagocheque_delete', array('id' => $pagocheque->getIdpagocheque())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;

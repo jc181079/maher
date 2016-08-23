@@ -60,7 +60,7 @@ class SolicituddetalleController extends Controller
                 $em->persist($solicituddetalle);
                 $em->flush();
 
-                return $this->redirectToRoute('solicituddetalle_show', array('id' => $solicituddetalle->getId()));
+                return $this->redirectToRoute('solicituddetalle_show', array('id' => $solicituddetalle->getIdsolicituddetalle()));
             }
 
             return $this->render('solicituddetalle/new.html.twig', array(
@@ -118,7 +118,7 @@ class SolicituddetalleController extends Controller
                 $em->persist($solicituddetalle);
                 $em->flush();
 
-                return $this->redirectToRoute('solicituddetalle_edit', array('id' => $solicituddetalle->getId()));
+                return $this->redirectToRoute('solicituddetalle_edit', array('id' => $solicituddetalle->getIdsolicituddetalle()));
             }
 
             return $this->render('solicituddetalle/edit.html.twig', array(
@@ -174,7 +174,7 @@ class SolicituddetalleController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             return $this->createFormBuilder()
-                            ->setAction($this->generateUrl('solicituddetalle_delete', array('id' => $solicituddetalle->getId())))
+                            ->setAction($this->generateUrl('solicituddetalle_delete', array('id' => $solicituddetalle->getIdsolicituddetalle())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;

@@ -76,7 +76,7 @@ class ClientesController extends Controller
                 $em->persist($cliente);
                 $em->flush();
 
-                return $this->redirectToRoute('clientes_show', array('id' => $cliente->getId()));
+                return $this->redirectToRoute('clientes_show', array('id' => $cliente->getIdclientes()));
             }
 
             return $this->render('clientes/new.html.twig', array(
@@ -167,8 +167,14 @@ class ClientesController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($cliente);
                 $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                        'Mensaje', "El registro fue eliminado satisfactoriamente."
+                );
+            }else{
+                $this->get('session')->getFlashBag()->add(
+                        'Alerta', "El registro no pudo ser eliminado, puede que el registro este relacionado."
+                );
             }
-
             return $this->redirectToRoute('clientes_index');
         } else {
             $this->get('session')->getFlashBag()->add(
@@ -190,7 +196,7 @@ class ClientesController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             return $this->createFormBuilder()
-                            ->setAction($this->generateUrl('clientes_delete', array('id' => $cliente->getId())))
+                            ->setAction($this->generateUrl('clientes_delete', array('id' => $cliente->getIdclientes())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;

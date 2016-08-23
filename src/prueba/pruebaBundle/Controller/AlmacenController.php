@@ -151,6 +151,13 @@ class AlmacenController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($almacen);
                 $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                        'Mensaje', "El registro fue eliminado satisfactoriamente."
+                );
+            }else{
+                $this->get('session')->getFlashBag()->add(
+                        'Alerta', "El registro no pudo ser eliminado, puede que el registro este relacionado."
+                );
             }
 
             return $this->redirectToRoute('almacen_index');

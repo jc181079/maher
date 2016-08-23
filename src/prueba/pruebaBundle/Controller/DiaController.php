@@ -118,7 +118,7 @@ class DiaController extends Controller
                 $em->persist($dium);
                 $em->flush();
 
-                return $this->redirectToRoute('dia_edit', array('id' => $dium->getId()));
+                return $this->redirectToRoute('dia_edit', array('id' => $dium->getIddia()));
             }
 
             return $this->render('dia/edit.html.twig', array(
@@ -174,7 +174,7 @@ class DiaController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             return $this->createFormBuilder()
-                            ->setAction($this->generateUrl('dia_delete', array('id' => $dium->getId())))
+                            ->setAction($this->generateUrl('dia_delete', array('id' => $dium->getIddia())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;

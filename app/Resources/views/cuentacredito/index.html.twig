@@ -1,9 +1,36 @@
 {% extends 'base.html.twig' %}
-
+{% use "::navbar.html.twig" %}
 {% block body %}
-    <h1>Cuentacredito list</h1>
-
-    <table>
+    {% block navbar %}
+        {{ parent() }}
+    {% endblock %}
+     <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de CUENTA A CREDITO</strong></h1>
+            <p>aqui podra administrar las diferentes cuentas a credito de los clientes a la empresa</p>
+            <footer>
+                <a class="btn btn-default" href="{{ path('cuentacredito_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+     </div>
+     {% if app.session.flashbag.get('Mensaje') %}      
+         {% for flashMessage in app.session.flashbag.get('Mensaje') %}
+             <div class="alert alert-success" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+     {% if app.session.flashbag.get('Alerta') %}      
+         {% for flashMessage in app.session.flashbag.get('Alerta') %}
+             <div class="alert alert-danger" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+     <div class="container">
+         <table class="table table-bordered table-responsive">
         <thead>
             <tr>
                 <th>Estatuscredito</th>
@@ -14,24 +41,30 @@
             </tr>
         </thead>
         <tbody>
-        {% for cuentacredito in cuentacreditos %}
-            <tr>
-                <td><a href="{{ path('cuentacredito_show', { 'id': cuentacredito.idcuentacredito }) }}">{{ cuentacredito.estatuscredito }}</a></td>
-                <td>{{ cuentacredito.cuentacreditomonto }}</td>
-                <td>{% if cuentacredito.cuentacreditofecha %}{{ cuentacredito.cuentacreditofecha|date('Y-m-d') }}{% endif %}</td>
-                <td>{{ cuentacredito.idcuentacredito }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('cuentacredito_show', { 'id': cuentacredito.idcuentacredito }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('cuentacredito_edit', { 'id': cuentacredito.idcuentacredito }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
+            {% if cuentacreditos %}
+                {% for cuentacredito in cuentacreditos %}
+                    <tr>
+                        <td><a href="{{ path('cuentacredito_show', { 'id': cuentacredito.idcuentacredito }) }}">{{ cuentacredito.estatuscredito }}</a></td>
+                        <td>{{ cuentacredito.cuentacreditomonto }}</td>
+                        <td>{% if cuentacredito.cuentacreditofecha %}{{ cuentacredito.cuentacreditofecha|date('Y-m-d') }}{% endif %}</td>
+                        <td>{{ cuentacredito.idcuentacredito }}</td>
+                        <td>
+                            <ul>
+                                <li>
+                                    <a href="{{ path('cuentacredito_show', { 'id': cuentacredito.idcuentacredito }) }}">show</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('cuentacredito_edit', { 'id': cuentacredito.idcuentacredito }) }}">edit</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>            
+                {% endfor %}
+            {% else %}
+                <tr >
+                    <td colspan="7"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                </tr>
+            {% endif%}
         </tbody>
     </table>
 

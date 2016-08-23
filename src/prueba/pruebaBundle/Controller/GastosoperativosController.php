@@ -118,7 +118,7 @@ class GastosoperativosController extends Controller
                 $em->persist($gastosoperativo);
                 $em->flush();
 
-                return $this->redirectToRoute('gastosoperativos_edit', array('id' => $gastosoperativo->getId()));
+                return $this->redirectToRoute('gastosoperativos_edit', array('id' => $gastosoperativo->getIdgastosoperativos()));
             }
 
             return $this->render('gastosoperativos/edit.html.twig', array(
@@ -174,7 +174,7 @@ class GastosoperativosController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             return $this->createFormBuilder()
-                            ->setAction($this->generateUrl('gastosoperativos_delete', array('id' => $gastosoperativo->getId())))
+                            ->setAction($this->generateUrl('gastosoperativos_delete', array('id' => $gastosoperativo->getIdgastosoperativos())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;

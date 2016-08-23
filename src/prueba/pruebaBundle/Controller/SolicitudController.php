@@ -118,7 +118,7 @@ class SolicitudController extends Controller
                 $em->persist($solicitud);
                 $em->flush();
 
-                return $this->redirectToRoute('solicitud_edit', array('id' => $solicitud->getId()));
+                return $this->redirectToRoute('solicitud_edit', array('id' => $solicitud->getIdsolicitud()));
             }
 
             return $this->render('solicitud/edit.html.twig', array(
@@ -174,7 +174,7 @@ class SolicitudController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             return $this->createFormBuilder()
-                            ->setAction($this->generateUrl('solicitud_delete', array('id' => $solicitud->getId())))
+                            ->setAction($this->generateUrl('solicitud_delete', array('id' => $solicitud->getIdsolicitud())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;

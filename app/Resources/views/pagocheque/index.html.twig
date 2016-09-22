@@ -1,9 +1,36 @@
 {% extends 'base.html.twig' %}
-
+{% use "::navbar.html.twig" %}
 {% block body %}
-    <h1>Pagocheque list</h1>
-
-    <table>
+    {% block navbar %}
+        {{ parent() }}
+    {% endblock %}
+     <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de PAGOS DE CHEQUES</strong></h1>
+            <p>aqui podra administrar las diferentes pagos efectuados a traves de cheques por los clientes de la empresa</p>
+            <footer>
+                <a class="btn btn-default" href="{{ path('clientes_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+     </div>
+     {% if app.session.flashbag.get('Mensaje') %}      
+         {% for flashMessage in app.session.flashbag.get('Mensaje') %}
+             <div class="alert alert-success" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+     {% if app.session.flashbag.get('Alerta') %}      
+         {% for flashMessage in app.session.flashbag.get('Alerta') %}
+             <div class="alert alert-danger" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+<div class="container">
+         <table class="table table-bordered table-responsive">
         <thead>
             <tr>
                 <th>Fechapago</th>
@@ -14,24 +41,31 @@
             </tr>
         </thead>
         <tbody>
-        {% for pagocheque in pagocheques %}
-            <tr>
-                <td><a href="{{ path('pagocheque_show', { 'id': pagocheque.idpagocheque }) }}">{{ pagocheque.fechapago }}</a></td>
-                <td>{{ pagocheque.estatuspagocheque }}</td>
-                <td>{{ pagocheque.observacionpagocheque }}</td>
-                <td>{{ pagocheque.idpagocheque }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('pagocheque_show', { 'id': pagocheque.idpagocheque }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('pagocheque_edit', { 'id': pagocheque.idpagocheque }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
+            {% if pagocheques %}
+                {% for pagocheque in pagocheques %}
+                    <tr>
+                        <td><a href="{{ path('pagocheque_show', { 'id': pagocheque.idpagocheque }) }}">{{ pagocheque.fechapago }}</a></td>
+                        <td>{{ pagocheque.estatuspagocheque }}</td>
+                        <td>{{ pagocheque.observacionpagocheque }}</td>
+                        <td>{{ pagocheque.idpagocheque }}</td>
+                        <td>
+                            <ul>
+                                <li>
+                                    <a href="{{ path('pagocheque_show', { 'id': pagocheque.idpagocheque }) }}">show</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('pagocheque_edit', { 'id': pagocheque.idpagocheque }) }}">edit</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr >
+                    <td colspan="7"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                </tr>
+            {% endif%}
+
         </tbody>
     </table>
 

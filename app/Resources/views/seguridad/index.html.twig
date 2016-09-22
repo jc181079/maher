@@ -1,9 +1,36 @@
 {% extends 'base.html.twig' %}
-
+{% use "::navbar.html.twig" %}
 {% block body %}
-    <h1>Seguridad list</h1>
-
-    <table>
+    {% block navbar %}
+        {{ parent() }}
+    {% endblock %}
+     <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de SEGURIDAD</strong></h1>
+            <p>aqui podra administrar los diferentes usuarios que manejan el sistema de la empresa</p>
+            <footer>
+                <a class="btn btn-default" href="{{ path('clientes_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+     </div>
+     {% if app.session.flashbag.get('Mensaje') %}      
+         {% for flashMessage in app.session.flashbag.get('Mensaje') %}
+             <div class="alert alert-success" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+     {% if app.session.flashbag.get('Alerta') %}      
+         {% for flashMessage in app.session.flashbag.get('Alerta') %}
+             <div class="alert alert-danger" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+<div class="container">
+         <table class="table table-bordered table-responsive">
         <thead>
             <tr>
                 <th>Nombreusuario</th>
@@ -15,25 +42,31 @@
             </tr>
         </thead>
         <tbody>
-        {% for seguridad in seguridads %}
-            <tr>
-                <td><a href="{{ path('seguridad_show', { 'id': seguridad.idseguridad }) }}">{{ seguridad.nombreusuario }}</a></td>
-                <td>{{ seguridad.login }}</td>
-                <td>{{ seguridad.pass }}</td>
-                <td>{{ seguridad.tipousuario }}</td>
-                <td>{{ seguridad.idseguridad }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('seguridad_show', { 'id': seguridad.idseguridad }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('seguridad_edit', { 'id': seguridad.idseguridad }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
+            {% if seguridads %}
+                {% for seguridad in seguridads %}
+                    <tr>
+                        <td><a href="{{ path('seguridad_show', { 'id': seguridad.idseguridad }) }}">{{ seguridad.nombreusuario }}</a></td>
+                        <td>{{ seguridad.login }}</td>
+                        <td>{{ seguridad.pass }}</td>
+                        <td>{{ seguridad.tipousuario }}</td>
+                        <td>{{ seguridad.idseguridad }}</td>
+                        <td>
+                            <ul>
+                                <li>
+                                    <a href="{{ path('seguridad_show', { 'id': seguridad.idseguridad }) }}">show</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('seguridad_edit', { 'id': seguridad.idseguridad }) }}">edit</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr >
+                    <td colspan="7"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                </tr>
+            {% endif%}
         </tbody>
     </table>
 

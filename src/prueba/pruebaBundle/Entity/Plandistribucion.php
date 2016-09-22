@@ -13,6 +13,20 @@ use Doctrine\ORM\Mapping as ORM;
 class Plandistribucion
 {
     /**
+     * @var string
+     *
+     * @ORM\Column(name="plandistribucionestatus", type="string", length=45, nullable=true)
+     */
+    private $plandistribucionestatus;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="plandistribucionobservacion", type="text", nullable=true)
+     */
+    private $plandistribucionobservacion;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="idplandistribucion", type="integer")
@@ -42,6 +56,54 @@ class Plandistribucion
     private $iddia;
 
 
+
+    /**
+     * Set plandistribucionestatus
+     *
+     * @param string $plandistribucionestatus
+     *
+     * @return Plandistribucion
+     */
+    public function setPlandistribucionestatus($plandistribucionestatus)
+    {
+        $this->plandistribucionestatus = $plandistribucionestatus;
+
+        return $this;
+    }
+
+    /**
+     * Get plandistribucionestatus
+     *
+     * @return string
+     */
+    public function getPlandistribucionestatus()
+    {
+        return $this->plandistribucionestatus;
+    }
+
+    /**
+     * Set plandistribucionobservacion
+     *
+     * @param string $plandistribucionobservacion
+     *
+     * @return Plandistribucion
+     */
+    public function setPlandistribucionobservacion($plandistribucionobservacion)
+    {
+        $this->plandistribucionobservacion = $plandistribucionobservacion;
+
+        return $this;
+    }
+
+    /**
+     * Get plandistribucionobservacion
+     *
+     * @return string
+     */
+    public function getPlandistribucionobservacion()
+    {
+        return $this->plandistribucionobservacion;
+    }
 
     /**
      * Get idplandistribucion

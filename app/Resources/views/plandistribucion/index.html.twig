@@ -1,9 +1,36 @@
 {% extends 'base.html.twig' %}
-
+{% use "::navbar.html.twig" %}
 {% block body %}
-    <h1>Plandistribucion list</h1>
-
-    <table>
+    {% block navbar %}
+        {{ parent() }}
+    {% endblock %}
+     <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de PLAN DE DISTRIBUCION</strong></h1>
+            <p>aqui podra administrar los diferentes planes de distribucion a ser efectuados a los clientes por la empresa</p>
+            <footer>
+                <a class="btn btn-default" href="{{ path('clientes_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+     </div>
+     {% if app.session.flashbag.get('Mensaje') %}      
+         {% for flashMessage in app.session.flashbag.get('Mensaje') %}
+             <div class="alert alert-success" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+     {% if app.session.flashbag.get('Alerta') %}      
+         {% for flashMessage in app.session.flashbag.get('Alerta') %}
+             <div class="alert alert-danger" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+<div class="container">
+         <table class="table table-bordered table-responsive">
         <thead>
             <tr>
                 <th>Idplandistribucion</th>
@@ -11,21 +38,27 @@
             </tr>
         </thead>
         <tbody>
-        {% for plandistribucion in plandistribucions %}
-            <tr>
-                <td><a href="{{ path('plandistribucion_show', { 'id': plandistribucion.idplandistribucion }) }}">{{ plandistribucion.idplandistribucion }}</a></td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('plandistribucion_show', { 'id': plandistribucion.idplandistribucion }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('plandistribucion_edit', { 'id': plandistribucion.idplandistribucion }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
+            {% if plandistribucions %}
+                {% for plandistribucion in plandistribucions %}
+                    <tr>
+                        <td><a href="{{ path('plandistribucion_show', { 'id': plandistribucion.idplandistribucion }) }}">{{ plandistribucion.idplandistribucion }}</a></td>
+                        <td>
+                            <ul>
+                                <li>
+                                    <a href="{{ path('plandistribucion_show', { 'id': plandistribucion.idplandistribucion }) }}">show</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('plandistribucion_edit', { 'id': plandistribucion.idplandistribucion }) }}">edit</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr >
+                    <td colspan="7"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                </tr>
+            {% endif%}
         </tbody>
     </table>
 

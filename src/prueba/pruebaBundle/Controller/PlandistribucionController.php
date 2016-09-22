@@ -151,6 +151,13 @@ class PlandistribucionController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($plandistribucion);
                 $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                        'Mensaje', "El registro fue eliminado satisfactoriamente."
+                );
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                        'Alerta', "El registro no pudo ser eliminado, puede que el registro este relacionado."
+                );
             }
 
             return $this->redirectToRoute('plandistribucion_index');
@@ -171,19 +178,13 @@ class PlandistribucionController extends Controller
      */
     private function createDeleteForm(Plandistribucion $plandistribucion)
     {
-        $session = $request->getSession();
-        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+        
             return $this->createFormBuilder()
                             ->setAction($this->generateUrl('plandistribucion_delete', array('id' => $plandistribucion->getIdplandistribucion())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;
-        } else {
-            $this->get('session')->getFlashBag()->add(
-                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
-            );
-        }
-        return $this->redirect($this->generateUrl('inicio'));
+        
     }
 
 }

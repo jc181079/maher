@@ -19,6 +19,8 @@ class SeguridadType extends AbstractType
             ->add('login')
             ->add('pass')
             ->add('tipousuario')
+            ->add('rif')
+            
         ;
     }
     

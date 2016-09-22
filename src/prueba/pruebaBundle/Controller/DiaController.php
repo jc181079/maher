@@ -151,6 +151,13 @@ class DiaController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($dium);
                 $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                        'Mensaje', "El registro fue eliminado satisfactoriamente."
+                );
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                        'Alerta', "El registro no pudo ser eliminado, puede que el registro este relacionado."
+                );
             }
 
             return $this->redirectToRoute('dia_index');
@@ -171,18 +178,12 @@ class DiaController extends Controller
      */
     private function createDeleteForm(Dia $dium)
     {
-        $session = $request->getSession();
-        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+        
             return $this->createFormBuilder()
                             ->setAction($this->generateUrl('dia_delete', array('id' => $dium->getIddia())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;
-        } else {
-            $this->get('session')->getFlashBag()->add(
-                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
-            );
-        }
-        return $this->redirect($this->generateUrl('inicio'));
+        
     }
 }

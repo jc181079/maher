@@ -151,6 +151,13 @@ class PagosController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($pago);
                 $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                        'Mensaje', "El registro fue eliminado satisfactoriamente."
+                );
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                        'Alerta', "El registro no pudo ser eliminado, puede que el registro este relacionado."
+                );
             }
 
             return $this->redirectToRoute('pagos_index');
@@ -171,18 +178,12 @@ class PagosController extends Controller
      */
     private function createDeleteForm(Pagos $pago)
     {
-        $session = $request->getSession();
-        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+        
             return $this->createFormBuilder()
                             ->setAction($this->generateUrl('pagos_delete', array('id' => $pago->getIdpagos())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;
-        } else {
-            $this->get('session')->getFlashBag()->add(
-                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
-            );
-        }
-        return $this->redirect($this->generateUrl('inicio'));
+        
     }
 }

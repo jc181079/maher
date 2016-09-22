@@ -1,0 +1,17 @@
+{% extends "::base.html.twig" %}
+{% block stylesheets %}
+    {{ parent() }}    
+{% endblock %}
+{% block body %}
+    <header class="container-fluid">
+        {# para mostrar el mensaje de que se borro el dato #}
+        <form name="cambioclave" id="cambioclave" action="{{ path('seguridad_cambioclave') }}" method="post">
+            <div class="form-horizontal">
+                <label>Escriba nueva clave</label> <input name="clave1" id="clave1" class="form-control" type="password">
+                <label>Repita la nueva clave</label> <input name="clave2" id="clave2" class="form-control" type="password">
+                <button class="btn btn-primary" type="submit">Cambiar</button>
+            </div>            
+        </form>
+        
+    </header>
+{% endblock %}

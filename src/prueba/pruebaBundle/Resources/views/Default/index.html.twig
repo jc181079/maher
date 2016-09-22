@@ -1,4 +1,5 @@
 {% extends "::base.html.twig" %}
+
 {% block stylesheets %}
     {{ parent() }}
     <style>
@@ -20,7 +21,14 @@
                 <span class="glyphicon glyphicon-warning-sign" ></span> 
                 {{flashMessage}}...
             </div>
-            
+
+        {% endfor%}
+        {% for flashMessage in app.session.flashbag.get('Mensaje2') %}
+            <div class="alert alert-success" role="alert">
+                <span class="glyphicon glyphicon-warning-sign" ></span> 
+                {{flashMessage}}...
+            </div>
+
         {% endfor%}
         <div class="bs-docs-section">
             <div class="row">
@@ -39,7 +47,37 @@
                     </div>
                 </div>
 
+                <div class="col-lg-6 col-lg-offset-1 center-block ">
+                    <!-- Button trigger modal --><div class="jumbotron">
+                        <div class="container">
+                            <p>Para todos aquellos interesados en ser clientes de esta respetable empresa se les invita a 
+                                que se registren en nuestra base de datos de clientes con el fin de brindarles un mejor 
+                                servicio</p>
+                            <p><a id="registrar" class="btn btn-primary" href="{{path('modal')}}" data-title="Registrar nuevo cliente" data-toggle="lightbox" >Registrar Nuevo usuario</a></p>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //con esta funcion de jquery trabaja el tooltip
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            });  
+           // $('#registrar').ekkoLightbox();
+           $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
+                event.preventDefault();
+                $(this).ekkoLightbox();
+            }); 
+        });
+          
+    </script>
+    
 {% endblock %}

@@ -1,0 +1,50 @@
+<?php
+
+namespace prueba\pruebaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Plancompra
+ *
+ * @ORM\Table(name="plancompra", indexes={@ORM\Index(name="fk_plancompra_seguridad1_idx", columns={"idseguridad"})})
+ * @ORM\Entity
+ */
+class Plancompra
+{
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="plancomprafecha", type="date", nullable=true)
+     */
+    private $plancomprafecha;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="plancompraestatus", type="string", length=45, nullable=true)
+     */
+    private $plancompraestatus;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idplancompra", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idplancompra;
+
+    /**
+     * @var \prueba\pruebaBundle\Entity\Seguridad
+     *
+     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Seguridad")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idseguridad", referencedColumnName="idseguridad")
+     * })
+     */
+    private $idseguridad;
+
+
+}
+

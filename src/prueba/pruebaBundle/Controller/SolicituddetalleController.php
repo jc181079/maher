@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use prueba\pruebaBundle\Entity\Solicituddetalle;
+use prueba\pruebaBundle\Entity\Solicitud;
 use prueba\pruebaBundle\Form\SolicituddetalleType;
 
 /**
@@ -25,7 +26,7 @@ class SolicituddetalleController extends Controller
     public function indexAction(Request $request)
     {
         $session = $request->getSession();
-        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado' or $session->get('tipousuario') == 'Cliente') {
             $em = $this->getDoctrine()->getManager();
 
             $solicituddetalles = $em->getRepository('pruebaBundle:Solicituddetalle')->findAll();
@@ -44,27 +45,72 @@ class SolicituddetalleController extends Controller
     /**
      * Creates a new Solicituddetalle entity.
      *
-     * @Route("/new", name="solicituddetalle_new")
+     * @Route("/new/{idsolicitud}", name="solicituddetalle_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request,$idsolicitud)
     {
         $session = $request->getSession();
-        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado' or $session->get('tipousuario') == 'Cliente') {
             $solicituddetalle = new Solicituddetalle();
             $form = $this->createForm('prueba\pruebaBundle\Form\SolicituddetalleType', $solicituddetalle);
             $form->handleRequest($request);
+            
+            /**
+             * con este find se busca los detalles ya ingresados en la solicitud actual
+             * para ser mostrados en el formulario de ingreso
+             */
+            $em = $this->getDoctrine()->getManager();
+            $findsd = $em->createQuery(
+                       'select sd.idsolicituddetalle,p.nombreproducto,sd.cantidad,sd.precio,sd.total
+
+                        from pruebaBundle:producto p inner join pruebaBundle:solicituddetalle sd with
+                        sd.idproducto=p.idproducto
+
+                        where sd.idsolicitud=' . $idsolicitud . ''
+            );
+            $resultadosd=$findsd->getResult();
+            //***********************************************************************
+            /**
+             * con este find se busca la solicitud actual
+             * para ser mostrados en el formulario de ingreso
+             */
+            
+            $finds = $em->createQuery(
+                       'select s.fechaentrega,s.estatus,s.tipopago,s.prioridad,sum(sd.total) t
+
+                        from pruebaBundle:Solicitud s inner join pruebaBundle:Solicituddetalle sd with
+                        sd.idsolicitud=s.idsolicitud                        
+
+                        where s.idsolicitud=' . $idsolicitud . ''
+            );
+            $resultados=$finds->getResult();
+            //***********************************************************************
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($solicituddetalle);
-                $em->flush();
+                $findproducto = $this->getDoctrine()
+                    ->getRepository('pruebaBundle:Producto')
+                    ->findOneBy(array('idproducto' => $solicituddetalle->getIdproducto()));
+                if ($findproducto) {
+                    $findsolicitud = $this->getDoctrine()
+                    ->getRepository('pruebaBundle:Solicitud')
+                    ->findOneBy(array('idsolicitud' => $idsolicitud));
+                    $solicituddetalle->setPrecio($findproducto->getPrecioventa());
+                    $solicituddetalle->setTotal($solicituddetalle->getCantidad() * $findproducto->getPrecioventa());
+                    $solicituddetalle->setIdsolicitud($findsolicitud);
+                    $em->persist($solicituddetalle);
+                    $em->flush();
+                }
 
-                return $this->redirectToRoute('solicituddetalle_show', array('id' => $solicituddetalle->getIdsolicituddetalle()));
+
+                return $this->redirectToRoute('solicituddetalle_new', array('idsolicitud' => $idsolicitud));
             }
 
             return $this->render('solicituddetalle/new.html.twig', array(
-                        'solicituddetalle' => $solicituddetalle,
+                        'idsolicitud' => $idsolicitud,
+                        'solicituddetalles'=>$resultadosd,
+                        'solicitud'=>$resultados,
                         'form' => $form->createView(),
             ));
         } else {
@@ -81,7 +127,7 @@ class SolicituddetalleController extends Controller
      * @Route("/{id}", name="solicituddetalle_show")
      * @Method("GET")
      */
-    public function showAction(Solicituddetalle $solicituddetalle)
+    public function showAction(Solicituddetalle $solicituddetalle,  Request $request)
     {
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
@@ -151,6 +197,13 @@ class SolicituddetalleController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($solicituddetalle);
                 $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                        'Mensaje', "El registro fue eliminado satisfactoriamente."
+                );
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                        'Alerta', "El registro no pudo ser eliminado, puede que el registro este relacionado."
+                );
             }
 
             return $this->redirectToRoute('solicituddetalle_index');
@@ -171,19 +224,15 @@ class SolicituddetalleController extends Controller
      */
     private function createDeleteForm(Solicituddetalle $solicituddetalle)
     {
-        $session = $request->getSession();
-        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+        
             return $this->createFormBuilder()
                             ->setAction($this->generateUrl('solicituddetalle_delete', array('id' => $solicituddetalle->getIdsolicituddetalle())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;
-        } else {
-            $this->get('session')->getFlashBag()->add(
-                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
-            );
-        }
-        return $this->redirect($this->generateUrl('inicio'));
+        
     }
+    
+    
 
 }

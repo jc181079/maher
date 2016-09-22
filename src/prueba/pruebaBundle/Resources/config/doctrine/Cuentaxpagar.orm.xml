@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="prueba\pruebaBundle\Entity\Cuentaxpagar" table="cuentaxpagar">
+    <indexes>
+      <index name="fk_cuentaxpagar_proveedor1_idx" columns="idproveedor"/>
+    </indexes>
+    <id name="idcuentaxpagar" type="integer" column="idcuentaxpagar">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="fechacuentaxpagar" type="date" column="fechacuentaxpagar" nullable="true"/>
+    <field name="montocuentaxpagar" type="float" column="montocuentaxpagar" precision="10" scale="0" nullable="true"/>
+    <many-to-one field="idproveedor" target-entity="Proveedor" fetch="LAZY">
+      <join-columns>
+        <join-column name="idproveedor" referenced-column-name="idproveedor"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

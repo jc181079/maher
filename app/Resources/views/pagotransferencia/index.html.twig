@@ -1,9 +1,36 @@
 {% extends 'base.html.twig' %}
-
+{% use "::navbar.html.twig" %}
 {% block body %}
-    <h1>Pagotransferencia list</h1>
-
-    <table>
+    {% block navbar %}
+        {{ parent() }}
+    {% endblock %}
+     <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de PAGOS POR TRANSFERENCIA</strong></h1>
+            <p>aqui podra administrar los diferentes pagos efectuados atraves de transferencias bancarias por clientes de la empresa</p>
+            <footer>
+                <a class="btn btn-default" href="{{ path('clientes_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+     </div>
+     {% if app.session.flashbag.get('Mensaje') %}      
+         {% for flashMessage in app.session.flashbag.get('Mensaje') %}
+             <div class="alert alert-success" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+     {% if app.session.flashbag.get('Alerta') %}      
+         {% for flashMessage in app.session.flashbag.get('Alerta') %}
+             <div class="alert alert-danger" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+<div class="container">
+         <table class="table table-bordered table-responsive">
         <thead>
             <tr>
                 <th>Estatustransferencia</th>
@@ -15,25 +42,31 @@
             </tr>
         </thead>
         <tbody>
-        {% for pagotransferencium in pagotransferencias %}
-            <tr>
-                <td><a href="{{ path('pagotransferencia_show', { 'id': pagotransferencium.idpagotransferencia }) }}">{{ pagotransferencium.estatustransferencia }}</a></td>
-                <td>{{ pagotransferencium.bancobeneficiado }}</td>
-                <td>{{ pagotransferencium.cuentabeneficiada }}</td>
-                <td>{% if pagotransferencium.fechatransferencia %}{{ pagotransferencium.fechatransferencia|date('Y-m-d') }}{% endif %}</td>
-                <td>{{ pagotransferencium.idpagotransferencia }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('pagotransferencia_show', { 'id': pagotransferencium.idpagotransferencia }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('pagotransferencia_edit', { 'id': pagotransferencium.idpagotransferencia }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
+            {% if pagotransferencias %}
+                {% for pagotransferencium in pagotransferencias %}
+                    <tr>
+                        <td><a href="{{ path('pagotransferencia_show', { 'id': pagotransferencium.idpagotransferencia }) }}">{{ pagotransferencium.estatustransferencia }}</a></td>
+                        <td>{{ pagotransferencium.bancobeneficiado }}</td>
+                        <td>{{ pagotransferencium.cuentabeneficiada }}</td>
+                        <td>{% if pagotransferencium.fechatransferencia %}{{ pagotransferencium.fechatransferencia|date('Y-m-d') }}{% endif %}</td>
+                        <td>{{ pagotransferencium.idpagotransferencia }}</td>
+                        <td>
+                            <ul>
+                                <li>
+                                    <a href="{{ path('pagotransferencia_show', { 'id': pagotransferencium.idpagotransferencia }) }}">show</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('pagotransferencia_edit', { 'id': pagotransferencium.idpagotransferencia }) }}">edit</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr >
+                    <td colspan="7"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                </tr>
+            {% endif%}
         </tbody>
     </table>
 

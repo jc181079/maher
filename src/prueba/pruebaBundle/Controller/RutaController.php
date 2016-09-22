@@ -32,6 +32,7 @@ class RutaController extends Controller
 
             return $this->render('ruta/index.html.twig', array(
                         'rutas' => $rutas,
+                        'diaactivo' => $session->get('diaactivo'),
             ));
         } else {
             $this->get('session')->getFlashBag()->add(
@@ -151,6 +152,13 @@ class RutaController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($rutum);
                 $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                        'Mensaje', "El registro fue eliminado satisfactoriamente."
+                );
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                        'Alerta', "El registro no pudo ser eliminado, puede que el registro este relacionado."
+                );
             }
 
             return $this->redirectToRoute('ruta_index');
@@ -171,19 +179,13 @@ class RutaController extends Controller
      */
     private function createDeleteForm(Ruta $rutum)
     {
-        $session = $request->getSession();
-        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+        
             return $this->createFormBuilder()
                             ->setAction($this->generateUrl('ruta_delete', array('id' => $rutum->getIdruta())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;
-        } else {
-            $this->get('session')->getFlashBag()->add(
-                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
-            );
-        }
-        return $this->redirect($this->generateUrl('inicio'));
+        
     }
 
 }

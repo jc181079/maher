@@ -1,0 +1,60 @@
+<?php
+
+namespace prueba\pruebaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Compradetalle
+ *
+ * @ORM\Table(name="compradetalle", indexes={@ORM\Index(name="fk_compradetalle_compra1_idx", columns={"idcompra"}), @ORM\Index(name="fk_compradetalle_producto1_idx", columns={"idproducto"})})
+ * @ORM\Entity
+ */
+class Compradetalle
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="cantidad", type="integer", nullable=true)
+     */
+    private $cantidad;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="preciocompra", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $preciocompra;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idcompradetalle", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idcompradetalle;
+
+    /**
+     * @var \prueba\pruebaBundle\Entity\Producto
+     *
+     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Producto")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idproducto", referencedColumnName="idproducto")
+     * })
+     */
+    private $idproducto;
+
+    /**
+     * @var \prueba\pruebaBundle\Entity\Compra
+     *
+     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Compra")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idcompra", referencedColumnName="idcompra")
+     * })
+     */
+    private $idcompra;
+
+
+}
+

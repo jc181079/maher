@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Seguridad
  *
- * @ORM\Table(name="seguridad")
+ * @ORM\Table(name="seguridad", indexes={@ORM\Index(name="fk_seguridad_ruta1_idx", columns={"ruta_idruta"})})
  * @ORM\Entity
  */
 class Seguridad
@@ -41,6 +41,41 @@ class Seguridad
     private $tipousuario;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="rif", type="string", length=10, nullable=true)
+     */
+    private $rif;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipocliente", type="string", length=45, nullable=true)
+     */
+    private $tipocliente;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="telefono", type="string", length=45, nullable=true)
+     */
+    private $telefono;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="direccion", type="text", nullable=true)
+     */
+    private $direccion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contacto", type="string", length=45, nullable=true)
+     */
+    private $contacto;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="idseguridad", type="integer")
@@ -48,6 +83,16 @@ class Seguridad
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idseguridad;
+
+    /**
+     * @var \prueba\pruebaBundle\Entity\Ruta
+     *
+     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Ruta")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="ruta_idruta", referencedColumnName="idruta")
+     * })
+     */
+    private $rutaruta;
 
 
 }

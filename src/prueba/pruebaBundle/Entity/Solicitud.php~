@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Solicitud
  *
- * @ORM\Table(name="solicitud", indexes={@ORM\Index(name="fk_solicitud_clientes1_idx", columns={"idclientes"}), @ORM\Index(name="fk_solicitud_seguridad1_idx", columns={"idseguridad"})})
+ * @ORM\Table(name="solicitud")
  * @ORM\Entity
  */
 class Solicitud
@@ -27,6 +27,41 @@ class Solicitud
     private $fechaentrega;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="estatus", type="string", length=45, nullable=true)
+     */
+    private $estatus;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numerosolicitud", type="string", length=45, nullable=true)
+     */
+    private $numerosolicitud;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipopago", type="string", length=45, nullable=true)
+     */
+    private $tipopago;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prioridad", type="string", length=5, nullable=true)
+     */
+    private $prioridad;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="rif", type="string", length=10, nullable=true)
+     */
+    private $rif;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="idsolicitud", type="integer")
@@ -34,26 +69,6 @@ class Solicitud
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idsolicitud;
-
-    /**
-     * @var \prueba\pruebaBundle\Entity\Seguridad
-     *
-     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Seguridad")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idseguridad", referencedColumnName="idseguridad")
-     * })
-     */
-    private $idseguridad;
-
-    /**
-     * @var \prueba\pruebaBundle\Entity\Clientes
-     *
-     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Clientes")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idclientes", referencedColumnName="idclientes")
-     * })
-     */
-    private $idclientes;
 
 
 }

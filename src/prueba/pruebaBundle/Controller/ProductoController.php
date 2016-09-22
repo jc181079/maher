@@ -28,11 +28,18 @@ class ProductoController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             $em = $this->getDoctrine()->getManager();
+            $permisologia=1;
 
             $productos = $em->getRepository('pruebaBundle:Producto')->findAll();
 
             return $this->render('producto/index_prod.html.twig', array(
-                        'productos' => $productos,
+                        'productos' => $productos,                       
+                        'permisologia' => $permisologia,
+                        'nu'=>$session->get('nombreusuario'),
+                        'l'=>$session->get('login'),
+                         'diaactivo' => $session->get('diaactivo'),
+                        
+           
             ));
         } else {
             $this->get('session')->getFlashBag()->add(
@@ -82,7 +89,7 @@ class ProductoController extends Controller
      * @Route("/{id}", name="producto_show")
      * @Method("GET")
      */
-    public function showAction(Producto $producto,$id)
+    public function showAction(Producto $producto,$id,Request $request)
     {
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
@@ -171,6 +178,13 @@ class ProductoController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($producto);
                 $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                        'Mensaje', "El registro fue eliminado satisfactoriamente."
+                );
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                        'Alerta', "El registro no pudo ser eliminado, puede que el registro este relacionado."
+                );
             }
 
             return $this->redirectToRoute('producto_index');
@@ -191,18 +205,12 @@ class ProductoController extends Controller
      */
     private function createDeleteForm(Producto $producto)
     {
-        $session = $request->getSession();
-        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+       
             return $this->createFormBuilder()
                             ->setAction($this->generateUrl('producto_delete', array('id' => $producto->getIdproducto())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;
-        } else {
-            $this->get('session')->getFlashBag()->add(
-                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
-            );
-        }
-        return $this->redirect($this->generateUrl('inicio'));
+     
     }
 }

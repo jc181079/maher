@@ -10,7 +10,8 @@
     <field name="estatuscredito" type="string" column="estatuscredito" length="45" nullable="true">
       <options>
         <option name="fixed"/>
-        <option name="comment">Debe</option>
+        <option name="comment">Debe
+Pagada</option>
       </options>
     </field>
     <field name="cuentacreditomonto" type="float" column="cuentacreditomonto" precision="10" scale="0" nullable="true">
@@ -19,6 +20,11 @@
       </options>
     </field>
     <field name="cuentacreditofecha" type="date" column="cuentacreditofecha" nullable="true"/>
+    <field name="numerosolicitud" type="string" column="numerosolicitud" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <many-to-one field="idpagos" target-entity="Pagos" fetch="LAZY">
       <join-columns>
         <join-column name="idpagos" referenced-column-name="idpagos"/>

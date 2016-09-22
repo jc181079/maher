@@ -27,11 +27,16 @@ class InventarioController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             $em = $this->getDoctrine()->getManager();
+            $permisologia=1;
 
             $inventarios = $em->getRepository('pruebaBundle:Inventario')->findAll();
 
             return $this->render('inventario/index_inv.html.twig', array(
-                        'inventarios' => $inventarios,
+                         'inventarios' => $inventarios,
+                         'diaactivo' => $session->get('diaactivo'),
+                         'nu'=>$session->get('nombreusuario'),
+                         'l'=>$session->get('login'),
+                         'permisologia' => $permisologia,
             ));
         } else {
             $this->get('session')->getFlashBag()->add(
@@ -151,6 +156,13 @@ class InventarioController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($inventario);
                 $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                        'Mensaje', "El registro fue eliminado satisfactoriamente."
+                );
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                        'Alerta', "El registro no pudo ser eliminado, puede que el registro este relacionado."
+                );
             }
 
             return $this->redirectToRoute('inventario_index');
@@ -171,18 +183,12 @@ class InventarioController extends Controller
      */
     private function createDeleteForm(Inventario $inventario)
     {
-        $session = $request->getSession();
-        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+        
             return $this->createFormBuilder()
                             ->setAction($this->generateUrl('inventario_delete', array('id' => $inventario->getIdinventario())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;
-        } else {
-            $this->get('session')->getFlashBag()->add(
-                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
-            );
-        }
-        return $this->redirect($this->generateUrl('inicio'));
+        
     }
 }

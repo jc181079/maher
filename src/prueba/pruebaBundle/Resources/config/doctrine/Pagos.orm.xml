@@ -2,7 +2,7 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
   <entity name="prueba\pruebaBundle\Entity\Pagos" table="pagos">
     <indexes>
-      <index name="fk_pagosefectivo_solicitud1_idx" columns="idsolicitud"/>
+      <index name="fk_pagos_solicitud1_idx" columns="idsolicitud"/>
     </indexes>
     <id name="idpagos" type="integer" column="idpagos">
       <generator strategy="IDENTITY"/>
@@ -15,7 +15,11 @@
     <field name="tipopago" type="string" column="tipopago" length="45" nullable="true">
       <options>
         <option name="fixed"/>
-        <option name="comment">En efectivo -------&gt;circulante</option>
+        <option name="comment">En efectivo -------&gt;circulante
+En Cheque -------&gt;cuentas por cobrar por defecto
+Credito-----------&gt;cuenta por cobrar
+Transferencia----&gt;banco
+Deposito----------&gt;banco</option>
       </options>
     </field>
     <field name="observacion" type="text" column="observacion" nullable="true">
@@ -24,6 +28,11 @@
       </options>
     </field>
     <field name="fechapago" type="date" column="fechapago" nullable="true"/>
+    <field name="numerosolicitud" type="string" column="numerosolicitud" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <many-to-one field="idsolicitud" target-entity="Solicitud" fetch="LAZY">
       <join-columns>
         <join-column name="idsolicitud" referenced-column-name="idsolicitud"/>

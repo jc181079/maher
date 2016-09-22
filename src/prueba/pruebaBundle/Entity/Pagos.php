@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Pagos
  *
- * @ORM\Table(name="pagos", indexes={@ORM\Index(name="fk_pagosefectivo_solicitud1_idx", columns={"idsolicitud"})})
+ * @ORM\Table(name="pagos", indexes={@ORM\Index(name="fk_pagos_solicitud1_idx", columns={"idsolicitud"})})
  * @ORM\Entity
  */
 class Pagos
@@ -39,6 +39,13 @@ class Pagos
      * @ORM\Column(name="fechapago", type="date", nullable=true)
      */
     private $fechapago;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numerosolicitud", type="string", length=45, nullable=true)
+     */
+    private $numerosolicitud;
 
     /**
      * @var integer
@@ -155,6 +162,30 @@ class Pagos
     public function getFechapago()
     {
         return $this->fechapago;
+    }
+
+    /**
+     * Set numerosolicitud
+     *
+     * @param string $numerosolicitud
+     *
+     * @return Pagos
+     */
+    public function setNumerosolicitud($numerosolicitud)
+    {
+        $this->numerosolicitud = $numerosolicitud;
+
+        return $this;
+    }
+
+    /**
+     * Get numerosolicitud
+     *
+     * @return string
+     */
+    public function getNumerosolicitud()
+    {
+        return $this->numerosolicitud;
     }
 
     /**

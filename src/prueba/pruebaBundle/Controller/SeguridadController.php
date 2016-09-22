@@ -151,6 +151,13 @@ class SeguridadController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($seguridad);
                 $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                        'Mensaje', "El registro fue eliminado satisfactoriamente."
+                );
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                        'Alerta', "El registro no pudo ser eliminado, puede que el registro este relacionado."
+                );
             }
 
             return $this->redirectToRoute('seguridad_index');
@@ -171,19 +178,13 @@ class SeguridadController extends Controller
      */
     private function createDeleteForm(Seguridad $seguridad)
     {
-        $session = $request->getSession();
-        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+        
             return $this->createFormBuilder()
                             ->setAction($this->generateUrl('seguridad_delete', array('id' => $seguridad->getIdseguridad())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;
-        } else {
-            $this->get('session')->getFlashBag()->add(
-                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
-            );
-        }
-        return $this->redirect($this->generateUrl('inicio'));
+       
     }
     
     /**
@@ -198,12 +199,36 @@ class SeguridadController extends Controller
             $em = $this->getDoctrine()->getManager();
             $consulta = $em->getRepository('pruebaBundle:Seguridad')->findBy(array('login' => $request->get('login'),'pass'=> md5($request->get('pass'))));
             if ($consulta){
+                /**
+                 * con este query se busca saber si existe un dia activo o no
+                 */
+                $dia=date('Y-m-d');
+                $queryDia= $em->createQuery(
+                    'SELECT d.diafecha '
+                  . 'FROM pruebaBundle:Dia d '                  
+                  . 'WHERE d.diafecha='.$dia.' ');
+                 $resDia=$queryDia->getResult();
+                //************************************************************
+                if ($resDia) $diaactivo=1; else $diaactivo=0;
                 $session = $request->getSession();
                 $session->set('idseguridad',$consulta[0]->getIdseguridad()); // se guarda la id del usuario que se logio
                 $session->set('nombreusuario',$consulta[0]->getNombreusuario()); // se guarda el nombre del usuario
                 $session->set('login',$consulta[0]->getLogin()); // se guarda el tipo del usuario
                 $session->set('tipousuario',$consulta[0]->getTipousuario()); // se guarda el tipo del usuario
-                return $this->redirect($this->generateUrl('panel'));
+                $session->set('rif',$consulta[0]->getRif()); // se guarda el rif del usuario
+                $session->set('diaactivo',$diaactivo);
+                
+                /*
+                 * el sistema se loguea con la tabla seguridad, pero los clientes pueden loguiarse siempre y cuando 
+                 * tengan un registro en la tabla seguridad y tengan un registro en su tabla cliente,
+                 * la busqueda a continuacion se realizara por el rif, el cual sera el nombre del usuario
+                 * 
+                 */
+                
+                if ($consulta[0]->getTipousuario() == 'Cliente')
+                    return $this->redirect($this->generateUrl('solicitud_index'));
+                else
+                    return $this->redirect($this->generateUrl('panel'));
             }else {
                 $this->get('session')->getFlashBag()->add(
                             'Mensaje',
@@ -225,6 +250,87 @@ class SeguridadController extends Controller
         $session->clear();      
         return $this->render('pruebaBundle:Default:index.html.twig'); 
     }
-            
     
+    /**
+     * se guarda el nuevo cliente que se quiera registrar en el sistema de maher
+     * 
+     * @Route("/seguridad/cliente", name="seguridad_cliente")
+     * @Method({"GET", "POST"})
+     */        
+    public function newclienteAction(Request $request)
+    {
+        $seguridad = new Seguridad();
+        if ($request->get('clave1') == $request->get('clave2')) {
+            
+            /*
+             * para verificar que no se duplique el rif
+             */
+            $findrif = $this->getDoctrine()
+                    ->getRepository('pruebaBundle:Seguridad')
+                    ->findOneBy(array('rif' => $request->get('rif')));
+            if (!$findrif) {
+                /*
+                 * para evitar problemas que de error de que no puede capturar el dato
+                 * debes hacer lo siguiente:
+                 * 1-crea una consulta buscando el dato en la entidad
+                 * 2-si se consiguio el resultado deseado, entonces, colocas la variable
+                 *   resultado en set correspondiente y listo, problema solucionado
+                 */
+                $findruta = $this->getDoctrine()
+                    ->getRepository('pruebaBundle:Ruta')
+                    ->findOneBy(array('idruta' => $request->get('idruta')));
+                $seguridad->setNombreusuario($request->get('nombreusuario'));
+                $seguridad->setLogin($request->get('login'));
+                $seguridad->setPass(md5($request->get('clave1')));
+                $seguridad->setRif($request->get('rif'));
+                $seguridad->setDireccion($request->get('direccion'));
+                $seguridad->setContacto($request->get('contacto'));
+                $seguridad->setRutaruta($findruta);
+                $seguridad->setTipocliente('Legal');
+                $seguridad->setTipousuario('Cliente');
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($seguridad);
+                $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                        'Mensaje2', "Se le informa que se ha registrado correctamente la base de datos de cliente de Distribuidora Maher, c.a."
+                );
+            }else{
+                $this->get('session')->getFlashBag()->add(
+                            'Mensaje',
+                           "El rif que acaba de escribir esta ya registrado por otro cliente, por favor revise si escribio bien su Rif, en caso de persistir el problema pongase en contacto con la empresa Distribuidora Maher, c.a."
+                            );
+            }
+        }else {
+                $this->get('session')->getFlashBag()->add(
+                            'Mensaje',
+                           "Claves no coinsiden, vuelva a intentar "
+                            );
+            }
+            return $this->redirect($this->generateUrl('inicio'));
+    }
+    
+     /**
+     * se guarda el nuevo cliente que se quiera registrar en el sistema de maher
+     * 
+     * @Route("/seguridad/cambio/clave", name="seguridad_cambioclave")
+     * @Method({"GET", "POST"})
+     */        
+    public function cambiarclaveAction(Request $request)
+    {
+        $session = $request->getSession();
+        $seguridad = $this->getDoctrine()
+                    ->getRepository('pruebaBundle:Seguridad')
+                    ->findOneBy(array('idseguridad' => $session->get('idseguridad')));
+        if ($request->get('clave1') == $request->get('clave2')) {
+            $seguridad->setPass(md5($request->get('clave1')));
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($seguridad);
+            $em->flush();
+            $this->get('session')->getFlashBag()->add(
+                        'Mensaje2', "Se le informa que se ha cambiado correctamente su claves"
+            );
+        }
+        return $this->redirect($this->generateUrl('panel'));
+    }
 }

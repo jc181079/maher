@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Solicitud</h1>
+    <div class="container">
+        <!-- aqui se va a colocar la informacion de la solicitud -->
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr class="active">
+                    <th>Fecha de entrega de la solicitud</th>
+                    <th>Tipo de pago de la solicitud</th>
+                    <th>Estatus de la solicitud</th>
+                    <th>Total en bolivares de la solicitud</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+
+                {% if solicitud %}
+                    {% for solicituds in solicitud%}
+                        <tr>
+                            <td>{{ solicituds.fechaentrega|date('d-m-Y') }}</td>
+                            <td>{{ solicituds.tipopago}}</td>
+                            <td>{{ solicituds.estatus }}</td>
+                            <td>{{ 'Bs. '~solicituds.t|number_format(2,'.',',') }}</td>
+                        </tr>
+                    {% endfor%}
+                {% else %}
+                    <tr >
+                        <td colspan="7"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                    </tr>
+                {% endif%}
+            </tbody>
+        </table>
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr class="active">
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Total</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+
+                {% if solicituddetalles %}
+                    {% for solicituddetalle in solicituddetalles%}
+                        <tr>
+                            <td>{{ solicituddetalle.nombreproducto }}</td>
+                            <td>{{ solicituddetalle.cantidad|number_format(2,'.',',') }}</td>
+                            <td>{{ 'Bs. '~solicituddetalle.precio|number_format(2,'.',',') }}</td>
+                            <td>{{ 'Bs. '~solicituddetalle.total|number_format(2,'.',',') }}</td>                            
+                        </tr>
+                    {% endfor%}
+                {% else %}
+                    <tr >
+                        <td colspan="7"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                    </tr>
+                {% endif%}
+            </tbody>
+        </table>
+    </div>  
+                <a href="{{ path('solicitud_index') }}" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Volver atras"><span class="glyphicon glyphicon-arrow-left"></span></a>
+{% endblock %}
+
+

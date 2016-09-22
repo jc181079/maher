@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
   <entity name="prueba\pruebaBundle\Entity\Seguridad" table="seguridad">
+    <indexes>
+      <index name="fk_seguridad_ruta1_idx" columns="ruta_idruta"/>
+    </indexes>
     <id name="idseguridad" type="integer" column="idseguridad">
       <generator strategy="IDENTITY"/>
     </id>
@@ -22,8 +25,40 @@
     <field name="tipousuario" type="string" column="tipousuario" length="45" nullable="true">
       <options>
         <option name="fixed"/>
-        <option name="comment">Administrador</option>
+        <option name="comment">Administrador
+Cliente</option>
       </options>
     </field>
+    <field name="rif" type="string" column="rif" length="10" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="tipocliente" type="string" column="tipocliente" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="telefono" type="string" column="telefono" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="direccion" type="text" column="direccion" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Direccion comercial</option>
+      </options>
+    </field>
+    <field name="contacto" type="string" column="contacto" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <many-to-one field="rutaruta" target-entity="Ruta" fetch="LAZY">
+      <join-columns>
+        <join-column name="ruta_idruta" referenced-column-name="idruta"/>
+      </join-columns>
+    </many-to-one>
   </entity>
 </doctrine-mapping>

@@ -1,9 +1,36 @@
 {% extends 'base.html.twig' %}
 {% use "::navbar.html.twig" %}
 {% block body %}
-    <h1>Inventario list</h1>
-
-    <table>
+    {% block navbar %}
+        {{ parent() }}
+    {% endblock %}
+     <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de CLIENTES</strong></h1>
+            <p>aqui podra administrar las diferentes clientes por la empresa</p>
+            <footer>
+                <a class="btn btn-default" href="{{ path('inventario_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+     </div>
+     {% if app.session.flashbag.get('Mensaje') %}      
+         {% for flashMessage in app.session.flashbag.get('Mensaje') %}
+             <div class="alert alert-success" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+     {% if app.session.flashbag.get('Alerta') %}      
+         {% for flashMessage in app.session.flashbag.get('Alerta') %}
+             <div class="alert alert-danger" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+<div class="container">
+         <table class="table table-bordered table-responsive">
         <thead>
             <tr>
                 <th>Cantidad</th>
@@ -13,23 +40,29 @@
             </tr>
         </thead>
         <tbody>
-        {% for inventario in inventarios %}
-            <tr>
-                <td><a href="{{ path('inventario_show', { 'id': inventario.idinventario }) }}">{{ inventario.cantidad }}</a></td>
-                <td>{{ inventario.observacion }}</td>
-                <td>{{ inventario.idinventario }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('inventario_show', { 'id': inventario.idinventario }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('inventario_edit', { 'id': inventario.idinventario }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
+            {% if inventarios %}
+                {% for inventario in inventarios %}
+                    <tr>
+                        <td><a href="{{ path('inventario_show', { 'id': inventario.idinventario }) }}">{{ inventario.cantidad }}</a></td>
+                        <td>{{ inventario.observacion }}</td>
+                        <td>{{ inventario.idinventario }}</td>
+                        <td>
+                            <ul>
+                                <li>
+                                    <a href="{{ path('inventario_show', { 'id': inventario.idinventario }) }}">show</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('inventario_edit', { 'id': inventario.idinventario }) }}">edit</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr >
+                    <td colspan="7"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                </tr>
+            {% endif%}
         </tbody>
     </table>
 

@@ -1,0 +1,68 @@
+<?php
+
+namespace prueba\pruebaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Proveedor
+ *
+ * @ORM\Table(name="proveedor")
+ * @ORM\Entity
+ */
+class Proveedor
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="proveedornombre", type="string", length=45, nullable=true)
+     */
+    private $proveedornombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="proveedorrif", type="string", length=45, nullable=true)
+     */
+    private $proveedorrif;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="proveedorcontacto", type="string", length=45, nullable=true)
+     */
+    private $proveedorcontacto;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="proveedortlf", type="string", length=45, nullable=true)
+     */
+    private $proveedortlf;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="proveedoremail", type="string", length=45, nullable=true)
+     */
+    private $proveedoremail;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="proveedorobservacion", type="text", nullable=true)
+     */
+    private $proveedorobservacion;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idproveedor", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idproveedor;
+
+
+}
+

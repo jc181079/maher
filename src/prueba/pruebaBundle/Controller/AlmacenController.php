@@ -27,11 +27,16 @@ class AlmacenController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             $em = $this->getDoctrine()->getManager();
+            $permisologia=1;
 
             $almacens = $em->getRepository('pruebaBundle:Almacen')->findAll();
 
             return $this->render('almacen/index_alm.html.twig', array(
                         'almacens' => $almacens,
+                         'diaactivo' => $session->get('diaactivo'),
+                         'nu'=>$session->get('nombreusuario'),
+                         'l'=>$session->get('login'),
+                        'permisologia' => $permisologia,
             ));
         } else {
             $this->get('session')->getFlashBag()->add(
@@ -178,18 +183,12 @@ class AlmacenController extends Controller
      */
     private function createDeleteForm(Almacen $almacen)
     {
-        $session = $request->getSession();
-        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+       
             return $this->createFormBuilder()
                             ->setAction($this->generateUrl('almacen_delete', array('id' => $almacen->getIdalmacen())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;
-        } else {
-            $this->get('session')->getFlashBag()->add(
-                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
-            );
-        }
-        return $this->redirect($this->generateUrl('inicio'));
+        
     }
 }

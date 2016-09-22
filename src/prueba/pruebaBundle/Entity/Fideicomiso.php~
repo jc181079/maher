@@ -1,0 +1,57 @@
+<?php
+
+namespace prueba\pruebaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Fideicomiso
+ *
+ * @ORM\Table(name="fideicomiso", indexes={@ORM\Index(name="fk_fideicomiso_proveedor1_idx", columns={"idproveedor"})})
+ * @ORM\Entity
+ */
+class Fideicomiso
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="fideicomisofactura", type="string", length=45, nullable=true)
+     */
+    private $fideicomisofactura;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="fideicomisomonto", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $fideicomisomonto;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fideicomisofecha", type="date", nullable=true)
+     */
+    private $fideicomisofecha;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idfideicomiso", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idfideicomiso;
+
+    /**
+     * @var \prueba\pruebaBundle\Entity\Proveedor
+     *
+     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Proveedor")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idproveedor", referencedColumnName="idproveedor")
+     * })
+     */
+    private $idproveedor;
+
+
+}
+

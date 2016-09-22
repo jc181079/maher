@@ -11,10 +11,19 @@
     <field name="estatuspagocheque" type="string" column="estatuspagocheque" length="45" nullable="true">
       <options>
         <option name="fixed"/>
-        <option name="comment">Cobrado-------------&gt;circulante (efectivo)</option>
+        <option name="comment">Cobrado-------------&gt;circulante (efectivo)
+Depositado ---------&gt;banco
+En Bolsillo---------\
+Rebotado --------/-----&gt;cuentas por cobrar
+Rechazado -----/</option>
       </options>
     </field>
     <field name="observacionpagocheque" type="text" column="observacionpagocheque" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="numerosolicitud" type="string" column="numerosolicitud" length="45" nullable="true">
       <options>
         <option name="fixed"/>
       </options>

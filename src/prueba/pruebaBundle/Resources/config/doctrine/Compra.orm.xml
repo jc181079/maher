@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="prueba\pruebaBundle\Entity\Compra" table="compra">
+    <indexes>
+      <index name="fk_compra_proveedor1_idx" columns="idproveedor"/>
+    </indexes>
+    <id name="idcompra" type="integer" column="idcompra">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="comprafactura" type="string" column="comprafactura" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="compracantidad" type="integer" column="compracantidad" nullable="true">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="comprafecha" type="date" column="comprafecha" nullable="true"/>
+    <field name="compraestatus" type="string" column="compraestatus" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="tipocompra" type="string" column="tipocompra" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Credito
+Contado</option>
+      </options>
+    </field>
+    <many-to-one field="idproveedor" target-entity="Proveedor" fetch="LAZY">
+      <join-columns>
+        <join-column name="idproveedor" referenced-column-name="idproveedor"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

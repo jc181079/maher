@@ -1,24 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
   <entity name="prueba\pruebaBundle\Entity\Solicitud" table="solicitud">
-    <indexes>
-      <index name="fk_solicitud_clientes1_idx" columns="idclientes"/>
-      <index name="fk_solicitud_seguridad1_idx" columns="idseguridad"/>
-    </indexes>
     <id name="idsolicitud" type="integer" column="idsolicitud">
       <generator strategy="IDENTITY"/>
     </id>
     <field name="fechadolicitud" type="date" column="fechadolicitud" nullable="true"/>
     <field name="fechaentrega" type="date" column="fechaentrega" nullable="true"/>
-    <many-to-one field="idseguridad" target-entity="Seguridad" fetch="LAZY">
-      <join-columns>
-        <join-column name="idseguridad" referenced-column-name="idseguridad"/>
-      </join-columns>
-    </many-to-one>
-    <many-to-one field="idclientes" target-entity="Clientes" fetch="LAZY">
-      <join-columns>
-        <join-column name="idclientes" referenced-column-name="idclientes"/>
-      </join-columns>
-    </many-to-one>
+    <field name="estatus" type="string" column="estatus" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Activa
+Gestionada
+Entregada
+No entregada
+Cancelada</option>
+      </options>
+    </field>
+    <field name="numerosolicitud" type="string" column="numerosolicitud" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">numero de la solicitud:
+rif-correlativo</option>
+      </options>
+    </field>
+    <field name="tipopago" type="string" column="tipopago" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Efectivo
+Cheque
+Transferencia
+Credito</option>
+      </options>
+    </field>
+    <field name="prioridad" type="string" column="prioridad" length="5" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">la prioridad depende del tipo de pago si es efectivo es alta, si es cheque o transferencia es media, si es a credito baja
+Alta
+Media
+Baja</option>
+      </options>
+    </field>
+    <field name="rif" type="string" column="rif" length="10" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">con este campo se va a relacionar a traves de script asi se podra mostrar solo las solicitudes de los usuarios.</option>
+      </options>
+    </field>
   </entity>
 </doctrine-mapping>

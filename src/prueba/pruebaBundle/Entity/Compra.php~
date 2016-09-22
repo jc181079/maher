@@ -1,0 +1,71 @@
+<?php
+
+namespace prueba\pruebaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Compra
+ *
+ * @ORM\Table(name="compra", indexes={@ORM\Index(name="fk_compra_proveedor1_idx", columns={"idproveedor"})})
+ * @ORM\Entity
+ */
+class Compra
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="comprafactura", type="string", length=45, nullable=true)
+     */
+    private $comprafactura;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="compracantidad", type="integer", nullable=true)
+     */
+    private $compracantidad;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="comprafecha", type="date", nullable=true)
+     */
+    private $comprafecha;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="compraestatus", type="string", length=45, nullable=true)
+     */
+    private $compraestatus;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipocompra", type="string", length=45, nullable=true)
+     */
+    private $tipocompra;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idcompra", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idcompra;
+
+    /**
+     * @var \prueba\pruebaBundle\Entity\Proveedor
+     *
+     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Proveedor")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idproveedor", referencedColumnName="idproveedor")
+     * })
+     */
+    private $idproveedor;
+
+
+}
+

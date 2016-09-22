@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Solicitud creation</h1>
+    <div class="jumbotron">
+        {{ form_start(form) }}
+        <div class="container">
+
+            <div class="form-group">
+                <div class="col-md-6">
+                    <label>Fecha de solicitud: </label>
+                    {{ form_widget(form.fechadolicitud) }}
+                </div>
+
+            </div>    
+            <div class="form-group">
+                <div class="col-md-6">
+                    <label>Fecha de entrada: </label>
+                    {{ form_widget(form.fechaentrega) }}
+                </div>
+
+            </div>
+            <div class="form-group">
+                <div class="col-md-12"></div>
+                <label>Numero de solicitud: </label>
+                {{ form_widget(form.numerosolicitud) }}
+            </div>
+            <div class="form-group">
+                <div class="col-md-6">
+                    <label>Tipo de pago: </label>
+                    {{ form_widget(form.tipopago) }}
+                </div>
+            </div>
+
+
+        </div>
+        <div class="modal-footer">
+            <input type="submit" value="Create" class="btn btn-primary" />
+
+        </div>
+        {{ form_end(form) }}
+    </div>
+    
+
+    <ul>
+        <li>
+            <a href="{{ path('solicitud_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('public/js/bootstrap-datepicker.js') }}" ></script>
+   
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var d = new Date();
+            /*
+             * con el siguiente condicional solo se coloca un cero para que el valor sea 
+             * valido a la hora de verificar los datos el symfony
+             */
+            var mes;
+            if (d.getMonth()+1<10){
+                mes="0"+(d.getMonth()+1)
+            }else{
+                mes=(d.getMonth()+1)
+            }
+            ////////////////////////////////////////////////////////////////////
+            var strDate = d.getFullYear() + "-" + mes + "-" + d.getDate();
+         $('input#solicitud_fechadolicitud').val(strDate);                   
+         $('input#solicitud_fechadolicitud').prop('visible', false);
+         $('input#solicitud_rif').val('{{rif }}');
+         $('.js-datepicker').datepicker({
+             format: 'yyyy-mm-dd'
+         });
+     });
+          
+    </script>
+{% endblock %}

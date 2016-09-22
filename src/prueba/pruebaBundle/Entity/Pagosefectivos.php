@@ -27,6 +27,13 @@ class Pagosefectivos
     private $fechapagoefectivo;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="numerosolicitud", type="string", length=45, nullable=true)
+     */
+    private $numerosolicitud;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="idpagosefectivos", type="integer")
@@ -93,6 +100,30 @@ class Pagosefectivos
     public function getFechapagoefectivo()
     {
         return $this->fechapagoefectivo;
+    }
+
+    /**
+     * Set numerosolicitud
+     *
+     * @param string $numerosolicitud
+     *
+     * @return Pagosefectivos
+     */
+    public function setNumerosolicitud($numerosolicitud)
+    {
+        $this->numerosolicitud = $numerosolicitud;
+
+        return $this;
+    }
+
+    /**
+     * Get numerosolicitud
+     *
+     * @return string
+     */
+    public function getNumerosolicitud()
+    {
+        return $this->numerosolicitud;
     }
 
     /**

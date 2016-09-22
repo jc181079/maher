@@ -28,11 +28,16 @@ class MovimientoController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             $em = $this->getDoctrine()->getManager();
+            $permisologia=1;
 
             $movimientos = $em->getRepository('pruebaBundle:Movimiento')->findAll();
 
             return $this->render('movimiento/index_movimiento.html.twig', array(
                         'movimientos' => $movimientos,
+                        'nu'=>$session->get('nombreusuario'),
+                        'l'=>$session->get('login'),
+                        'permisologia' => $permisologia,
+                        'diaactivo' => $session->get('diaactivo'),
             ));
         } else {
             $this->get('session')->getFlashBag()->add(
@@ -116,7 +121,7 @@ class MovimientoController extends Controller
      * @Route("/{id}", name="movimiento_show")
      * @Method("GET")
      */
-    public function showAction(Movimiento $movimiento)
+    public function showAction(Movimiento $movimiento,Request $request)
     {
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
@@ -186,6 +191,13 @@ class MovimientoController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($movimiento);
                 $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                        'Mensaje', "El registro fue eliminado satisfactoriamente."
+                );
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                        'Alerta', "El registro no pudo ser eliminado, puede que el registro este relacionado."
+                );
             }
 
             return $this->redirectToRoute('movimiento_index');
@@ -206,18 +218,11 @@ class MovimientoController extends Controller
      */
     private function createDeleteForm(Movimiento $movimiento)
     {
-        $session = $request->getSession();
-        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
-            return $this->createFormBuilder()
+        return $this->createFormBuilder()
                             ->setAction($this->generateUrl('movimiento_delete', array('id' => $movimiento->getIdmovimiento())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;
-        } else {
-            $this->get('session')->getFlashBag()->add(
-                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
-            );
-        }
-        return $this->redirect($this->generateUrl('inicio'));
+        
     }
 }

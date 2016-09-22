@@ -13,6 +13,20 @@ use Doctrine\ORM\Mapping as ORM;
 class Plandistribucion
 {
     /**
+     * @var string
+     *
+     * @ORM\Column(name="plandistribucionestatus", type="string", length=45, nullable=true)
+     */
+    private $plandistribucionestatus;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="plandistribucionobservacion", type="text", nullable=true)
+     */
+    private $plandistribucionobservacion;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="idplandistribucion", type="integer")

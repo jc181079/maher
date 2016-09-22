@@ -1,0 +1,57 @@
+{% block modal %}
+    <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Formulario de registro de nuevo cliente</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-signin" method="post" action="{{ path('seguridad_cliente') }}" >
+                                    <div class="form-group">
+                                        <label  class="sr-only">Nombre del cliente</label>
+                                        <input  id="nombreusuario" name="nombreusuario" class="form-control" placeholder="Nombre del cliente"   >
+                                    </div>
+                                    <div class="form-group">
+                                        <label  class="sr-only">Login</label>
+                                        <input  id="login" name="cliente" class="form-control" placeholder="Login"   >
+                                    </div>
+                                    <div class="form-group">
+                                        <label  class="sr-only">Clave</label>
+                                        <input  id="clave1" name="clave1" class="form-control" type="password" placeholder="Clave del usuario"   >
+                                    </div>
+                                    <div class="form-group">
+                                        <label  class="sr-only">Repita la clave</label>
+                                        <input  id="clave2" name="clave2" class="form-control" type="password" placeholder="Repita la clave del usuario"   >
+                                    </div>
+                                    <div class="form-group">
+                                        <label  class="sr-only">Rif</label>
+                                        <input  id="rif" name="rif" class="form-control" placeholder="Rif"   >
+                                    </div>
+                                    <div class="form-group">
+                                        <label  class="sr-only">Direccion</label>
+                                        <input  id="direccion" name="direccion" class="form-control" placeholder="Direccion"   >
+                                    </div>
+                                    <div class="form-group">
+                                        <label  class="sr-only">Contacto</label>
+                                        <input  id="contacto" name="contacto" class="form-control" placeholder="Contacto"   >                                        
+                                    </div>
+                                    <div class="form-group">
+                                        <label  class="sr-only">Ruta</label>
+                                        <select name="idruta" id="idruta" class="form-control">
+                                            <option value="N/A">Seleccione</option>
+                                            <option value="1">Ruta Generica</option>
+                                        </select>                                        
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-success" type="submit"><span class="glyphicon glyphicon-floppy-disk"></span>Guardar</button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+{% endblock %}

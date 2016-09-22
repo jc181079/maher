@@ -41,6 +41,13 @@ class Pagotransferencia
     private $fechatransferencia;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="numerosolicitud", type="string", length=45, nullable=true)
+     */
+    private $numerosolicitud;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="idpagotransferencia", type="integer")
@@ -155,6 +162,30 @@ class Pagotransferencia
     public function getFechatransferencia()
     {
         return $this->fechatransferencia;
+    }
+
+    /**
+     * Set numerosolicitud
+     *
+     * @param string $numerosolicitud
+     *
+     * @return Pagotransferencia
+     */
+    public function setNumerosolicitud($numerosolicitud)
+    {
+        $this->numerosolicitud = $numerosolicitud;
+
+        return $this;
+    }
+
+    /**
+     * Get numerosolicitud
+     *
+     * @return string
+     */
+    public function getNumerosolicitud()
+    {
+        return $this->numerosolicitud;
     }
 
     /**

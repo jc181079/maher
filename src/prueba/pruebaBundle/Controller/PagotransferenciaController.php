@@ -148,12 +148,19 @@ class PagotransferenciaController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($pagotransferencium);
-            $em->flush();
-        }
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($pagotransferencium);
+                $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                        'Mensaje', "El registro fue eliminado satisfactoriamente."
+                );
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                        'Alerta', "El registro no pudo ser eliminado, puede que el registro este relacionado."
+                );
+            }
 
-        return $this->redirectToRoute('pagotransferencia_index');
+            return $this->redirectToRoute('pagotransferencia_index');
 } else {
             $this->get('session')->getFlashBag()->add(
                     'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
@@ -172,18 +179,12 @@ class PagotransferenciaController extends Controller
      */
     private function createDeleteForm(Pagotransferencia $pagotransferencium)
     {
-        $session = $request->getSession();
-        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+        
             return $this->createFormBuilder()
                             ->setAction($this->generateUrl('pagotransferencia_delete', array('id' => $pagotransferencium->getIdpagotransferencia())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;
-        } else {
-            $this->get('session')->getFlashBag()->add(
-                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
-            );
-        }
-        return $this->redirect($this->generateUrl('inicio'));
+        
     }
 }

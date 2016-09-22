@@ -8,6 +8,19 @@
     <id name="idplandistribucion" type="integer" column="idplandistribucion">
       <generator strategy="IDENTITY"/>
     </id>
+    <field name="plandistribucionestatus" type="string" column="plandistribucionestatus" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Activo
+Entregado
+No entregado</option>
+      </options>
+    </field>
+    <field name="plandistribucionobservacion" type="text" column="plandistribucionobservacion" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <many-to-one field="idsolicitud" target-entity="Solicitud" fetch="LAZY">
       <join-columns>
         <join-column name="idsolicitud" referenced-column-name="idsolicitud"/>

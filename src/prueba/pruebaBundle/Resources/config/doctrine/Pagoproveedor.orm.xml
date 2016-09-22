@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="prueba\pruebaBundle\Entity\Pagoproveedor" table="pagoproveedor">
+    <indexes>
+      <index name="fk_pagoproveedor_proveedor1_idx" columns="idproveedor"/>
+      <index name="fk_pagoproveedor_compra1_idx" columns="idcompra"/>
+    </indexes>
+    <id name="idpagoproveedor" type="integer" column="idpagoproveedor">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="tipopago" type="string" column="tipopago" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">efectivo
+cheque
+transferencia
+fideicomiso</option>
+      </options>
+    </field>
+    <field name="fechapago" type="date" column="fechapago" nullable="true"/>
+    <field name="montopago" type="string" column="montopago" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <many-to-one field="idproveedor" target-entity="Proveedor" fetch="LAZY">
+      <join-columns>
+        <join-column name="idproveedor" referenced-column-name="idproveedor"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idcompra" target-entity="Compra" fetch="LAZY">
+      <join-columns>
+        <join-column name="idcompra" referenced-column-name="idcompra"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

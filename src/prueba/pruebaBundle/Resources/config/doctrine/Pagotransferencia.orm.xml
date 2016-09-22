@@ -10,7 +10,8 @@
     <field name="estatustransferencia" type="string" column="estatustransferencia" length="45" nullable="true">
       <options>
         <option name="fixed"/>
-        <option name="comment">Confirmada----------&gt;banco</option>
+        <option name="comment">Confirmada----------&gt;banco
+No confirmada------&gt;cuenta por cobrar</option>
       </options>
     </field>
     <field name="bancobeneficiado" type="string" column="bancobeneficiado" length="45" nullable="true">
@@ -26,6 +27,11 @@
       </options>
     </field>
     <field name="fechatransferencia" type="date" column="fechatransferencia" nullable="true"/>
+    <field name="numerosolicitud" type="string" column="numerosolicitud" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <many-to-one field="idpagos" target-entity="Pagos" fetch="LAZY">
       <join-columns>
         <join-column name="idpagos" referenced-column-name="idpagos"/>

@@ -1,9 +1,36 @@
 {% extends 'base.html.twig' %}
-
+{% use "::navbar.html.twig" %}
 {% block body %}
-    <h1>Dia list</h1>
-
-    <table>
+    {% block navbar %}
+        {{ parent() }}
+    {% endblock %}
+     <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion el DIA</strong></h1>
+            <p>aqui podra administrar los diferentes dias de actividad de la empresa</p>
+            <footer>
+                <a class="btn btn-default" href="{{ path('clientes_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+     </div>
+     {% if app.session.flashbag.get('Mensaje') %}      
+         {% for flashMessage in app.session.flashbag.get('Mensaje') %}
+             <div class="alert alert-success" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+     {% if app.session.flashbag.get('Alerta') %}      
+         {% for flashMessage in app.session.flashbag.get('Alerta') %}
+             <div class="alert alert-danger" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+<div class="container">
+         <table class="table table-bordered table-responsive">
         <thead>
             <tr>
                 <th>Diafecha</th>
@@ -13,23 +40,29 @@
             </tr>
         </thead>
         <tbody>
-        {% for dium in dias %}
-            <tr>
-                <td><a href="{{ path('dia_show', { 'id': dium.iddia }) }}">{{ dium.diafecha }}</a></td>
-                <td>{% if dium.activo %}Yes{% else %}No{% endif %}</td>
-                <td>{{ dium.iddia }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('dia_show', { 'id': dium.iddia }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('dia_edit', { 'id': dium.iddia }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
+            {% if dias %}
+                {% for dium in dias %}
+                    <tr>
+                        <td><a href="{{ path('dia_show', { 'id': dium.iddia }) }}">{{ dium.diafecha }}</a></td>
+                        <td>{% if dium.activo %}Yes{% else %}No{% endif %}</td>
+                        <td>{{ dium.iddia }}</td>
+                        <td>
+                            <ul>
+                                <li>
+                                    <a href="{{ path('dia_show', { 'id': dium.iddia }) }}">show</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('dia_edit', { 'id': dium.iddia }) }}">edit</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr >
+                    <td colspan="7"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                </tr>
+            {% endif%}
         </tbody>
     </table>
 

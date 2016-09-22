@@ -27,6 +27,13 @@ class Pagosefectivos
     private $fechapagoefectivo;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="numerosolicitud", type="string", length=45, nullable=true)
+     */
+    private $numerosolicitud;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="idpagosefectivos", type="integer")

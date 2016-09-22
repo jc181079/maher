@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% block navbar %}
+        {{ parent() }}
+    {% endblock %}
+    
+     {% if app.session.flashbag.get('Mensaje') %}      
+         {% for flashMessage in app.session.flashbag.get('Mensaje') %}
+             <div class="alert alert-success" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+     {% if app.session.flashbag.get('Alerta') %}      
+         {% for flashMessage in app.session.flashbag.get('Alerta') %}
+             <div class="alert alert-danger" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+
+<div class="container">
+         <table class="table table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th>Fechadolicitud</th>
+                <th>Fechaentrega</th>
+                <th>Estatus</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>            
+            {% if solicituds %}
+                {% for solicitud in solicituds %}
+                    <tr>
+                        <td><a href="{{ path('solicitud_show', { 'idsolicitud': solicitud.idsolicitud }) }}">{{ solicitud.fechadolicitud|date('d-m-Y') }}</a></td>
+                        <td>{% if solicitud.fechaentrega %}{{ solicitud.fechaentrega|date('d-m-Y') }}{% endif %}</td>
+                        <td>{{ solicitud.estatus}}</td>
+                        <td>
+                            
+                            <div class="form-inline">
+                                {% if solicitud.estatus=='Activa' %}
+                                    <a class="btn btn-info" href="{{ path('solicituddetalle_new', { 'idsolicitud': solicitud.idsolicitud }) }}" data-toggle="tooltip" data-placement="top" title="Registrar producto en la solicitud"><span class="glyphicon glyphicon-plus"></span></a>
+                                    <a class="btn btn-primary" href="{{ path('solicitud_edit', { 'idsolicitud': solicitud.idsolicitud }) }}" data-toggle="tooltip" data-placement="top" title="Modifcar la solicitud"><span class="glyphicon glyphicon-pencil"></span></a>
+                                {% endif %}
+                                <a class="btn btn-default" href="{{ path('solicitud_show', { 'idsolicitud': solicitud.idsolicitud }) }}" data-toggle="tooltip" data-placement="top" title="Mostrar la solicitud"><span class="glyphicon glyphicon-list-alt"></span></a>  
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr >
+                    <td colspan="7"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                </tr>
+            {% endif%}
+        </tbody>
+    </table>
+
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+   
+{% endblock %}

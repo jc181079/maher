@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Solicitud
  *
- * @ORM\Table(name="solicitud", indexes={@ORM\Index(name="fk_solicitud_clientes1_idx", columns={"idclientes"}), @ORM\Index(name="fk_solicitud_seguridad1_idx", columns={"idseguridad"})})
+ * @ORM\Table(name="solicitud")
  * @ORM\Entity
  */
 class Solicitud
@@ -27,6 +27,41 @@ class Solicitud
     private $fechaentrega;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="estatus", type="string", length=45, nullable=true)
+     */
+    private $estatus;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numerosolicitud", type="string", length=45, nullable=true)
+     */
+    private $numerosolicitud;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipopago", type="string", length=45, nullable=true)
+     */
+    private $tipopago;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prioridad", type="string", length=5, nullable=true)
+     */
+    private $prioridad;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="rif", type="string", length=10, nullable=true)
+     */
+    private $rif;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="idsolicitud", type="integer")
@@ -34,26 +69,6 @@ class Solicitud
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idsolicitud;
-
-    /**
-     * @var \prueba\pruebaBundle\Entity\Seguridad
-     *
-     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Seguridad")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idseguridad", referencedColumnName="idseguridad")
-     * })
-     */
-    private $idseguridad;
-
-    /**
-     * @var \prueba\pruebaBundle\Entity\Clientes
-     *
-     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Clientes")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idclientes", referencedColumnName="idclientes")
-     * })
-     */
-    private $idclientes;
 
 
 
@@ -106,6 +121,126 @@ class Solicitud
     }
 
     /**
+     * Set estatus
+     *
+     * @param string $estatus
+     *
+     * @return Solicitud
+     */
+    public function setEstatus($estatus)
+    {
+        $this->estatus = $estatus;
+
+        return $this;
+    }
+
+    /**
+     * Get estatus
+     *
+     * @return string
+     */
+    public function getEstatus()
+    {
+        return $this->estatus;
+    }
+
+    /**
+     * Set numerosolicitud
+     *
+     * @param string $numerosolicitud
+     *
+     * @return Solicitud
+     */
+    public function setNumerosolicitud($numerosolicitud)
+    {
+        $this->numerosolicitud = $numerosolicitud;
+
+        return $this;
+    }
+
+    /**
+     * Get numerosolicitud
+     *
+     * @return string
+     */
+    public function getNumerosolicitud()
+    {
+        return $this->numerosolicitud;
+    }
+
+    /**
+     * Set tipopago
+     *
+     * @param string $tipopago
+     *
+     * @return Solicitud
+     */
+    public function setTipopago($tipopago)
+    {
+        $this->tipopago = $tipopago;
+
+        return $this;
+    }
+
+    /**
+     * Get tipopago
+     *
+     * @return string
+     */
+    public function getTipopago()
+    {
+        return $this->tipopago;
+    }
+
+    /**
+     * Set prioridad
+     *
+     * @param string $prioridad
+     *
+     * @return Solicitud
+     */
+    public function setPrioridad($prioridad)
+    {
+        $this->prioridad = $prioridad;
+
+        return $this;
+    }
+
+    /**
+     * Get prioridad
+     *
+     * @return string
+     */
+    public function getPrioridad()
+    {
+        return $this->prioridad;
+    }
+
+    /**
+     * Set rif
+     *
+     * @param string $rif
+     *
+     * @return Solicitud
+     */
+    public function setRif($rif)
+    {
+        $this->rif = $rif;
+
+        return $this;
+    }
+
+    /**
+     * Get rif
+     *
+     * @return string
+     */
+    public function getRif()
+    {
+        return $this->rif;
+    }
+
+    /**
      * Get idsolicitud
      *
      * @return integer
@@ -113,53 +248,5 @@ class Solicitud
     public function getIdsolicitud()
     {
         return $this->idsolicitud;
-    }
-
-    /**
-     * Set idseguridad
-     *
-     * @param \prueba\pruebaBundle\Entity\Seguridad $idseguridad
-     *
-     * @return Solicitud
-     */
-    public function setIdseguridad(\prueba\pruebaBundle\Entity\Seguridad $idseguridad = null)
-    {
-        $this->idseguridad = $idseguridad;
-
-        return $this;
-    }
-
-    /**
-     * Get idseguridad
-     *
-     * @return \prueba\pruebaBundle\Entity\Seguridad
-     */
-    public function getIdseguridad()
-    {
-        return $this->idseguridad;
-    }
-
-    /**
-     * Set idclientes
-     *
-     * @param \prueba\pruebaBundle\Entity\Clientes $idclientes
-     *
-     * @return Solicitud
-     */
-    public function setIdclientes(\prueba\pruebaBundle\Entity\Clientes $idclientes = null)
-    {
-        $this->idclientes = $idclientes;
-
-        return $this;
-    }
-
-    /**
-     * Get idclientes
-     *
-     * @return \prueba\pruebaBundle\Entity\Clientes
-     */
-    public function getIdclientes()
-    {
-        return $this->idclientes;
     }
 }

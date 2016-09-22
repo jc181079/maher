@@ -4,7 +4,8 @@
     {{ parent() }}
     <style>
         .bg-1 {
-           background-color: #1abc9c; /* Green */
+           padding:  30px;
+            background-color: #1abc9c; /* Green */
            color: #ffffff;
         }
         .bg-2 {
@@ -15,13 +16,39 @@
            background-color: windowframe; /* White */
            color: #555555;
         }
+        .bg-4 {
+           background-color: #999; /* White */
+           color: #000000 ;
+        }
+        .bg-5 {
+           background-color: #1f79a3; /* White */
+           color: #000000 ;
+        }
     </style>
 {% endblock %}
 {% block body %}
     {% block navbar %}
         {{ parent() }}
     {% endblock %}
-
+    {% set existencia = 0 %}
+    <div class="container">
+        {% if app.session.flashbag.get('Mensaje') %}      
+            {% for flashMessage in app.session.flashbag.get('Mensaje') %}
+                <div class="alert alert-success" role="alert">
+                    <span class="glyphicon glyphicon-warning-sign" ></span> 
+                    {{flashMessage}}...
+                </div>
+            {% endfor%}
+        {% endif%}
+        {% if app.session.flashbag.get('Alerta') %}      
+            {% for flashMessage in app.session.flashbag.get('Alerta') %}
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-warning-sign" ></span> 
+                    {{flashMessage}}...
+                </div>
+            {% endfor%}
+        {% endif%}
+    </div>
 <div class="container-fluid bg-1 text-center">
     <div class="bs-docs-section">
         <div class="row">
@@ -31,14 +58,18 @@
                 <!--div class="well bs-component"-->
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Gastos operativos del mes: <span class="badge">Bs. 168.000,00</span></h3>
+                            <h3 class="panel-title">Gastos operativos del mes: <span class="badge">{% for trgo in rgo %}Bs. {{trgo.trgo|number_format(2,'.',',')}}{% endfor %}</span></h3>
                         </div>
                         <div class="panel-body">
                             <ul class="nav nav-pills">
-                                <li class="active"><a href="#">Adelantos de sueldo <span class="badge">Bs.42.000,00</span></a></li>
-                                <li><a href="#">Comidas <span class="badge">Bs.42.000,00</span></a></li>
-                                <li><a href="#">Combustible <span class="badge">Bs.42.000,00</span></a></li>
-                                <li><a href="#">Reparaciones <span class="badge">Bs.42.000,00</span></a></li>
+                                {% if go %}
+                                    {% set i=1 %}
+                                    {% for gos in go %}
+                                        <li {% if i % 2 ==0 %}class="active" {% endif %}><a href="#">{{gos.conceptogasto}} <span class="badge">{{gos.monto}}</span></a></li>
+                                    {% endfor %}
+                                {% else %}
+                                    <label class="label label-primary">No posee gastos operativos registrados</label>
+                                {% endif %}
                             </ul>
                         </div>
                     </div>
@@ -53,9 +84,10 @@
                         </div>
                         <div class="panel-body">
                             <ul class="nav nav-pills">
-                                <li class="active"><a href="#">Entradas <span class="badge">42</span></a></li>
-                                <li><a href="#">Salidas <span class="badge">30</span></a></li>
-                                <li><a href="#">Existencia <span class="badge">12</span></a></li>
+                                {% for maxms in maxm %}
+                                    <li {%if maxms.tipomovimiento=="Entrada"%}class="active"{%endif%}><a href="#"> {{ maxms.tipomovimiento }} <span class="badge">{{maxms.cantidad}}</span></a></li>
+                                    
+                                {% endfor%}
                             </ul>
                         </div>
                     </div>
@@ -81,49 +113,71 @@
         </div>
     </div>
 </div>
-
+<div class="container-fluid bg-5 text-center">
+    <h1>Solicitudes</h1>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Solicitudes por prioridades</h3>
+        </div>
+        <div class="panel-body">
+            <ul class="nav nav-pills">
+                {% set i=1 %}
+                {% for solicituds in solicitud%}
+                <li {% if solicituds.prioridad=='Alta' %}class="active" {% endif %}><a id="{{solicituds.prioridad}}" href="{{ path('rep_sol', { 'prioridad': solicituds.prioridad })}}" data-title="Consulta de solicitudes por prioridad {{solicituds.prioridad}}" data-toggle="lightbox"> {{solicituds.tipopago}} <span class="badge"> {{solicituds.cantidad}} </span></a></li>
+                {%endfor%}
+            </ul>
+        </div>
+    </div>
+</div>
 <div class="container-fluid bg-2 text-center">
-  <h3>Kardex del dia</h3>
+  <h3>Kardex</h3>
   <div class="table-responsive">
       <table class="table table-striped table-hover ">
           <thead>
               <tr>
                   <th>#</th>
                   <th>Tipo de transaccion</th>
-                  <th>Fecha del movimiento</th>
-                  <th>Cliente</th>
-                  <th>Proveedor</th>
+                  <th>Fecha del movimiento</th>                  
+                  <th>Producto</th>
                   <th>Cantidad</th>
                   <th>Unidad de Medida</th>
                   <th>Precio Costo</th>
                   <th>Precio de Venta</th>
                   <th>Existencia</th>
                   <th>Existencia en Bs.</th>
-                  <th>Observacion</th>
-
               </tr>
           </thead>
           <tbody>
+              {% for movimiento in movimientos %}
               <tr>
                   <td>1</td>
-                  <td>Column content</td>
-                  <td>Column content</td>
-                  <td>Column content</td>
-                  <td>Column content</td>
-                  <td>Column content</td>
-                  <td>Column content</td>
-                  <td>Column content</td>
-                  <td>Column content</td>
-                  <td>Column content</td>
-                  <td>Column content</td>
-                  <td>Column content</td>
-
+                  <td>{{ movimiento.tipomovimiento}}</td>
+                  <td>{{ movimiento.fechamovimiento|date("d-m-Y")}}</td>
+                  <td>{{ movimiento.nombreproducto}}</td>
+                  <td>{{ movimiento.cantidad}}</td>
+                  <td>{{ movimiento.nombreund}}</td>
+                  <td>{{ movimiento.preciocosto}}</td>
+                  <td>{{ movimiento.precioventa}}</td>
+                  <td>
+                      {% if movimiento.tipomovimiento == 'Entrada' %}
+                          {% set existencia = existencia + movimiento.cantidad %}
+                      {% else %}
+                          {% set existencia = existencia - movimiento.cantidad %}
+                      {% endif %}
+                      {{ existencia }}
+                  </td>
+                  <td>{{ 'Bs. '~(movimiento.precioventa * movimiento.cantidad)|number_format(2,'.',',') }}</td>
+                  
               </tr>
-
+              {% endfor%}
           </tbody>
       </table> 
-  </div>
-  
+          <div class="btn-group btn-group-justified">
+             <a id="kardex_producto" class="btn btn-primary" href="{{path('modalproducto')}}" data-title="kardex por producto" data-toggle="lightbox" >Kardex por Productos</a>
+              <a id="kardex_almacen" class="btn btn-primary" href="{{path('modalalmacen')}}" data-title="kardex por almacen" data-toggle="lightbox" >Kardex por Almacen</a>
+              <a id="kardex_fecha" class="btn btn-primary" href="{{path('modalfecha')}}" data-title="kardex por fecha" data-toggle="lightbox" >Kardex por Fecha</a>
+          </div>
+  </div>  
 </div>
 
 <div class="container-fluid bg-3 text-center">
@@ -180,9 +234,39 @@
   </ul>
   </tbody>
 </table>
-  T
 </div>
+<div class="container-fluid bg-4 text-center">
+    <h1>Inventario</h1>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Almacen: <span class="badge">{% for trgo in rgo %}Bs. {{trgo.trgo|number_format(2,'.',',')}}{% endfor %}</span></h3>
+        </div>
+        <div class="panel-body">
+            <ul class="nav nav-pills">
+                {% set i=1 %}
+                {% for inventarios in inventario%}
+                <li {% if i % 2 ==0 %}class="active" {% endif %}><a href="#"> {{inventarios.nombreproducto}} <span class="badge"> {{inventarios.cantidad}} </span></a></li>
+                {%endfor%}
+            </ul>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //con esta funcion de jquery trabaja el tooltip
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            });  
+           // $('#registrar').ekkoLightbox();
+           $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
+                event.preventDefault();
+                $(this).ekkoLightbox();
+            }); 
+        });
+          
+    </script>
 {% endblock %}   

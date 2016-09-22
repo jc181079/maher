@@ -1,27 +1,53 @@
 {% extends 'base.html.twig' %}
-
+{% use "::navbar.html.twig" %}
 {% block body %}
-    <h1>Gastosoperativos list</h1>
-
-    <table>
+    {% block navbar %}
+        {{ parent() }}
+    {% endblock %}
+     <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de GASTOS OPERATIVOS</strong></h1>
+            <p>aqui podra administrar los diferentes gastos operativos de la empresa</p>
+            <footer>
+                <a class="btn btn-default" href="{{ path('clientes_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+     </div>
+     {% if app.session.flashbag.get('Mensaje') %}      
+         {% for flashMessage in app.session.flashbag.get('Mensaje') %}
+             <div class="alert alert-success" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+     {% if app.session.flashbag.get('Alerta') %}      
+         {% for flashMessage in app.session.flashbag.get('Alerta') %}
+             <div class="alert alert-danger" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+<div class="container">
+         <table class="table table-bordered table-responsive">
         <thead>
             <tr>
-                <th>Conceptogasto</th>
-                <th>Facturagasto</th>
-                <th>Montogasto</th>
-                <th>Observacion</th>
-                <th>Idgastosoperativos</th>
+                <th>Concepto de gasto</th>
+                <th>Factura del gasto</th>
+                <th>Monto del gasto</th>
+                <th>Observacion</th>                
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
+            {% if gastosoperativos %}
         {% for gastosoperativo in gastosoperativos %}
             <tr>
                 <td><a href="{{ path('gastosoperativos_show', { 'id': gastosoperativo.idgastosoperativos }) }}">{{ gastosoperativo.conceptogasto }}</a></td>
                 <td>{{ gastosoperativo.facturagasto }}</td>
                 <td>{{ gastosoperativo.montogasto }}</td>
-                <td>{{ gastosoperativo.observacion }}</td>
-                <td>{{ gastosoperativo.idgastosoperativos }}</td>
+                <td>{{ gastosoperativo.observacion }}</td>                
                 <td>
                     <ul>
                         <li>
@@ -34,6 +60,11 @@
                 </td>
             </tr>
         {% endfor %}
+        {% else %}
+                <tr >
+                    <td colspan="7"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                </tr>
+            {% endif%}
         </tbody>
     </table>
 

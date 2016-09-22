@@ -1,9 +1,36 @@
 {% extends 'base.html.twig' %}
-
+{% use "::navbar.html.twig" %}
 {% block body %}
-    <h1>Pagosefectivos list</h1>
-
-    <table>
+    {% block navbar %}
+        {{ parent() }}
+    {% endblock %}
+     <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de PAGOS EN EFECTIVO</strong></h1>
+            <p>aqui podra administrar las diferentes pagos en efectivos  efectuados por los clientes de la empresa</p>
+            <footer>
+                <a class="btn btn-default" href="{{ path('clientes_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+     </div>
+     {% if app.session.flashbag.get('Mensaje') %}      
+         {% for flashMessage in app.session.flashbag.get('Mensaje') %}
+             <div class="alert alert-success" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+     {% if app.session.flashbag.get('Alerta') %}      
+         {% for flashMessage in app.session.flashbag.get('Alerta') %}
+             <div class="alert alert-danger" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+<div class="container">
+         <table class="table table-bordered table-responsive">
         <thead>
             <tr>
                 <th>Pagosefectivomonto</th>
@@ -13,23 +40,29 @@
             </tr>
         </thead>
         <tbody>
-        {% for pagosefectivo in pagosefectivos %}
-            <tr>
-                <td><a href="{{ path('pagosefectivos_show', { 'id': pagosefectivo.idpagosefectivos }) }}">{{ pagosefectivo.pagosefectivomonto }}</a></td>
-                <td>{% if pagosefectivo.fechapagoefectivo %}{{ pagosefectivo.fechapagoefectivo|date('Y-m-d') }}{% endif %}</td>
-                <td>{{ pagosefectivo.idpagosefectivos }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('pagosefectivos_show', { 'id': pagosefectivo.idpagosefectivos }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('pagosefectivos_edit', { 'id': pagosefectivo.idpagosefectivos }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
+            {% if pagosefectivos %}
+                {% for pagosefectivo in pagosefectivos %}
+                    <tr>
+                        <td><a href="{{ path('pagosefectivos_show', { 'id': pagosefectivo.idpagosefectivos }) }}">{{ pagosefectivo.pagosefectivomonto }}</a></td>
+                        <td>{% if pagosefectivo.fechapagoefectivo %}{{ pagosefectivo.fechapagoefectivo|date('Y-m-d') }}{% endif %}</td>
+                        <td>{{ pagosefectivo.idpagosefectivos }}</td>
+                        <td>
+                            <ul>
+                                <li>
+                                    <a href="{{ path('pagosefectivos_show', { 'id': pagosefectivo.idpagosefectivos }) }}">show</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('pagosefectivos_edit', { 'id': pagosefectivo.idpagosefectivos }) }}">edit</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr >
+                    <td colspan="7"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                </tr>
+            {% endif%}
         </tbody>
     </table>
 

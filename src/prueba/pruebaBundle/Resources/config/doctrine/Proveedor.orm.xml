@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="prueba\pruebaBundle\Entity\Proveedor" table="proveedor">
+    <id name="idproveedor" type="integer" column="idproveedor">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="proveedornombre" type="string" column="proveedornombre" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="proveedorrif" type="string" column="proveedorrif" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="proveedorcontacto" type="string" column="proveedorcontacto" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="proveedortlf" type="string" column="proveedortlf" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="proveedoremail" type="string" column="proveedoremail" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="proveedorobservacion" type="text" column="proveedorobservacion" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">cualquier otra informacion que desee colocar del proveedor</option>
+      </options>
+    </field>
+  </entity>
+</doctrine-mapping>

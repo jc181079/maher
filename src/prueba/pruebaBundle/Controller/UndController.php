@@ -26,12 +26,19 @@ class UndController extends Controller
     {
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+            $permisologia=1;
             $em = $this->getDoctrine()->getManager();
 
             $unds = $em->getRepository('pruebaBundle:Und')->findAll();
 
             return $this->render('und/index_und.html.twig', array(
-                        'unds' => $unds,
+                        'unds' => $unds,                       
+                        'permisologia' => $permisologia,
+                        'nu'=>$session->get('nombreusuario'),
+                        'l'=>$session->get('login'),
+                        'diaactivo' => $session->get('diaactivo'),
+                        
+            
             ));
         } else {
             $this->get('session')->getFlashBag()->add(
@@ -81,7 +88,7 @@ class UndController extends Controller
      * @Route("/{id}", name="und_show")
      * @Method("GET")
      */
-    public function showAction(Und $und)
+    public function showAction(Und $und,Request $request)
     {
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
@@ -158,6 +165,13 @@ class UndController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($und);
                 $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                        'Mensaje', "El registro fue eliminado satisfactoriamente."
+                );
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                        'Alerta', "El registro no pudo ser eliminado, puede que el registro este relacionado."
+                );
             }
 
             return $this->redirectToRoute('und_index');
@@ -178,18 +192,12 @@ class UndController extends Controller
      */
     private function createDeleteForm(Und $und)
     {
-        $session = $request->getSession();
-        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
+        
             return $this->createFormBuilder()
                             ->setAction($this->generateUrl('und_delete', array('id' => $und->getIdund())))
                             ->setMethod('DELETE')
                             ->getForm()
             ;
-        } else {
-            $this->get('session')->getFlashBag()->add(
-                    'Mensaje', "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
-            );
-        }
-        return $this->redirect($this->generateUrl('inicio'));
+       
     }
 }

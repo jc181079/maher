@@ -9,6 +9,11 @@
     </id>
     <field name="pagosefectivomonto" type="float" column="pagosefectivomonto" precision="10" scale="0" nullable="true"/>
     <field name="fechapagoefectivo" type="date" column="fechapagoefectivo" nullable="true"/>
+    <field name="numerosolicitud" type="string" column="numerosolicitud" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <many-to-one field="idpagos" target-entity="Pagos" fetch="LAZY">
       <join-columns>
         <join-column name="idpagos" referenced-column-name="idpagos"/>

@@ -32,6 +32,8 @@ class PlandistribucionController extends Controller
 
             return $this->render('plandistribucion/index.html.twig', array(
                         'plandistribucions' => $plandistribucions,
+                        'nu'=>$session->get('nombreusuario'),
+                        'l'=>$session->get('login'),
             ));
         } else {
             $this->get('session')->getFlashBag()->add(
@@ -78,18 +80,59 @@ class PlandistribucionController extends Controller
     /**
      * Finds and displays a Plandistribucion entity.
      *
-     * @Route("/{id}", name="plandistribucion_show")
+     * @Route("/plan", name="plandistribucion_show")
      * @Method("GET")
      */
-    public function showAction(Plandistribucion $plandistribucion)
+    public function showAction(Request $request)
     {
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
-            $deleteForm = $this->createDeleteForm($plandistribucion);
-
-            return $this->render('plandistribucion/show.html.twig', array(
-                        'plandistribucion' => $plandistribucion,
-                        'delete_form' => $deleteForm->createView(),
+            //$deleteForm = $this->createDeleteForm($plandistribucion);
+            /**
+             * aqui se muestra el plan de distribucion del dia 
+             */
+            $em=$this->getDoctrine()->getManager();
+//            $findDia=$em->createQuery(
+//                      'SELECT d.iddia '
+//                    . 'FROM pruebaBundle:Dia d '
+//                    . "WHERE d.diafecha='". date('Y-m-d') ."' "
+//                    );
+            $fecha=date('Y-m-d');
+            $findDia = $this->getDoctrine()
+                    ->getRepository('pruebaBundle:Dia')
+                    ->findOneBy(array(
+                        'diafecha' => new \DateTime($fecha),                        
+                    ));
+            //$resDia=$findDia->getResult();
+            
+            $queryPO= $em->createQuery(
+                    'SELECT  s.nombreusuario, r.nombreruta,p.nombreproducto, SUM(sd.cantidad) cantidad ,sol.tipopago, sol.idsolicitud  '
+                  . 'FROM pruebaBundle:Seguridad s, pruebaBundle:Ruta r, pruebaBundle:Producto p, pruebaBundle:Solicituddetalle sd, pruebaBundle:Solicitud sol '                  
+                  . "WHERE sol.rif=s.rif AND s.rutaruta=r.idruta AND p.idproducto=sd.idproducto AND sol.estatus='Enviada' GROUP BY r.nombreruta, sd.idproducto"
+            );
+            $resPO=$queryPO->getResult();
+            
+            $findSolicitud = $this->getDoctrine()
+                    ->getRepository('pruebaBundle:Solicitud')
+                    ->findOneBy(array(
+                        'estatus' => 'Enviada',                        
+                    ));
+            
+            //se se va a ingresar el registro a traves de foreach
+            $plandistribucion = new Plandistribucion();
+            foreach ($resPO as $newPO){
+                $plandistribucion->setIddia($findDia);
+                $plandistribucion->setIdsolicitud($findSolicitud);
+                $plandistribucion->setPlandistribucionestatus('Activo');
+                $plandistribucion->setPlandistribucionobservacion('Plan de distribucion realizado en fecha '.date('d-m-YYYY h:i:s A'));
+                 $em->persist($plandistribucion);
+                $em->flush();
+            }
+            
+            return $this->render('plandistribucion/show_PO.html.twig', array(
+                        "resPO"=>$resPO,
+                        'nu'=>$session->get('nombreusuario'),
+                        'l'=>$session->get('login'),
             ));
         } else {
             $this->get('session')->getFlashBag()->add(

@@ -46,7 +46,7 @@
                                 {% if diaactivo==0%}
                                 <li><a href="{{ path('dia_activo') }}"><span class="badge">1</span> Iniciar Dia</a></li>                            
                                 {%else%}
-                                <li><a href="#"><span class="badge">2</span> Plan de distribucion</a></li>
+                                <li><a href="{{ path('plandistribucion_show') }}"><span class="badge">2</span> Plan de distribucion</a></li>
                                 <li class="dropdown-header"><span class="badge">3</span> Proveedores</li>
                                 <li><a href="#">Compra o entradas</a></li>
                                 <li role="separator" class="divider"></li>

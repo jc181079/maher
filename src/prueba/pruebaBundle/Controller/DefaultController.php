@@ -182,7 +182,7 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
             $dia = date('Y-m-d');
             $queryDia = $em->createQuery(
-                    'SELECT d.diafecha '
+                      'SELECT d.diafecha '
                     . 'FROM pruebaBundle:Dia d '
                     . 'WHERE d.diafecha=' . $dia . ' ');
             $resDia = $queryDia->getResult();

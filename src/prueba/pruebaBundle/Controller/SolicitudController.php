@@ -146,7 +146,7 @@ class SolicitudController extends Controller
             );
             $resultados=$finds->getResult();
             //***********************************************************************S
-            return $this->render('solicitud/show.html.twig', array(
+            return $this->render('solicitud/show_sol.html.twig', array(
                         'idsolicitud' => $idsolicitud,
                         'solicituddetalles'=>$resultadosd,
                         'solicitud'=>$resultados,

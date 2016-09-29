@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Plan de distribucion</h1>
+    <div class="container">
+        <!-- aqui se va a colocar la informacion de la solicitud -->   
+            {% for resPOs in resPO%}
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    {{ resPOs.nombreusuario }} | {{ resPOs.nombreruta }}
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        {{ resPOs.nombreproducto }}
+                                    </div>
+                                    <div class="col-md-1">
+                                        {{ resPOs.cantidad }}
+                                    </div>
+                                    <div class="col-md-1">
+                                        {{ resPOs.tipopago }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>               
+            {% endfor%}
+
+            <a href="{{ path('plandistribucion_index') }}">Back to the list</a>
+
+            <a href="{{ path('plandistribucion_edit', { 'id': plandistribucion.idplandistribucion }) }}">Edit</a>
+
+{% endblock %}

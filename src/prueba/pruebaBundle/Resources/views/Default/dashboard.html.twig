@@ -259,11 +259,11 @@
         $(document).ready(function() {
             //con esta funcion de jquery trabaja el tooltip
             $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
+                $('[data-toggle="tooltip"]').tooltip();
             });  
            // $('#registrar').ekkoLightbox();
            $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
-                event.preventDefault();
+                event.preventDefault();                
                 $(this).ekkoLightbox();
             }); 
         });

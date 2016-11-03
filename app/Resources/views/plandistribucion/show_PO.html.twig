@@ -3,38 +3,89 @@
 {% block body %}
     <h1>Plan de distribucion</h1>
     <div class="container">
-        <!-- aqui se va a colocar la informacion de la solicitud -->   
-            {% for resPOs in resPO%}
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    {{ resPOs.nombreusuario }} | {{ resPOs.nombreruta }}
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        {{ resPOs.nombreproducto }}
-                                    </div>
-                                    <div class="col-md-1">
-                                        {{ resPOs.cantidad }}
-                                    </div>
-                                    <div class="col-md-1">
-                                        {{ resPOs.tipopago }}
-                                    </div>
+        <!-- aqui se va a colocar la informacion de la solicitud -->
+        <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" class="btn btn-success">
+        {% set indice=0 %}
+        {% set var=0 %}
+        {% set monto=0.00 %}
+        {% for resPOs in resPO if var==0 %}
+            {% set indice = indice +1 %}
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{indice}}" aria-expanded="true" aria-controls="collapse{{indice}}">
+                                {{ resPOs.nombreusuario }} | {{ resPOs.nombreruta }}
+                            </a>                            
+                            
+                        </h4>
+                    </div>
+                    <div id="collapse{{indice}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <div class="row">
+                                        <div class="col-md-4">
+                                            Nombre del Producto
+                                        </div>
+                                        <div class="col-md-4">
+                                            Cantidad
+                                        </div>
+                                        <div class="col-md-4">
+                                           Tipo de pago
+                                        </div>
+                            </div>
+                            <div class="divider"></div>
+                            {% set idsol = 0 %}
+                            {% set estatus = "" %}
+                            {% for resPOs2 in resPO  %} 
+                                {% set idsol = resPOs2.idsolicitud %}
+                                {% set estatus = resPOs2.estatus %}
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            {{ resPOs2.nombreproducto }}
+                                        </div>
+                                        <div class="col-md-4">
+                                            {{ resPOs2.cantidad }}
+                                        </div>
+                                        <div class="col-md-4">
+                                            {{ resPOs2.tipopago }}
+                                        </div>
+                                    </div> 
+                                    {% set monto=monto + resPOs2.monto %}    
+                            {% endfor %}
+                            {% if estatus=="Enviada" %}
+                            <div class=" row col-md-12 ">
+                                Monto total de esta solicitud : Bs. {{ monto|number_format(2,'.',',') }}
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Estatus <span class="caret"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{ path('solicitud_actualizar', {'idsolicitud': idsol,'estatus': 'Entregada'}) }}">Solicitud Entregada</a></li>
+                                        <li><a href="{{ path('solicitud_actualizar', {'idsolicitud': idsol,'estatus': 'No entregada'}) }}">Solicitud no entregada</a></li>
+                                        <li><a href="{{ path('solicitud_actualizar', {'idsolicitud': idsol,'estatus': 'Cancelada'}) }}">Solicitud cancelada</a></li>                                    
+                                    </ul>
                                 </div>
                             </div>
+                            {% else%} 
+                                {% if estatus=="Entregada" %}
+                                    {% set clase = "label label-primary" %}
+                                {% elseif  estatus=="No entregada"   %} 
+                                    {% set clase = "label label-warning" %}
+                                {% elseif  estatus=="Cancelada"   %} 
+                                    {% set clase = "label label-danger" %}
+                                {% endif  %}
+                                <span class="{{clase}}">Estatus de la solicitud:{{estatus}}</span>
+                                <a class="btn btn-success" href="{{ path('solicitud_actualizar', {'idsolicitud': idsol,'estatus': 'Cancelada'}) }}">Solicitud cancelada</a>
+                            {%endif%}    
                         </div>
-                    </div>                    
-                </div>               
-            {% endfor%}
-
-            <a href="{{ path('plandistribucion_index') }}">Back to the list</a>
-
-            <a href="{{ path('plandistribucion_edit', { 'id': plandistribucion.idplandistribucion }) }}">Edit</a>
+                    </div>
+                </div>                    
+            </div>
+            {% set var=1%}
+        {% endfor%}
+    </div> 
+           
 
 {% endblock %}
+{% block javascript %}
+    {{parent()}}
+ {% endblock %}

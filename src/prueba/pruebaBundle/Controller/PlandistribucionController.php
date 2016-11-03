@@ -21,7 +21,7 @@ class PlandistribucionController extends Controller
      *
      * @Route("/", name="plandistribucion_index")
      * @Method("GET")
-     */
+     *
     public function indexAction(Request $request)
     {
         $session = $request->getSession();
@@ -42,14 +42,14 @@ class PlandistribucionController extends Controller
         }
         return $this->redirect($this->generateUrl('inicio'));
     }
-
+*/
     /**
      * Creates a new Plandistribucion entity.
      *
      * @Route("/new", name="plandistribucion_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    /*public function newAction(Request $request)
     {
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
@@ -76,9 +76,9 @@ class PlandistribucionController extends Controller
         }
         return $this->redirect($this->generateUrl('inicio'));
     }
-
+*/
     /**
-     * Finds and displays a Plandistribucion entity.
+     * Aqui se realiza de manera automatica el plan de distribucion y luego se muestra.
      *
      * @Route("/plan", name="plandistribucion_show")
      * @Method("GET")
@@ -92,23 +92,24 @@ class PlandistribucionController extends Controller
              * aqui se muestra el plan de distribucion del dia 
              */
             $em=$this->getDoctrine()->getManager();
-//            $findDia=$em->createQuery(
-//                      'SELECT d.iddia '
-//                    . 'FROM pruebaBundle:Dia d '
-//                    . "WHERE d.diafecha='". date('Y-m-d') ."' "
-//                    );
+
             $fecha=date('Y-m-d');
             $findDia = $this->getDoctrine()
                     ->getRepository('pruebaBundle:Dia')
                     ->findOneBy(array(
                         'diafecha' => new \DateTime($fecha),                        
                     ));
-            //$resDia=$findDia->getResult();
+//            $findDia=$em->createQuery(
+//                      ' SELECT d.iddia '
+//                    . ' FROM pruebaBundle:Dia d '
+//                    . " WHERE d.diafecha='". $fecha ."' "
+//                    );
+//            $resDia=$findDia->getResult();
             
             $queryPO= $em->createQuery(
-                    'SELECT  s.nombreusuario, r.nombreruta,p.nombreproducto, SUM(sd.cantidad) cantidad ,sol.tipopago, sol.idsolicitud  '
+                    'SELECT  s.nombreusuario, r.nombreruta,p.nombreproducto, SUM(p.precioventa*sd.cantidad) monto ,SUM(sd.cantidad) cantidad ,sol.tipopago, sol.idsolicitud,sol.estatus   '
                   . 'FROM pruebaBundle:Seguridad s, pruebaBundle:Ruta r, pruebaBundle:Producto p, pruebaBundle:Solicituddetalle sd, pruebaBundle:Solicitud sol '                  
-                  . "WHERE sol.rif=s.rif AND s.rutaruta=r.idruta AND p.idproducto=sd.idproducto AND sol.estatus='Enviada' GROUP BY r.nombreruta, sd.idproducto"
+                  . "WHERE sol.rif=s.rif AND s.rutaruta=r.idruta AND p.idproducto=sd.idproducto GROUP BY r.nombreruta, sd.idproducto"
             );
             $resPO=$queryPO->getResult();
             
@@ -117,18 +118,23 @@ class PlandistribucionController extends Controller
                     ->findOneBy(array(
                         'estatus' => 'Enviada',                        
                     ));
-            
-            //se se va a ingresar el registro a traves de foreach
-            $plandistribucion = new Plandistribucion();
-            foreach ($resPO as $newPO){
-                $plandistribucion->setIddia($findDia);
-                $plandistribucion->setIdsolicitud($findSolicitud);
-                $plandistribucion->setPlandistribucionestatus('Activo');
-                $plandistribucion->setPlandistribucionobservacion('Plan de distribucion realizado en fecha '.date('d-m-YYYY h:i:s A'));
-                 $em->persist($plandistribucion);
-                $em->flush();
+            $findPlan = $this->getDoctrine()
+                    ->getRepository('pruebaBundle:Plandistribucion')
+                    ->findOneBy(array(
+                        'iddia' => $findDia,
+            ));
+            if (!$findPlan) {
+                $plandistribucion = new Plandistribucion();
+                foreach ($resPO as $newPO) {
+                    $plandistribucion->setIddia($findDia);
+                    $plandistribucion->setIdsolicitud($findSolicitud);
+                    $plandistribucion->setPlandistribucionestatus('Activo');
+                    $plandistribucion->setPlandistribucionobservacion('Plan de distribucion realizado en fecha ' . date('d-m-Y h:i:s A'));
+                    $em->persist($plandistribucion);
+                    $em->flush();
+                }
             }
-            
+            //se se va a ingresar el registro a traves de foreach            
             return $this->render('plandistribucion/show_PO.html.twig', array(
                         "resPO"=>$resPO,
                         'nu'=>$session->get('nombreusuario'),
@@ -147,7 +153,7 @@ class PlandistribucionController extends Controller
      *
      * @Route("/{id}/edit", name="plandistribucion_edit")
      * @Method({"GET", "POST"})
-     */
+     *
     public function editAction(Request $request, Plandistribucion $plandistribucion)
     {
         $session = $request->getSession();
@@ -176,13 +182,13 @@ class PlandistribucionController extends Controller
         }
         return $this->redirect($this->generateUrl('inicio'));
     }
-
+*/
     /**
      * Deletes a Plandistribucion entity.
      *
      * @Route("/{id}", name="plandistribucion_delete")
      * @Method("DELETE")
-     */
+     *
     public function deleteAction(Request $request, Plandistribucion $plandistribucion)
     {
         $session = $request->getSession();
@@ -211,14 +217,14 @@ class PlandistribucionController extends Controller
         }
         return $this->redirect($this->generateUrl('inicio'));
     }
-
+*/
     /**
      * Creates a form to delete a Plandistribucion entity.
      *
      * @param Plandistribucion $plandistribucion The Plandistribucion entity
      *
      * @return \Symfony\Component\Form\Form The form
-     */
+     *
     private function createDeleteForm(Plandistribucion $plandistribucion)
     {
         
@@ -229,5 +235,5 @@ class PlandistribucionController extends Controller
             ;
         
     }
-
+*/
 }

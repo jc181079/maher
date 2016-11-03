@@ -278,4 +278,21 @@ class SolicitudController extends Controller
                 );
         return $this->redirect($this->generateUrl('solicitud_index'));
     }
+    /**
+     * con esta funcion se actualiza el estatus de la solicitud al momento de ser visto en el plan de distribucion
+     * @Route("/solicitud_actualizar/{idsolicitud}/{estatus}", name="solicitud_actualizar")
+     * @Method({"GET", "POST"}) 
+     */
+    public function solicitud_actualizar($idsolicitud,$estatus){
+        $findsolicitud = $this->getDoctrine()
+                    ->getRepository('pruebaBundle:Solicitud')
+                    ->findOneBy(array('idsolicitud' => $idsolicitud));
+        $em=$this->getDoctrine()->getManager();
+        $findsolicitud->setEstatus('Entregada');
+        $em->persist($findsolicitud);
+        $em->flush();
+        return $this->redirect($this->generateUrl('plandistribucion_show'));
+                
+    }
+    
 }

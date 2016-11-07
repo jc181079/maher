@@ -34,12 +34,13 @@ class DefaultController extends Controller
            */
           $primero=date('Y').'-'.date('m').'-01'; //se obtiene el primer dia del mes
           $ultimo=date('Y').'-'.date('m').'-'.cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')); //se obtiene el ultimo dia del mes
+          /*
+           * se modifico la sentencia sql por haber modificado la estructura de la base de datos 
+           */
           $queryGastoOperativo= $em->createQuery(
                     'SELECT SUM(go.montogasto) trgo '
-                  . 'FROM pruebaBundle:Gastosoperativos go INNER JOIN '
-                  . '     pruebaBundle:Plandistribucion pd WITH go.idplandistribucion=pd.idplandistribucion INNER JOIN '
-                  . '     pruebaBundle:Dia d WITH pd.iddia=d.iddia '
-                  . 'WHERE d.diafecha>='.$primero.' AND d.diafecha<='.$ultimo.'');
+                  . 'FROM pruebaBundle:Gastosoperativos go  '
+                  . "WHERE go.fechagasto between '$primero' and '$ultimo'");
           $resGastosOperativosMes=$queryGastoOperativo->getResult();
           if (!$resGastosOperativosMes) $resGastosOperativosMes= array('trgo'=>0);
           //*****************************************************************************************
@@ -118,7 +119,7 @@ class DefaultController extends Controller
        }else {
            $this->get('session')->getFlashBag()->add(
                             'Mensaje',
-                            "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso"
+                            "Esta intentando entrar a una zona de seguridad a la cual no tiene acceso".$session->get('tipousuario')
                             );            
         }
     return $this->redirect($this->generateUrl('inicio'));    

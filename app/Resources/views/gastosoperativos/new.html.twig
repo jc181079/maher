@@ -1,16 +1,75 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Gastosoperativos creation</h1>
+    <h1>Ingreso de gastos operativos</h1>
+    <div class="jumbotron">
+        {{ form_start(form) }}
+        <div class="container">
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+            <div class="form-group">
+                <div class="col-md-12">
+                        <label>Concepto del gasto</label>
+                        {{ form_widget(form.conceptogasto) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label>Numero de la factura</label>    
+                        {{ form_widget(form.facturagasto) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                        <label>Monto del gasto</label>   
+                        {{ form_widget(form.montogasto) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                        <label>Observacion</label>   
+                        {{ form_widget(form.observacion) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                        <label>Fecha del gasto</label>   
+                        {{ form_widget(form.fechagasto) }}
+                </div>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Guardar" /> | <a class="btn btn-default" href="{{ path('gastosoperativos_index') }}">Volver</a>
+        </div>
+        
     {{ form_end(form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('gastosoperativos_index') }}">Back to the list</a>
-        </li>
-    </ul>
+            
+        
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('public/js/bootstrap-datepicker.js') }}" ></script>
+   
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var d = new Date();
+            /*
+             * con el siguiente condicional solo se coloca un cero para que el valor sea 
+             * valido a la hora de verificar los datos el symfony
+             */
+            var mes;
+            if (d.getMonth()+1<10){
+                mes="0"+(d.getMonth()+1)
+            }else{
+                mes=(d.getMonth()+1)
+            }
+            ////////////////////////////////////////////////////////////////////
+            var strDate = d.getFullYear() + "-" + mes + "-" + d.getDate();
+         $('input#solicitud_fechagasto').val(strDate);                   
+         $('input#solicitud_fechagasto').prop('visible', false);
+         
+         $('.js-datepicker').datepicker({
+             format: 'yyyy-mm-dd'
+         });
+     });
+          
+    </script>
 {% endblock %}

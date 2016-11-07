@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Gastosoperativos
  *
- * @ORM\Table(name="gastosoperativos", indexes={@ORM\Index(name="fk_gastosoperativos_plandistribucion1_idx", columns={"idplandistribucion"})})
+ * @ORM\Table(name="gastosoperativos")
  * @ORM\Entity
  */
 class Gastosoperativos
@@ -41,6 +41,13 @@ class Gastosoperativos
     private $observacion;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fechagasto", type="date", nullable=true)
+     */
+    private $fechagasto;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="idgastosoperativos", type="integer")
@@ -48,16 +55,6 @@ class Gastosoperativos
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idgastosoperativos;
-
-    /**
-     * @var \prueba\pruebaBundle\Entity\Plandistribucion
-     *
-     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Plandistribucion")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idplandistribucion", referencedColumnName="idplandistribucion")
-     * })
-     */
-    private $idplandistribucion;
 
 
 
@@ -158,6 +155,30 @@ class Gastosoperativos
     }
 
     /**
+     * Set fechagasto
+     *
+     * @param \DateTime $fechagasto
+     *
+     * @return Gastosoperativos
+     */
+    public function setFechagasto($fechagasto)
+    {
+        $this->fechagasto = $fechagasto;
+
+        return $this;
+    }
+
+    /**
+     * Get fechagasto
+     *
+     * @return \DateTime
+     */
+    public function getFechagasto()
+    {
+        return $this->fechagasto;
+    }
+
+    /**
      * Get idgastosoperativos
      *
      * @return integer
@@ -165,29 +186,5 @@ class Gastosoperativos
     public function getIdgastosoperativos()
     {
         return $this->idgastosoperativos;
-    }
-
-    /**
-     * Set idplandistribucion
-     *
-     * @param \prueba\pruebaBundle\Entity\Plandistribucion $idplandistribucion
-     *
-     * @return Gastosoperativos
-     */
-    public function setIdplandistribucion(\prueba\pruebaBundle\Entity\Plandistribucion $idplandistribucion = null)
-    {
-        $this->idplandistribucion = $idplandistribucion;
-
-        return $this;
-    }
-
-    /**
-     * Get idplandistribucion
-     *
-     * @return \prueba\pruebaBundle\Entity\Plandistribucion
-     */
-    public function getIdplandistribucion()
-    {
-        return $this->idplandistribucion;
     }
 }

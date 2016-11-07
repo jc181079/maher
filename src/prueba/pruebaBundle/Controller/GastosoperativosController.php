@@ -28,10 +28,18 @@ class GastosoperativosController extends Controller
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             $em = $this->getDoctrine()->getManager();
 
-            $gastosoperativos = $em->getRepository('pruebaBundle:Gastosoperativos')->findAll();
+            $permisologia = 0;
+            if ($session->get('tipousuario') == 'Administrador') {
+                $gastosoperativos = $em->getRepository('pruebaBundle:Gastosoperativos')->findAll();
+                $permisologia = 1;
+            }
 
             return $this->render('gastosoperativos/index.html.twig', array(
                         'gastosoperativos' => $gastosoperativos,
+                        'permisologia' => $permisologia,
+                        'nu'=>$session->get('nombreusuario'),
+                        'l'=>$session->get('login'),
+                        'diaactivo'=>$session->get('diaactivo'),
             ));
         } else {
             $this->get('session')->getFlashBag()->add(
@@ -81,7 +89,7 @@ class GastosoperativosController extends Controller
      * @Route("/{id}", name="gastosoperativos_show")
      * @Method("GET")
      */
-    public function showAction(Gastosoperativos $gastosoperativo)
+    public function showAction(Gastosoperativos $gastosoperativo, Request $request)
     {
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {

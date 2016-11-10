@@ -65,7 +65,7 @@
                                 {% if go %}
                                     {% set i=1 %}
                                     {% for gos in go %}
-                                        <li {% if i % 2 ==0 %}class="active" {% endif %}><a href="#">{{gos.conceptogasto}} <span class="badge">{{gos.monto}}</span></a></li>
+                                        <li {% if i % 2 ==0 %}class="active" {% endif %}><a href="#">{{gos.conceptogasto}} <span class="badge">Bs. {{gos.monto|number_format(2,'.',',')}}</span></a></li>
                                     {% endfor %}
                                 {% else %}
                                     <label class="label label-primary">No posee gastos operativos registrados</label>

@@ -8,13 +8,27 @@
             <div class="form-group">
                 {{ form_start(form) }}
                 {{ form_widget(form) }}
-                <input class="btn btn-success" type="submit" value="Guardar" />
+                <div class="modal-footer">
+                    <input class="btn btn-success" type="submit" value="Guardar" /> | <a class="btn btn-default" href="{{ path('producto_index') }}">Volver atras</a>
+                </div>
+                
                 {{ form_end(form) }}  
-            </div>
-            
+            </div>            
         </div>        
-        <footer>
-            <a class="btn btn-default" href="{{ path('producto_index') }}">Volver atras</a>
-        </footer>
     </div>
+{% endblock %}
+{% block javascripts  %}
+{{ parent() }}
+<script type="text/javascript">
+    $(document).ready(function() {
+       /*
+        * con este bloque de codigo se calcula el precio de venta de manera automatica
+        */
+       var pvp=0;
+        $('#producto_preciocosto').focusout(function(){
+            pvp=$('#producto_preciocosto').val()*1.30;
+            $('#producto_precioventa').val(pvp);
+        })
+    })
+</script>
 {% endblock %}

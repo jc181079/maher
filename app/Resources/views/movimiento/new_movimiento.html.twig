@@ -30,13 +30,16 @@
                     <label for="fm">almacena a ser afectado</label>
                     {{ form_widget(form.idalmacen) }}
                 </div>
-                <input class="btn btn-success" type="submit" value="Guardar" />
+                <div class="modal-footer">
+                    <input class="btn btn-success" type="submit" value="Guardar" /> | <a class="btn btn-default" href="{{ path('movimiento_index') }}">Volver atras</a>
+                </div>
                 {{ form_end(form) }}
             </div>
         </div>
     </div>
+    
 <footer>
-    <a class="btn btn-default" href="{{ path('movimiento_index') }}">Volver atras</a>
+    
 </footer>
 
 {% endblock %}

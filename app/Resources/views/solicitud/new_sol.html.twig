@@ -1,52 +1,45 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Solicitud creation</h1>
-    <div class="jumbotron">
-        {{ form_start(form) }}
-        <div class="container">
+    <div class="container">
+    <header><h1>.:NUEVA SOLICITUD</h1></header>    
+        <div class="jumbotron">
+            {{ form_start(form) }}           
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label>Fecha de solicitud: </label>
+                        {{ form_widget(form.fechadolicitud) }}
+                    </div>
 
-            <div class="form-group">
-                <div class="col-md-6">
-                    <label>Fecha de solicitud: </label>
-                    {{ form_widget(form.fechadolicitud) }}
+                </div>    
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label>Fecha de entrada: </label>
+                        {{ form_widget(form.fechaentrega) }}
+                    </div>
+
                 </div>
-
-            </div>    
-            <div class="form-group">
-                <div class="col-md-6">
-                    <label>Fecha de entrada: </label>
-                    {{ form_widget(form.fechaentrega) }}
+                <div class="form-group">
+                    <div class="col-md-12"></div>
+                    <label>Nro. de solicitud: </label>
+                    {{ form_widget(form.numerosolicitud) }}
                 </div>
-
-            </div>
-            <div class="form-group">
-                <div class="col-md-12"></div>
-                <label>Numero de solicitud: </label>
-                {{ form_widget(form.numerosolicitud) }}
-            </div>
-            <div class="form-group">
-                <div class="col-md-6">
-                    <label>Tipo de pago: </label>
-                    {{ form_widget(form.tipopago) }}
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label>Tipo de pago: </label>
+                        {{ form_widget(form.tipopago) }}
+                    </div>
                 </div>
-            </div>
-
-
         </div>
         <div class="modal-footer">
-            <input type="submit" value="Create" class="btn btn-primary" />
-
+            <input type="submit" value="Guardar" class="btn btn-primary" /> | 
+            <a href="{{ path('solicitud_index') }}" class="btn btn-default">Volver atras</a>
         </div>
         {{ form_end(form) }}
     </div>
-    
 
-    <ul>
-        <li>
-            <a href="{{ path('solicitud_index') }}">Back to the list</a>
-        </li>
-    </ul>
+            
+
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

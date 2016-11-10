@@ -185,7 +185,7 @@ class DefaultController extends Controller
             $queryDia = $em->createQuery(
                       'SELECT d.diafecha '
                     . 'FROM pruebaBundle:Dia d '
-                    . 'WHERE d.diafecha=' . $dia . ' ');
+                    . "WHERE d.diafecha=' . $dia . '");
             $resDia = $queryDia->getResult();
             //************************************************************
             if ($resDia)
@@ -244,6 +244,50 @@ class DefaultController extends Controller
         
     }
     
-    
+    /**
+     * en esta funcion se realiza el cierre del dia de trabajo
+     * @Route("/diacerrar",name="dia_cerrar")
+     */
+    public function CerrarDiaAction(Request $request)
+    {
+        $session = $request->getSession();
+        if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado' or $session->get('tipousuario') == 'Cliente') {
+
+            /**
+             * con este query se busca saber si existe un dia activo o no
+             */
+            $em = $this->getDoctrine()->getManager();
+            $dia = date('Y-m-d');
+            $queryDia = $em->createQuery(
+                      'SELECT d.diafecha '
+                    . 'FROM pruebaBundle:Dia d '
+                    . "WHERE d.diafecha='".$dia."'");
+            $resDia = $queryDia->getResult();
+            //************************************************************
+            
+            $findseguridad = $this->getDoctrine()
+                    ->getRepository('pruebaBundle:Seguridad')
+                    ->findOneBy(array('idseguridad' => $session->get('idseguridad')));
+            
+            if ($resDia)  {
+                $xdia = $this->getDoctrine()
+                    ->getRepository('pruebaBundle:Dia')
+                    ->findOneBy(array('activo' => 1)); 
+                $xdia->setActivo(0);
+                $session->set('diaactivo',0);                
+                $em->persist($xdia);
+                $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                        'Mensaje', "Se ha cerrado el dia de manera correcta"
+                );
+                
+            }
+
+
+            return $this->redirect($this->generateUrl('panel'));  
+        }
+           
+        
+    }
     
 }

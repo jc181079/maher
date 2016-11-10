@@ -206,7 +206,7 @@ class SeguridadController extends Controller
                 $queryDia= $em->createQuery(
                     'SELECT d.diafecha '
                   . 'FROM pruebaBundle:Dia d '                  
-                  . 'WHERE d.diafecha='.$dia.' ');
+                  . "WHERE d.diafecha='".$dia."'");
                  $resDia=$queryDia->getResult();
                 //************************************************************
                 if ($resDia) $diaactivo=1; else $diaactivo=0;

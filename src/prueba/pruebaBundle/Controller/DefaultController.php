@@ -103,6 +103,17 @@ class DefaultController extends Controller
                   
                   );
           $resgo=$querygo->getResult();
+
+         /*
+          * se calcula el balance general
+          */
+         $querygn=$em->createQuery(
+                    'SELECT go.conceptogasto,sum(go.montogasto) monto  '
+                  . 'from pruebaBundle:Gastonomina go  '                  
+                  . 'group by go.conceptogasto '
+                  
+                  );
+          $resgo=$querygo->getResult();
            return $this->render('pruebaBundle:Default:dashboard.html.twig', array(
                         'permisologia' => $permisologia,
                         'nu'=>$session->get('nombreusuario'),

@@ -29,9 +29,22 @@ class GastonominaController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             $gastonominas = $em->getRepository('pruebaBundle:Gastonomina')->findAll();
+             /*
+             * con este condicional el cliente solo podra observar solo sus solicitudes nada mas
+             * permisologia evita que el cliente tenga acceso a las opciones del navbar
+             */
+            if ($session->get('tipousuario') == 'Cliente') {                
+                $permisologia = 0;
+            } else {                
+                $permisologia = 1;
+            }
 
-            return $this->render('gastonomina/index.html.twig', array(
+            return $this->render('gastonomina/index_gn.html.twig', array(
                         'gastonominas' => $gastonominas,
+                        'permisologia' => $permisologia,
+                        'nu'=>$session->get('nombreusuario'),
+                        'l'=>$session->get('login'),
+                        'diaactivo'=>$session->get('diaactivo'),
             ));
         } else {
             $this->get('session')->getFlashBag()->add(
@@ -63,7 +76,7 @@ class GastonominaController extends Controller
                 return $this->redirectToRoute('gastonomina_show', array('id' => $gastonomina->getIdgastonomina()));
             }
 
-            return $this->render('gastonomina/new.html.twig', array(
+            return $this->render('gastonomina/new_gn.html.twig', array(
                         'gastonomina' => $gastonomina,
                         'form' => $form->createView(),
             ));
@@ -81,13 +94,13 @@ class GastonominaController extends Controller
      * @Route("/{id}", name="gastonomina_show")
      * @Method("GET")
      */
-    public function showAction(Gastonomina $gastonomina)
+    public function showAction(Gastonomina $gastonomina,Request $request)
     {
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             $deleteForm = $this->createDeleteForm($gastonomina);
 
-            return $this->render('gastonomina/show.html.twig', array(
+            return $this->render('gastonomina/show_gn.html.twig', array(
                         'gastonomina' => $gastonomina,
                         'delete_form' => $deleteForm->createView(),
             ));
@@ -121,7 +134,7 @@ class GastonominaController extends Controller
                 return $this->redirectToRoute('gastonomina_edit', array('id' => $gastonomina->getIdgastonomina()));
             }
 
-            return $this->render('gastonomina/edit.html.twig', array(
+            return $this->render('gastonomina/edit_gn.html.twig', array(
                         'gastonomina' => $gastonomina,
                         'edit_form' => $editForm->createView(),
                         'delete_form' => $deleteForm->createView(),

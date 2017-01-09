@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+    <header><h1>.:Gasto de nomina</h1></header>    
+        <div class="jumbotron">
+
+    {{ form_start(form) }}
+        <div class="form-group">
+            <div class="col-md-12">
+                {{ form_widget(form) }}
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" value="Guardar" class="btn btn-primary" /> | 
+            <a href="{{ path('gastonomina_index') }}" class="btn btn-default">Volver atras</a>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('public/js/bootstrap-datepicker.js') }}" ></script>
+   
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+         $('.js-datepicker').datepicker({
+             format: 'yyyy-mm-dd'
+         });
+     });
+          
+    </script>
+{% endblock %}

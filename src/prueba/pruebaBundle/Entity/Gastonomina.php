@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Gastonomina
  *
- * @ORM\Table(name="gastonomina", indexes={@ORM\Index(name="fk_gastonomina_plandistribucion1_idx", columns={"idplandistribucion"})})
+ * @ORM\Table(name="gastonomina")
  * @ORM\Entity
  */
 class Gastonomina
@@ -27,6 +27,13 @@ class Gastonomina
     private $montogastonomina;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fechapago", type="date", nullable=true)
+     */
+    private $fechapago;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="idgastonomina", type="integer")
@@ -34,16 +41,6 @@ class Gastonomina
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idgastonomina;
-
-    /**
-     * @var \prueba\pruebaBundle\Entity\Plandistribucion
-     *
-     * @ORM\ManyToOne(targetEntity="prueba\pruebaBundle\Entity\Plandistribucion")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idplandistribucion", referencedColumnName="idplandistribucion")
-     * })
-     */
-    private $idplandistribucion;
 
 
 
@@ -96,6 +93,30 @@ class Gastonomina
     }
 
     /**
+     * Set fechapago
+     *
+     * @param \DateTime $fechapago
+     *
+     * @return Gastonomina
+     */
+    public function setFechapago($fechapago)
+    {
+        $this->fechapago = $fechapago;
+
+        return $this;
+    }
+
+    /**
+     * Get fechapago
+     *
+     * @return \DateTime
+     */
+    public function getFechapago()
+    {
+        return $this->fechapago;
+    }
+
+    /**
      * Get idgastonomina
      *
      * @return integer
@@ -103,29 +124,5 @@ class Gastonomina
     public function getIdgastonomina()
     {
         return $this->idgastonomina;
-    }
-
-    /**
-     * Set idplandistribucion
-     *
-     * @param \prueba\pruebaBundle\Entity\Plandistribucion $idplandistribucion
-     *
-     * @return Gastonomina
-     */
-    public function setIdplandistribucion(\prueba\pruebaBundle\Entity\Plandistribucion $idplandistribucion = null)
-    {
-        $this->idplandistribucion = $idplandistribucion;
-
-        return $this;
-    }
-
-    /**
-     * Get idplandistribucion
-     *
-     * @return \prueba\pruebaBundle\Entity\Plandistribucion
-     */
-    public function getIdplandistribucion()
-    {
-        return $this->idplandistribucion;
     }
 }

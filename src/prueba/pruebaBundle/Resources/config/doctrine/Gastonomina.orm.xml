@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
   <entity name="prueba\pruebaBundle\Entity\Gastonomina" table="gastonomina">
-    <indexes>
-      <index name="fk_gastonomina_plandistribucion1_idx" columns="idplandistribucion"/>
-    </indexes>
     <id name="idgastonomina" type="integer" column="idgastonomina">
       <generator strategy="IDENTITY"/>
     </id>
@@ -13,10 +10,6 @@
       </options>
     </field>
     <field name="montogastonomina" type="float" column="montogastonomina" precision="10" scale="0" nullable="true"/>
-    <many-to-one field="idplandistribucion" target-entity="Plandistribucion" fetch="LAZY">
-      <join-columns>
-        <join-column name="idplandistribucion" referenced-column-name="idplandistribucion"/>
-      </join-columns>
-    </many-to-one>
+    <field name="fechapago" type="date" column="fechapago" nullable="true"/>
   </entity>
 </doctrine-mapping>

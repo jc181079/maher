@@ -27,12 +27,16 @@ class RutaController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
             $em = $this->getDoctrine()->getManager();
+            $permisologia=1;
 
             $rutas = $em->getRepository('pruebaBundle:Ruta')->findAll();
 
             return $this->render('ruta/index.html.twig', array(
                         'rutas' => $rutas,
-                        'diaactivo' => $session->get('diaactivo'),
+                        'diaactivo' => $session->get('diaactivo'),                        
+                        'nu'=>$session->get('nombreusuario'),
+                        'l'=>$session->get('login'),
+                        'permisologia' => $permisologia,
             ));
         } else {
             $this->get('session')->getFlashBag()->add(
@@ -82,7 +86,7 @@ class RutaController extends Controller
      * @Route("/{id}", name="ruta_show")
      * @Method("GET")
      */
-    public function showAction(Ruta $rutum)
+    public function showAction(Ruta $rutum,Request $request)
     {
        $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {

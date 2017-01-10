@@ -1,36 +1,47 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
 {% block body %}
-    <h1>Ruta</h1>
+    <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de RUTAS</strong></h1>
+            <p>Consulta</p>
+            <footer class="comment">
+                <a class="btn btn-default" href="{{ path('ruta_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-bordered table-responsive">
+                    <tbody>
+                        <tr>
+                            <th>Nombre de la ruta</th>
+                            <td>{{ rutum.nombreruta }}</td>
+                        </tr>
+                        <tr>
+                            <th>Detalle de la ruta</th>
+                            <td>{{ rutum.detalleruta }}</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+   
+    <div class="row">
+        <footer>
+            <div class="container thumbnail">
+                <div class="btn-group btn-group-justified" role="group">
+                    <a class="btn btn-default" href="{{ path('ruta_index') }}">Volver atras</a>
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Nombreruta</th>
-                <td>{{ rutum.nombreruta }}</td>
-            </tr>
-            <tr>
-                <th>Detalleruta</th>
-                <td>{{ rutum.detalleruta }}</td>
-            </tr>
-            <tr>
-                <th>Idruta</th>
-                <td>{{ rutum.idruta }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('ruta_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('ruta_edit', { 'id': rutum.idruta }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                    <a class="btn btn-info" href="{{ path('ruta_edit', { 'id': rutum.idruta }) }}">Modificar registro</a>
+                </div>
+            </div>
+        </footer>
+    </div>
 {% endblock %}

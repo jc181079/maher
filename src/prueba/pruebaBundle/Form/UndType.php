@@ -17,8 +17,8 @@ class UndType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombreund',TextType::class,array('attr' => array('class' => 'form-control')))
-            ->add('valor',NumberType::class,array('attr' => array('class' => 'form-control')))
+            ->add('nombreund',TextType::class,array('attr' => array('class' => 'form-control'),'label'  => 'Nombre de la unidad de medida:',))
+            ->add('valor',NumberType::class,array('attr' => array('class' => 'form-control'),'label'  => 'Valor de la unidad de medida:',))
         ;
     }
     

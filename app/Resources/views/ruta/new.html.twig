@@ -1,16 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Ruta creation</h1>
-
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('ruta_index') }}">Back to the list</a>
-        </li>
-    </ul>
+    <div class="container">
+        <header><h1>.:Registro de una nueva ruta</h1></header>
+        <div class="jumbotron">
+            <div class="form-group">
+                {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <input class="btn btn-success" type="submit" value="Guardar" />
+                {{ form_end(form) }}
+            </div>
+        </div>
+        <footer>
+            <a class="btn btn-default" href="{{ path('ruta_index') }}">Volver atras</a>
+        </footer>
+        
+    </div>
 {% endblock %}

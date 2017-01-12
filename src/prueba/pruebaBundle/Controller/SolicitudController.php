@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use prueba\pruebaBundle\Entity\Solicitud;
 use prueba\pruebaBundle\Form\SolicitudType;
+use prueba\pruebaBundle\Form\SolicitudAdminType;
 
 /**
  * Solicitud controller.
@@ -65,9 +66,20 @@ class SolicitudController extends Controller
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado' or $session->get('tipousuario') == 'Cliente') {
             
-            $solicitud = new Solicitud();
-            $form = $this->createForm('prueba\pruebaBundle\Form\SolicitudType', $solicitud);
-            $form->handleRequest($request);
+            /*
+            * aqui se coloca un condicional para obtener el formulario con que va a trabajar el administrador
+            * para registrar las solicitudes de los usuarios
+            */
+            if ($session->get('tipousuario') == 'Administrador'){
+                $solicitud = new Solicitud();
+                $form = $this->createForm('prueba\pruebaBundle\Form\SolicitudAdminType', $solicitud);
+                $form->handleRequest($request);
+            }else{
+                $solicitud = new Solicitud();
+                $form = $this->createForm('prueba\pruebaBundle\Form\SolicitudType', $solicitud);
+                $form->handleRequest($request);
+            }
+            
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
@@ -89,7 +101,7 @@ class SolicitudController extends Controller
                 $em->persist($solicitud);
                 $em->flush();
 
-                return $this->redirectToRoute('solicitud_show', array('id' => $solicitud->getIdsolicitud()));
+                return $this->redirectToRoute('solicitud_show', array('idsolicitud' => $solicitud->getIdsolicitud()));
             }
 
             return $this->render('solicitud/new_sol.html.twig', array(
@@ -163,7 +175,7 @@ class SolicitudController extends Controller
     /**
      * Displays a form to edit an existing Solicitud entity.
      *
-     * @Route("/{id}/edit", name="solicitud_edit")
+     * @Route("/{idsolicitud}/edit", name="solicitud_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Solicitud $solicitud)

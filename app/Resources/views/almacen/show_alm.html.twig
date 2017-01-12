@@ -1,32 +1,45 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
 {% block body %}
-    <h1>Almacen</h1>
+    <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de Almacen</strong></h1>
+            <p>Consulta</p>
+            <footer class="comment">
+                <a class="btn btn-default" href="{{ path('almacen_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+    </div>
+        <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-bordered table-responsive">
+                    <tbody>
+                        <tr>
+                            <th>Nombre del almacen</th>
+                            <td>{{ almacen.nombrealmacen }}</td>
+                        </tr>
+                        <tr>
+                            <th>Idalmacen</th>
+                            <td>{{ almacen.idalmacen }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <footer>
+            <div class="container thumbnail">
+                <div class="btn-group btn-group-justified" role="group">
+                    <a class="btn btn-default" href="{{ path('almacen_index') }}">Volver atras</a>
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Nombrealmacen</th>
-                <td>{{ almacen.nombrealmacen }}</td>
-            </tr>
-            <tr>
-                <th>Idalmacen</th>
-                <td>{{ almacen.idalmacen }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('almacen_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('almacen_edit', { 'id': almacen.idalmacen }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                    <a class="btn btn-info" href="{{ path('almacen_edit', { 'id': almacen.idalmacen }) }}">Modificar registro</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+   
 {% endblock %}

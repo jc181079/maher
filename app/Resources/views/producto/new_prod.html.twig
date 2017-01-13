@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+    {{parent()}}
+    <link href="{{ asset('public/css/select2.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ asset('public/css/select2.min.css') }}" rel="stylesheet" media="screen">
+{% endblock %}
 {% block body %}
     
     <div class="container">
@@ -19,8 +23,10 @@
 {% endblock %}
 {% block javascripts  %}
 {{ parent() }}
+<script src="{{ asset('public/js/select2.min.js') }}" ></script>
 <script type="text/javascript">
     $(document).ready(function() {
+       $('select').select2();
        /*
         * con este bloque de codigo se calcula el precio de venta de manera automatica
         */

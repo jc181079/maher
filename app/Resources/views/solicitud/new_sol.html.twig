@@ -3,33 +3,58 @@
 {% block body %}
     <div class="container">
     <header><h1>.:NUEVA SOLICITUD</h1></header>    
+        {{ form_start(form) }} 
         <div class="jumbotron">
-            {{ form_start(form) }}           
+            <div class="row">                      
                 <div class="form-group">
-                    <div class="col-md-12">
+                    <div class="col-md-2">
                         <label>Fecha de solicitud: </label>
+                    </div>    
+                    <div class="col-md-8">                        
                         {{ form_widget(form.fechadolicitud) }}
                     </div>
-
-                </div>    
+                </div>
+            </div>
+            <div class="row">        
                 <div class="form-group">
-                    <div class="col-md-12">
-                        <label>Fecha de entrada: </label>
+                    <div class="col-md-2">
+                       <label>Fecha de entrada: </label> 
+                    </div>
+                    <div class="col-md-8">                        
                         {{ form_widget(form.fechaentrega) }}
                     </div>
-
                 </div>
+            </div>
+            <div class="row">        
                 <div class="form-group">
-                    <div class="col-md-12"></div>
-                    <label>Nro. de solicitud: </label>
-                    {{ form_widget(form.numerosolicitud) }}
+                    <div class="col-md-2">
+                        <label>Nro. de solicitud: </label>
+                    </div>    
+                    <div class="col-md-10">                        
+                        {{ form_widget(form.numerosolicitud) }}              
+                    </div>
                 </div>
+            </div>
+            <div class="row">        
                 <div class="form-group">
-                    <div class="col-md-12">
+                    <div class="col-md-2">
                         <label>Tipo de pago: </label>
+                    </div>
+                    <div class="col-md-10">                        
                         {{ form_widget(form.tipopago) }}
                     </div>
                 </div>
+            </div>
+            <div class="row">        
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label>Rif del cliente: </label>
+                    </div>    
+                    <div class="col-md-10">                        
+                        {{ form_widget(form.rif) }}
+                    </div>
+                </div>
+            </div>        
         </div>
         <div class="modal-footer">
             <input type="submit" value="Guardar" class="btn btn-primary" /> | 
@@ -37,9 +62,6 @@
         </div>
         {{ form_end(form) }}
     </div>
-
-            
-
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
@@ -60,7 +82,7 @@
             }
             ////////////////////////////////////////////////////////////////////
             var strDate = d.getFullYear() + "-" + mes + "-" + d.getDate();
-         $('input#solicitud_fechadolicitud').val(strDate);                   
+         $('input#solicitud_admin_fechadolicitud').val(strDate);                   
          $('input#solicitud_fechadolicitud').prop('visible', false);
          $('input#solicitud_rif').val('{{rif }}');
          $('.js-datepicker').datepicker({

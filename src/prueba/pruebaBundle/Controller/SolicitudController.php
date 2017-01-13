@@ -70,16 +70,13 @@ class SolicitudController extends Controller
             * aqui se coloca un condicional para obtener el formulario con que va a trabajar el administrador
             * para registrar las solicitudes de los usuarios
             */
-            if ($session->get('tipousuario') == 'Administrador'){
-                $solicitud = new Solicitud();
+            $solicitud = new Solicitud();
+            if ($session->get('tipousuario') == 'Administrador'){                
                 $form = $this->createForm('prueba\pruebaBundle\Form\SolicitudAdminType', $solicitud);
-                $form->handleRequest($request);
-            }else{
-                $solicitud = new Solicitud();
-                $form = $this->createForm('prueba\pruebaBundle\Form\SolicitudType', $solicitud);
-                $form->handleRequest($request);
+            }else{               
+                $form = $this->createForm('prueba\pruebaBundle\Form\SolicitudType', $solicitud);               
             }
-            
+            $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $em = $this->getDoctrine()->getManager();

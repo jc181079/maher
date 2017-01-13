@@ -8,10 +8,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
-class SolicitudType extends AbstractType
+
+class SolicitudAdminType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -32,7 +32,8 @@ class SolicitudType extends AbstractType
                     
                     // se esta personalizando el label del formulario
                     'label'  => 'Fecha de la solicitud:',
-                    
+                    // se coloca por defecto la fecha actual
+                    //'data'=> date('Y-m-d'),  //aqui se esta colocando el numero de la solicitud
                 ))               
             ->add('fechaentrega', DateType::class, array(
                     'widget' => 'single_text',
@@ -53,34 +54,12 @@ class SolicitudType extends AbstractType
                         'Transferencia' => 'Transferencia',
                         'Credito' => 'Credito',
                     ),
-                    'choice_attr' => function($category, $key, $index) {
-                        return ['class' => 'form-control'];
-                    },
+                    'attr'=> ['class' =>'form-control'], //manera correcta de colocar la clase de bottstrap
+                   
                 ))                
-                ->add('rif',EntityType::class,array(
-                // query choices from this entity
-                'class' => 'pruebaBundle:Seguridad',
-                'placeholder'=>'Seleccione',
-
-                // use the User.username property as the visible option string
-                'choice_label' => 'nombreusuario',
-
-                // used to render a select box, check boxes or radios
-                // 'multiple' => true,
-                // 'expanded' => true,,
-                'choice_attr' =>  function($val, $key, $index) {
-                        // adds a class like attending_yes, attending_no, etc
-                        return ['class' => 'form-control'];
-                    }))
-                            
-
-        ;
-        /*
-         * los datos de fechasolicitud,estatus, idseguridad, idclientes se vana a guardar a traves de script en el controller
-         * lor tal motivo se eliminarion los objetos en este formulario
-         */
+                ->add('rif',TextType::class,array('attr' => array('class' => 'form-control')))
+                ;
     }
-    
     /**
      * @param OptionsResolver $resolver
      */

@@ -50,9 +50,7 @@ class SolicitudType extends AbstractType
                         'Transferencia' => 'Transferencia',
                         'Credito' => 'Credito',
                     ),
-                    'choice_attr' => function($category, $key, $index) {
-                        return ['class' => 'form-control'];
-                    },
+                    'attr'=> ['class' =>'form-control'], //manera correcta de colocar la clase de bottstrap
                 ))                
                 ->add('rif',HiddenType::class,array('attr' => array('class' => 'form-control')))
                             

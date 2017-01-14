@@ -21,43 +21,41 @@
          {% endfor%}
      {% endif%}
 
-<div class="container">
-         <table class="table table-bordered table-responsive">
-        <thead>
-            <tr>
-                <th>Fechadolicitud</th>
-                <th>Fechaentrega</th>
-                <th>Estatus</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>            
-            {% if solicituds %}
-                {% for solicitud in solicituds %}
-                    <tr>
-                        <td><a href="{{ path('solicitud_show', { 'idsolicitud': solicitud.idsolicitud }) }}">{{ solicitud.fechadolicitud|date('d-m-Y') }}</a></td>
-                        <td>{% if solicitud.fechaentrega %}{{ solicitud.fechaentrega|date('d-m-Y') }}{% endif %}</td>
-                        <td>{{ solicitud.estatus}}</td>
-                        <td>
-                            
-                            <div class="form-inline">
-                                {% if solicitud.estatus=='Activa' %}
-                                    <a class="btn btn-info" href="{{ path('solicituddetalle_new', { 'idsolicitud': solicitud.idsolicitud }) }}" data-toggle="tooltip" data-placement="top" title="Registrar producto en la solicitud"><span class="glyphicon glyphicon-plus"></span></a>
-                                    <a class="btn btn-primary" href="{{ path('solicitud_edit', { 'idsolicitud': solicitud.idsolicitud }) }}" data-toggle="tooltip" data-placement="top" title="Modifcar la solicitud"><span class="glyphicon glyphicon-pencil"></span></a>
-                                {% endif %}
-                                <a class="btn btn-default" href="{{ path('solicitud_show', { 'idsolicitud': solicitud.idsolicitud }) }}" data-toggle="tooltip" data-placement="top" title="Mostrar la solicitud"><span class="glyphicon glyphicon-list-alt"></span></a>  
-                            </div>
-                        </td>
-                    </tr>
-                {% endfor %}
-            {% else %}
-                <tr >
-                    <td colspan="7"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
-                </tr>
-            {% endif%}
-        </tbody>
-    </table>
-
-    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-   
+<div class="container">  
+   <div class="row">
+        <div class="form-group">
+                <div class="col-md-2">
+                    Fecha de la solicitud
+                </div>
+                <div class="col-md-2">
+                    Fecha de la entrega
+                </div>
+                <div class="col-md-2">
+                    Estatus de la solicitud
+                </div>                
+        </div>    
+   </div>      
+    {% if solicituds %}
+        {% for solicitud in solicituds %}
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="{{ path('solicitud_show', { 'idsolicitud': solicitud.idsolicitud }) }}">{{ solicitud.fechadolicitud|date('d-m-Y') }}</a>
+                </div>
+                <div class="col-md-3">
+                    {% if solicitud.fechaentrega %}{{ solicitud.fechaentrega|date('d-m-Y') }}{% endif %}
+                </div>
+                <div class="col-md-3">
+                    {{ solicitud.estatus}}
+                </div>
+            </div>                  
+        {% endfor %}
+    {%  else %}
+    <div class="col-md-3">
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..
+        </div>
+    </div>
+    {%  endif %}
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button> 
+</div>      
 {% endblock %}

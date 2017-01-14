@@ -175,12 +175,16 @@ class SolicitudController extends Controller
      * @Route("/{idsolicitud}/edit", name="solicitud_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Solicitud $solicitud)
+    public function editAction(Request $request, Solicitud $solicitud,$idsolicitud)
     {
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado' or $session->get('tipousuario') == 'Cliente') {
             $deleteForm = $this->createDeleteForm($solicitud);
-            $editForm = $this->createForm('prueba\pruebaBundle\Form\SolicitudType', $solicitud);
+            if ($session->get('tipousuario') == 'Administrador'){
+                $editForm = $this->createForm('prueba\pruebaBundle\Form\SolicitudAdminType', $solicitud);
+            }else{
+                $editForm = $this->createForm('prueba\pruebaBundle\Form\SolicitudType', $solicitud);
+            }
             $editForm->handleRequest($request);
 
             if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -188,7 +192,7 @@ class SolicitudController extends Controller
                 $em->persist($solicitud);
                 $em->flush();
 
-                return $this->redirectToRoute('solicitud_edit', array('id' => $solicitud->getIdsolicitud()));
+                return $this->redirectToRoute('solicitud_edit', array('idsolicitud' => $solicitud->getIdsolicitud()));
             }
 
             return $this->render('solicitud/edit_sol.html.twig', array(

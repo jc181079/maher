@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+    {{parent()}}
+    <link href="{{ asset('public/css/select2.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ asset('public/css/select2.min.css') }}" rel="stylesheet" media="screen">
+{% endblock %}
 {% block body %}
     <div class="container">
     <header><h1>.:NUEVA SOLICITUD</h1></header>    
@@ -66,9 +70,10 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('public/js/bootstrap-datepicker.js') }}" ></script>
-   
+    <script src="{{ asset('public/js/select2.min.js') }}" ></script>
     <script type="text/javascript">
         $(document).ready(function() {
+            $('select').select2();
             var d = new Date();
             /*
              * con el siguiente condicional solo se coloca un cero para que el valor sea 
@@ -84,7 +89,7 @@
             var strDate = d.getFullYear() + "-" + mes + "-" + d.getDate();
          $('input#solicitud_admin_fechadolicitud').val(strDate);                   
          $('input#solicitud_fechadolicitud').prop('visible', false);
-         $('input#solicitud_rif').val('{{rif }}');
+         /*$('input#solicitud_rif').val('{{rif }}');*/
          $('.js-datepicker').datepicker({
              format: 'yyyy-mm-dd'
          });

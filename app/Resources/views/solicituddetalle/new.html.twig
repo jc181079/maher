@@ -22,7 +22,7 @@
                             <td>{{ solicituds.fechaentrega|date('d-m-Y') }}</td>
                             <td>{{ solicituds.tipopago}}</td>
                             <td>{{ solicituds.estatus }}</td>
-                            <td>{{ 'Bs. '~solicituds.total|number_format(2,'.',',') }}</td>
+                            <td>{{ 'Bs. '~solicituds.t|number_format(2,'.',',') }}</td>
                         </tr>
                     {% endfor%}
                 {% else %}

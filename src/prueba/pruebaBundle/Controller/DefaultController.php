@@ -245,14 +245,12 @@ class DefaultController extends Controller
     /**
      * @Route("/modal/reportsol/{prioridad}", name="rep_sol")
      */
-     public function repsolaltaAction($prioridad){
+     public function repsolaltaAction($prioridad,Request $request){
         
          $solicitud = $this->getDoctrine()
                     ->getRepository('pruebaBundle:Solicitud')
-                    ->findOneBy(array('prioridad' => $prioridad));
-         return $this->render('pruebaBundle:Default:rep_sol.html.twig',array('solicituds'=>$solicitud));
-        
-        
+                    ->findOneBy(array('prioridad' => 'Alta'));
+        return $this->render('pruebaBundle:Default:rep_sol.html.twig',array('solicituds'=>$solicitud));        
     }
     
     /**

@@ -1,21 +1,92 @@
 {% extends 'base.html.twig' %}
-
 {% block body %}
-    <h1>Solicitud edit</h1>
-
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('solicitud_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    <div class="container">
+    <header><h1>.:Edicion de la solicitud</h1></header>    
+        {{ form_start(edit_form) }} 
+        <div class="jumbotron">
+            <div class="row">                      
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label>Fecha de solicitud: </label>
+                    </div>    
+                    <div class="col-md-8">                        
+                        {{ form_widget(edit_form.fechadolicitud) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">        
+                <div class="form-group">
+                    <div class="col-md-2">
+                       <label>Fecha de entrada: </label> 
+                    </div>
+                    <div class="col-md-8">                        
+                        {{ form_widget(edit_form.fechaentrega) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">        
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label>Nro. de solicitud: </label>
+                    </div>    
+                    <div class="col-md-10">                        
+                        {{ form_widget(edit_form.numerosolicitud) }}              
+                    </div>
+                </div>
+            </div>
+            <div class="row">        
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label>Tipo de pago: </label>
+                    </div>
+                    <div class="col-md-10">                        
+                        {{ form_widget(edit_form.tipopago) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">        
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label>Rif del cliente: </label>
+                    </div>    
+                    <div class="col-md-10">                        
+                        {{ form_widget(edit_form.rif) }}
+                    </div>
+                </div>
+            </div>        
+        </div>
+        <div class="modal-footer">
+            <input type="submit" value="Guardar" class="btn btn-primary" /> | 
+            <a href="{{ path('solicitud_index') }}" class="btn btn-default">Volver atras</a>
+        </div>
+        {{ form_end(edit_form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('public/js/bootstrap-datepicker.js') }}" ></script>
+   
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var d = new Date();
+            /*
+             * con el siguiente condicional solo se coloca un cero para que el valor sea 
+             * valido a la hora de verificar los datos el symfony
+             */
+            var mes;
+            if (d.getMonth()+1<10){
+                mes="0"+(d.getMonth()+1)
+            }else{
+                mes=(d.getMonth()+1)
+            }
+            ////////////////////////////////////////////////////////////////////
+            var strDate = d.getFullYear() + "-" + mes + "-" + d.getDate();
+         $('input#solicitud_admin_fechadolicitud').val(strDate);                   
+         $('input#solicitud_fechadolicitud').prop('visible', false);
+         $('.js-datepicker').datepicker({
+             format: 'yyyy-mm-dd'
+         });
+     });
+          
+    </script>
 {% endblock %}

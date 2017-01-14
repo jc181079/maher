@@ -1,44 +1,55 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
 {% block body %}
-    <h1>Movimiento</h1>
+    <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de MOVIMIENTO</strong></h1>
+        <p>Consulta</p>
+            <footer class="comment">
+                <a class="btn btn-default" href="{{ path('almacen_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+    </div>
+        <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-bordered table-responsive">
+                    <tbody>
+                        <th>Cantidad</th>
+                        <td>{{ movimiento.cantidad }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fechamovimiento</th>
+                            <td>{% if movimiento.fechamovimiento %}{{ movimiento.fechamovimiento|date('Y-m-d') }}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>Tipomovimiento</th>
+                            <td>{{ movimiento.tipomovimiento }}</td>
+                        </tr>
+                        <tr>
+                            <th>Conceptomovimiento</th>
+                            <td>{{ movimiento.conceptomovimiento }}</td>
+                        </tr>
+                        <tr>
+                            <th>Idmovimiento</th>
+                            <td>{{ movimiento.idmovimiento }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <footer>
+            <div class="container thumbnail">
+                <div class="btn-group btn-group-justified" role="group">
+                    <a class="btn btn-default" href="{{ path('movimiento_index') }}">Volver atras</a>
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Cantidad</th>
-                <td>{{ movimiento.cantidad }}</td>
-            </tr>
-            <tr>
-                <th>Fechamovimiento</th>
-                <td>{% if movimiento.fechamovimiento %}{{ movimiento.fechamovimiento|date('Y-m-d') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Tipomovimiento</th>
-                <td>{{ movimiento.tipomovimiento }}</td>
-            </tr>
-            <tr>
-                <th>Conceptomovimiento</th>
-                <td>{{ movimiento.conceptomovimiento }}</td>
-            </tr>
-            <tr>
-                <th>Idmovimiento</th>
-                <td>{{ movimiento.idmovimiento }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('movimiento_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('movimiento_edit', { 'id': movimiento.idmovimiento }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                    <a class="btn btn-info" href="{{ path('movimiento_edit', { 'id': movimiento.idmovimiento }) }}">Modificar registro</a>
+                </div>
+            </div>
+        </footer>
+    </div>
 {% endblock %}

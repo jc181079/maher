@@ -40,7 +40,7 @@ class DefaultController extends Controller
           $queryGastoOperativo= $em->createQuery(
                     'SELECT SUM(go.montogasto) trgo '
                   . 'FROM pruebaBundle:Gastosoperativos go  '
-                  . "WHERE go.fechagasto between '$primero' and '$ultimo'");
+                  . "WHERE go.fechagasto between '".$primero."' and '".$ultimo."'");
           $resGastosOperativosMes=$queryGastoOperativo->getResult();
           if (!$resGastosOperativosMes) $resGastosOperativosMes= array('trgo'=>0);
           //*****************************************************************************************
@@ -71,17 +71,26 @@ class DefaultController extends Controller
           /**
            * aqui se va a mostrar la informacion de los inventarios
            */
+          $querySumInv=$em->createQuery(
+                    'SELECT a.nombrealmacen,sum(p.precioventa*i.cantidad) sti '
+                  . 'from pruebaBundle:Inventario i INNER JOIN pruebaBundle:Producto p with  i.idproducto=p.idproducto INNER JOIN pruebaBundle:Almacen a with i.idalmacen=a.idalmacen '
+                  . 'Where i.idproducto=p.idproducto  and i.idalmacen=a.idalmacen '
+                  . 'group by a.nombrealmacen '
+                  
+                  );
           $queryinventario=$em->createQuery(
-                    'SELECT p.nombreproducto,i.cantidad '
+                    'SELECT p.nombreproducto,i.cantidad, a.nombrealmacen '
                   . 'from pruebaBundle:Inventario i INNER JOIN pruebaBundle:Producto p with  i.idproducto=p.idproducto '
+                  .'INNER JOIN pruebaBundle:Almacen a with a.idalmacen=i.idalmacen '
                   . 'Where i.idproducto=p.idproducto '
                   . 'group by p.nombreproducto '
                   
                   );
           $resinventario=$queryinventario->getResult();
+          $resSumInv=$querySumInv->getResult();
           //*******************************************************************************************
           /**
-           * aqui se va a mostrar la informacion de los inventarios
+           * aqui se va a mostrar la informacion de las cantidades de solicitudes realizadas
            */
           $querysolicitud=$em->createQuery(
                     'SELECT sol.tipopago,count(sol.idsolicitud) cantidad,sol.prioridad '
@@ -125,6 +134,7 @@ class DefaultController extends Controller
                         'inventario'=>$resinventario,
                         'solicitud'=>$ressolicitud,
                         'go'=>$resgo,
+                        'rsi'=>$resSumInv,
                         
             )); 
        }else {
@@ -246,10 +256,12 @@ class DefaultController extends Controller
      * @Route("/modal/reportsol/{prioridad}", name="rep_sol")
      */
      public function repsolaltaAction($prioridad,Request $request){
-        
-         $solicitud = $this->getDoctrine()
-                    ->getRepository('pruebaBundle:Solicitud')
-                    ->findOneBy(array('prioridad' => 'Alta'));
+        $em = $this->getDoctrine()->getManager();
+        $querySol= $em->createQuery(
+                    'SELECT s.idsolicitud, s.fechadolicitud, s.fechaentrega, s.estatus '                  
+                  . 'FROM pruebaBundle:Solicitud s '                 
+                  . "WHERE s.prioridad= '".$prioridad."'");
+          $solicitud=$querySol->getResult();
         return $this->render('pruebaBundle:Default:rep_sol.html.twig',array('solicituds'=>$solicitud));        
     }
     
@@ -294,9 +306,39 @@ class DefaultController extends Controller
 
 
             return $this->redirect($this->generateUrl('panel'));  
-        }
-           
-        
+        }       
+    }
+
+    /**
+    * aqui se realiza el resultado de de las busquedas
+    *
+    * @Route("/buscar",name="buscar_s")
+    */ 
+    public function searchAction(Request $request){
+
+      switch (strtoupper($request->get('search'))) {
+        case 'UNIDAD':
+          return $this->redirect($this->generateUrl('und_index'));
+          break;
+        case 'MOVIMIENTO':
+          return $this->redirect($this->generateUrl('movimiento_index'));
+          break;
+        case 'SOLICITUD':
+          return $this->redirect($this->generateUrl('solicitud_index'));
+          break;
+        case 'RUTA':
+          return $this->redirect($this->generateUrl('ruta_index'));
+          break;
+        case 'PRODUCTO':
+          return $this->redirect($this->generateUrl('producto_index'));
+          break;
+        case 'ALMACEN':
+          return $this->redirect($this->generateUrl('almacen_index'));
+          break; 
+         default:
+          return $this->redirect($this->generateUrl('panel'));
+          break;  
+      }
     }
     
 }

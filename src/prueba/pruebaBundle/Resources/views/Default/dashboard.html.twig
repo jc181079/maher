@@ -239,13 +239,13 @@
     <h1>Inventario</h1>
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h3 class="panel-title">Almacen: <span class="badge">{% for trgo in rgo %}Bs. {{trgo.trgo|number_format(2,'.',',')}}{% endfor %}</span></h3>
+            <h3 class="panel-title">{% for rsiV in rsi %} Almacen: {{ rsiV.nombrealmacen }} <span class="badge">Bs. {{rsiV.sti|number_format(2,'.',',')}}</span>{% endfor %}</h3>
         </div>
         <div class="panel-body">
             <ul class="nav nav-pills">
                 {% set i=1 %}
                 {% for inventarios in inventario%}
-                <li {% if i % 2 ==0 %}class="active" {% endif %}><a href="#"> {{inventarios.nombreproducto}} <span class="badge"> {{inventarios.cantidad}} </span></a></li>
+                <li {% if i % 2 ==0 %}class="active" {% endif %}><a href="#">{{inventarios.nombrealmacen}} - {{inventarios.nombreproducto}} <span class="badge"> {{inventarios.cantidad}} </span></a></li>
                 {%endfor%}
             </ul>
         </div>

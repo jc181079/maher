@@ -25,14 +25,8 @@ class SolicituddetalleType extends AbstractType
 
                 // use the User.username property as the visible option string
                 'choice_label' => 'nombreproducto',
-
-                // used to render a select box, check boxes or radios
-                // 'multiple' => true,
-                // 'expanded' => true,,
-                'choice_attr' =>  function($val, $key, $index) {
-                        // adds a class like attending_yes, attending_no, etc
-                        return ['class' => 'form-control'];
-                    }))
+                'attr'=> ['class' =>'form-control', 'data-live-search'=>'true'], //manera correcta de colocar 
+                ))
                 ->add('cantidad',NumberType::class,array('attr' => array('class' => 'form-control')))
 //                ->add('precio',NumberType::class,array('attr' => array('class' => 'form-control')))
 //                ->add('total',NumberType::class,array('attr' => array('class' => 'form-control')))

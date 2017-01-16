@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class MovimientoType extends AbstractType
 {
@@ -29,7 +30,14 @@ class MovimientoType extends AbstractType
                 // add a class that can be selected in JavaScript
                 'attr' => ['class' => 'js-datepicker'],
             ))
-            ->add('tipomovimiento',TextType::class,array('attr' => array('class' => 'form-control')))
+            ->add('tipomovimiento', ChoiceType::class, array(
+                    'choices' => array(
+                        'Seleccione' => null,
+                        'Entrada' => 'Entrada',
+                        'Salida' => 'Salida',                        
+                    ),
+                    'attr'=> ['class' =>'form-control'], //manera correcta de colocar la clase de bottstrap
+                    ))
             ->add('conceptomovimiento',TextType::class,array('attr' => array('class' => 'form-control')))
             ->add('idproducto',EntityType::class,array(
                 // query choices from this entity
@@ -38,14 +46,8 @@ class MovimientoType extends AbstractType
 
                 // use the User.username property as the visible option string
                 'choice_label' => 'nombreproducto',
-
-                // used to render a select box, check boxes or radios
-                // 'multiple' => true,
-                // 'expanded' => true,,
-                'choice_attr' =>  function($val, $key, $index) {
-                        // adds a class like attending_yes, attending_no, etc
-                        return ['class' => 'form-control'];
-                    }))
+                'attr'=> ['class' =>'form-control', 'data-live-search'=>'true'], //manera correcta de colocar la clase de bottstrap
+               ))
             ->add('idalmacen',EntityType::class,array(
                 // query choices from this entity
                 'class' => 'pruebaBundle:Almacen',
@@ -54,13 +56,8 @@ class MovimientoType extends AbstractType
                 // use the User.username property as the visible option string
                 'choice_label' => 'nombrealmacen',
 
-                // used to render a select box, check boxes or radios
-                // 'multiple' => true,
-                // 'expanded' => true,,
-                'choice_attr' =>  function($val, $key, $index) {
-                        // adds a class like attending_yes, attending_no, etc
-                        return ['class' => 'form-control'];
-                    }))
+                'attr'=> ['class' =>'form-control', 'data-live-search'=>'true'], //manera correcta de colocar la clase de bottstrap
+                ))
         ;
     }
     

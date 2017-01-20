@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <header><h1>.:NUEVO PROVEEDOR</h1></header> 
+    {{ form_start(form) }}
+    <div class="jumbotron">
+            <div class="row">                      
+                <div class="form-group">
+                    {{ form_widget(form) }}
+                </div>
+            </div>
+    </div>
+    <div class="modal-footer">
+            <input type="submit" value="Guardar" class="btn btn-primary" /> | 
+            <a href="{{ path('proveedor_index') }}" class="btn btn-default">Volver atras</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

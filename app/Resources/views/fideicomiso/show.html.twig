@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Fideicomiso</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Fideicomisofactura</th>
+                <td>{{ fideicomiso.fideicomisofactura }}</td>
+            </tr>
+            <tr>
+                <th>Fideicomisomonto</th>
+                <td>{{ fideicomiso.fideicomisomonto }}</td>
+            </tr>
+            <tr>
+                <th>Fideicomisofecha</th>
+                <td>{% if fideicomiso.fideicomisofecha %}{{ fideicomiso.fideicomisofecha|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Idfideicomiso</th>
+                <td>{{ fideicomiso.idfideicomiso }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('fideicomiso_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('fideicomiso_edit', { 'id': fideicomiso.idfideicomiso }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

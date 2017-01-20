@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Fideicomiso list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fideicomisofactura</th>
+                <th>Fideicomisomonto</th>
+                <th>Fideicomisofecha</th>
+                <th>Idfideicomiso</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for fideicomiso in fideicomisos %}
+            <tr>
+                <td><a href="{{ path('fideicomiso_show', { 'id': fideicomiso.idfideicomiso }) }}">{{ fideicomiso.fideicomisofactura }}</a></td>
+                <td>{{ fideicomiso.fideicomisomonto }}</td>
+                <td>{% if fideicomiso.fideicomisofecha %}{{ fideicomiso.fideicomisofecha|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ fideicomiso.idfideicomiso }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('fideicomiso_show', { 'id': fideicomiso.idfideicomiso }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('fideicomiso_edit', { 'id': fideicomiso.idfideicomiso }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('fideicomiso_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

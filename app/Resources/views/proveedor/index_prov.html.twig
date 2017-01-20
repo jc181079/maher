@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+{% use "::navbar.html.twig" %}
+{% block body %}
+    {% block navbar %}
+        {{ parent() }}
+    {% endblock %}
+     <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de Proveedores</strong></h1>
+            <p>aqui podra administrar los diferentes proveedores manejadas por la empresa</p>
+            <footer>
+                <a class="btn btn-default" href="{{ path('proveedor_new') }}">Ingresar nuevo registro</a>
+            </footer>
+             {% if app.session.flashbag.get('Mensaje') %}      
+                 {% for flashMessage in app.session.flashbag.get('Mensaje') %}
+                     <div class="alert alert-success" role="alert">
+                         <span class="glyphicon glyphicon-warning-sign" ></span> 
+                         {{flashMessage}}...
+                     </div>
+                 {% endfor%}
+             {% endif%}
+             {% if app.session.flashbag.get('Alerta') %}      
+                 {% for flashMessage in app.session.flashbag.get('Alerta') %}
+                     <div class="alert alert-danger" role="alert">
+                         <span class="glyphicon glyphicon-warning-sign" ></span> 
+                         {{flashMessage}}...
+                     </div>
+                 {% endfor%}
+            {% endif%}
+            <div class="container">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                         <tr>
+                            <th>Nombre</th>
+                            <th>Rif</th>
+                            <th>Contacto</th>
+                            <th>Telefono</th>
+                            <th>Correo</th>
+                            <th>Observacion</th>                            
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                         {% if proveedors %}
+                            {% for proveedor in proveedors %}
+                                <tr>
+                                    <td><a href="{{ path('proveedor_show', { 'id': proveedor.idproveedor }) }}">{{ proveedor.proveedornombre }}</a></td>
+                                    <td>{{ proveedor.proveedorrif }}</td>
+                                    <td>{{ proveedor.proveedorcontacto }}</td>
+                                    <td>{{ proveedor.proveedortlf }}</td>
+                                    <td>{{ proveedor.proveedoremail }}</td>
+                                    <td>{{ proveedor.proveedorobservacion }}</td>                              
+                                    <td>
+                                        <ul>
+                                            <li>
+                                                <a href="{{ path('proveedor_show', { 'id': proveedor.idproveedor }) }}">show</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ path('proveedor_edit', { 'id': proveedor.idproveedor }) }}">edit</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                             <tr >
+                                 <td colspan="8"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                             </tr>    
+                        {% endif %}
+                     </tbody>
+                </table>
+            </div>
+        <ul>
+            <li>
+                <a href="{{ path('proveedor_new') }}">Create a new entry</a>
+            </li>
+        </ul>        
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

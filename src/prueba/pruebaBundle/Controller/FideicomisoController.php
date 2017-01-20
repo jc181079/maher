@@ -60,6 +60,32 @@ class FideicomisoController extends Controller
     }
 
     /**
+     * Creates a new Fideicomiso entity.
+     *
+     * @Route("/agregar/{idproveedor}", name="fideicomiso_agregar")
+     * @Method({"GET", "POST"})
+     */
+    public function agregarAction(Request $request)
+    {
+        $fideicomiso = new Fideicomiso();
+        $form = $this->createForm('prueba\pruebaBundle\Form\FideicomisoType', $fideicomiso);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($fideicomiso);
+            $em->flush();
+
+            return $this->redirectToRoute('fideicomiso_show', array('id' => $fideicomiso->getId()));
+        }
+
+        return $this->render('fideicomiso/new.html.twig', array(
+            'fideicomiso' => $fideicomiso,
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
      * Finds and displays a Fideicomiso entity.
      *
      * @Route("/{id}", name="fideicomiso_show")

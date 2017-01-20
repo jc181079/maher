@@ -1,41 +1,66 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
 {% block body %}
-    <h1>Proveedor</h1>
+    <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de PROVEEDORES</strong></h1>
+            <p>Consulta</p>
+            <footer class="comment">
+                <a class="btn btn-default" href="{{ path('producto_new') }}">Ingresar nuevo registro</a>
+            </footer>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-bordered table-responsive">
+                    <tbody>
+                        <tr>
+                            <th>Proveedornombre</th>
+                            <td>{{ proveedor.proveedornombre }}</td>
+                        </tr>
+                        <tr>
+                            <th>Proveedorrif</th>
+                            <td>{{ proveedor.proveedorrif }}</td>
+                        </tr>
+                        <tr>
+                            <th>Proveedorcontacto</th>
+                            <td>{{ proveedor.proveedorcontacto }}</td>
+                        </tr>
+                        <tr>
+                            <th>Proveedortlf</th>
+                            <td>{{ proveedor.proveedortlf }}</td>
+                        </tr>
+                        <tr>
+                            <th>Proveedoremail</th>
+                            <td>{{ proveedor.proveedoremail }}</td>
+                        </tr>
+                        <tr>
+                            <th>Proveedorobservacion</th>
+                            <td>{{ proveedor.proveedorobservacion }}</td>
+                        </tr>
+                        <tr>
+                            <th>Idproveedor</th>
+                            <td>{{ proveedor.idproveedor }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <footer>
+            <div class="container thumbnail">
+                <div class="btn-group btn-group-justified" role="group">
+                    <a class="btn btn-default" href="{{ path('proveedor_index') }}">Volver atras</a>
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Proveedornombre</th>
-                <td>{{ proveedor.proveedornombre }}</td>
-            </tr>
-            <tr>
-                <th>Proveedorrif</th>
-                <td>{{ proveedor.proveedorrif }}</td>
-            </tr>
-            <tr>
-                <th>Proveedorcontacto</th>
-                <td>{{ proveedor.proveedorcontacto }}</td>
-            </tr>
-            <tr>
-                <th>Proveedortlf</th>
-                <td>{{ proveedor.proveedortlf }}</td>
-            </tr>
-            <tr>
-                <th>Proveedoremail</th>
-                <td>{{ proveedor.proveedoremail }}</td>
-            </tr>
-            <tr>
-                <th>Proveedorobservacion</th>
-                <td>{{ proveedor.proveedorobservacion }}</td>
-            </tr>
-            <tr>
-                <th>Idproveedor</th>
-                <td>{{ proveedor.idproveedor }}</td>
-            </tr>
-        </tbody>
-    </table>
-
+                    <a class="btn btn-info" href="{{ path('proveedor_edit', { 'id': proveedor.idproveedor }) }}">Modificar registro</a>
+                </div>
+            </div>
+        </footer>
+    </div>
     <ul>
         <li>
             <a href="{{ path('proveedor_index') }}">Back to the list</a>

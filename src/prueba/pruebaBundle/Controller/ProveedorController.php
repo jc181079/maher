@@ -64,7 +64,7 @@ class ProveedorController extends Controller
             $em->persist($proveedor);
             $em->flush();
 
-            return $this->redirectToRoute('proveedor_show', array('id' => $proveedor->getId()));
+            return $this->redirectToRoute('proveedor_show', array('id' => $proveedor->getIdproveedor()));
         }
 
         return $this->render('proveedor/new_prov.html.twig', array(
@@ -83,7 +83,7 @@ class ProveedorController extends Controller
     {
         $deleteForm = $this->createDeleteForm($proveedor);
 
-        return $this->render('proveedor/show.html.twig', array(
+        return $this->render('proveedor/show_prov.html.twig', array(
             'proveedor' => $proveedor,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -106,7 +106,7 @@ class ProveedorController extends Controller
             $em->persist($proveedor);
             $em->flush();
 
-            return $this->redirectToRoute('proveedor_edit', array('id' => $proveedor->getId()));
+            return $this->redirectToRoute('proveedor_edit', array('id' => $proveedor->getIdproveedor()));
         }
 
         return $this->render('proveedor/edit_prov.html.twig', array(
@@ -146,7 +146,7 @@ class ProveedorController extends Controller
     private function createDeleteForm(Proveedor $proveedor)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('proveedor_delete', array('id' => $proveedor->getId())))
+            ->setAction($this->generateUrl('proveedor_delete', array('id' => $proveedor->getIdproveedor())))
             ->setMethod('DELETE')
             ->getForm()
         ;

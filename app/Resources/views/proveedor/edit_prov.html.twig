@@ -1,21 +1,21 @@
 {% extends 'base.html.twig' %}
-
 {% block body %}
-    <h1>Proveedor edit</h1>
-
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
+    <div class="container">
+        <header><h1>.:MODIFICACION DEL PROVEEDOR</h1></header>
+        {{ form_start(edit_form) }}
+        <div class="jumbotron">
+            <div class="row">                      
+                <div class="form-group">
+                    
+                        {{ form_widget(edit_form) }}
+                    
+                </div>
+            </div>
+    </div>
+    <div class="modal-footer">
+            <input type="submit" value="Guardar" class="btn btn-primary" /> | 
+            <a href="{{ path('proveedor_index') }}" class="btn btn-default">Volver atras</a>
+    </div>
     {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('proveedor_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+</div>
 {% endblock %}

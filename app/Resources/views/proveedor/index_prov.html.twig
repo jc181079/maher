@@ -51,14 +51,11 @@
                                     <td>{{ proveedor.proveedoremail }}</td>
                                     <td>{{ proveedor.proveedorobservacion }}</td>                              
                                     <td>
-                                        <ul>
-                                            <li>
-                                                <a href="{{ path('proveedor_show', { 'id': proveedor.idproveedor }) }}">show</a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ path('proveedor_edit', { 'id': proveedor.idproveedor }) }}">edit</a>
-                                            </li>
-                                        </ul>
+                                        <div class="btn-group">
+                                            <a class="btn btn-info" href="{{ path('proveedor_show', { 'id': proveedor.idproveedor }) }}">Consultar</a>
+                                            <a class="btn btn-success" href="{{ path('proveedor_edit', { 'id': proveedor.idproveedor }) }}">Modificar</a>
+                                            <a class="btn btn-warning" href="{{ path('fideicomiso_agregar', { 'idproveedor': proveedor.idproveedor }) }}">Fideicomiso</a>
+                                        </div>                                 
                                     </td>
                                 </tr>
                             {% endfor %}

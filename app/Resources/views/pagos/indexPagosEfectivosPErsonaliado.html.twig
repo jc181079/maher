@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+{% use "::navbar.html.twig" %}
+{% block body %}
+    {% block navbar %}
+        {{ parent() }}
+    {% endblock %}
+     <div class="jumbotron">
+        <div class="container">
+            <h1><strong>.:Modulo de administracion de PAGOS en efectivo</strong></h1>
+            <p>aqui podra administrar los diferentes pagos efectuados por los clientes de la empresa</p>
+            
+        </div>
+     </div>
+     {% if app.session.flashbag.get('Mensaje') %}      
+         {% for flashMessage in app.session.flashbag.get('Mensaje') %}
+             <div class="alert alert-success" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+     {% if app.session.flashbag.get('Alerta') %}      
+         {% for flashMessage in app.session.flashbag.get('Alerta') %}
+             <div class="alert alert-danger" role="alert">
+                 <span class="glyphicon glyphicon-warning-sign" ></span> 
+                 {{flashMessage}}...
+             </div>
+         {% endfor%}
+     {% endif%}
+<div class="container">
+        <div class="container">
+    <table class="table table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th>Fechade la solicitud</th>
+                <th>Fecha de la entrega</th>
+                <th>Estatus</th>
+                <th>Monto pagado</th>
+                <th>Cliente</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>            
+            {% if solicituds %}
+                {% for solicitud in solicituds %}
+                    <tr>
+                        <td><a href="{{ path('solicitud_show', { 'idsolicitud': solicitud.idsolicitud }) }}">{{ solicitud.fechadolicitud|date('d-m-Y') }}</a></td>
+                        <td>{% if solicitud.fechaentrega %}{{ solicitud.fechaentrega|date('d-m-Y') }}{% endif %}</td>
+                        <td>{{ solicitud.estatus}}</td>
+                        <td>{{ solicitud.montopagado|number_format(2,'.',',')}}</td>
+                        <td>{{ solicitud.nombreusuario}}</td>
+                        <td>
+                            {% if solicitud.montopagado<=0 %}
+                                <div class="form-inline">
+                                    <a class="btn btn-default" href="{{ path('pagos_personalizado_efectivo_new', { 'idsolicitud': solicitud.idsolicitud }) }}" data-toggle="tooltip" data-placement="top" title="Registrar el pago"><span class="glyphicon glyphicon-usd"></span></a>  
+                                </div>
+                            {% else %}
+                                <div class="form-inline">
+                                    <a class="btn btn-default" href="{{ path('pagos_personalizado_efectivo_new', { 'idsolicitud': solicitud.idsolicitud }) }}" data-toggle="tooltip" data-placement="top" title="Mostrar el pago"><span class="glyphicon glyphicon-zoom-in"></span></a>  
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr >
+                    <td colspan="7"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span> No hay regiastros en este modulo por los momentos..</div></td>
+                </tr>
+            {% endif%}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('pagos_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

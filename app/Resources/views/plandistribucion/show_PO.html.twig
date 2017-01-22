@@ -4,7 +4,8 @@
     <h1>Plan de distribucion</h1>
     <div class="container">
         <!-- aqui se va a colocar la informacion de la solicitud -->
-        <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" class="btn btn-success">
+        <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" class="btn btn-success"> - 
+        <a class="btn btn-default" href="{{ path('panel') }}">Volver al panel de control</a>
         {% set indice=0 %}
         {% set var=0 %}
         {% set monto=0.00 %}
@@ -73,8 +74,8 @@
                                 {% elseif  estatus=="Cancelada"   %} 
                                     {% set clase = "label label-danger" %}
                                 {% endif  %}
-                                <span class="{{clase}}">Estatus de la solicitud:{{estatus}}</span>
-                                <a class="btn btn-success" href="{{ path('solicitud_actualizar', {'idsolicitud': idsol,'estatus': 'Cancelada'}) }}">Solicitud cancelada</a>
+                                    <span class="{{clase}}">Estatus de la solicitud:{{estatus}}</span>
+                                    <a class="btn btn-success" href="{{ path('solicitud_actualizar', {'idsolicitud': idsol,'estatus': 'Cancelada'}) }}">Solicitud cancelada</a>
                             {%endif%}    
                         </div>
                     </div>

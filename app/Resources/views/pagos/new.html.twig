@@ -1,16 +1,46 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+    {{parent()}}
+{% endblock %}
 {% block body %}
-    <h1>Pagos creation</h1>
+    <div class="container">
+        <header><h1>.:Registro de pago de solicitud entregada</h1></header>  
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('pagos_index') }}">Back to the list</a>
-        </li>
-    </ul>
+                {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                   <div class="modal-footer">
+                        <input type="submit" value="Guardar" class="btn btn-primary" /> | 
+                        <a href="{{ path('solicitudesEntregadasEfectivo_index') }}" class="btn btn-default">Volver atras</a>
+                    </div>
+                {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('public/js/bootstrap-datepicker.js') }}" ></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var d = new Date();
+            /*
+             * con el siguiente condicional solo se coloca un cero para que el valor sea 
+             * valido a la hora de verificar los datos el symfony
+             */
+            var mes;
+            if (d.getMonth()+1<10){
+                mes="0"+(d.getMonth()+1)
+            }else{
+                mes=(d.getMonth()+1)
+            }
+            ////////////////////////////////////////////////////////////////////                  
+         $('input#pagos_fechapago').prop('visible', false);
+         
+         {% for rsd in resultadosd %}
+            $('input#pagos_montopagado').val('{{rsd.montoPagar }}');
+         {% endfor %}
+         $('.js-datepicker').datepicker({
+             format: 'yyyy-mm-dd'
+         });
+     });
+          
+    </script>
 {% endblock %}

@@ -202,26 +202,30 @@ class DefaultController extends Controller
              * con este query se busca saber si existe un dia activo o no
              */
             $em = $this->getDoctrine()->getManager();
-            $dia = date('Y-m-d');
+            $fecha = date('Y-m-d');
             $queryDia = $em->createQuery(
                       'SELECT d.diafecha '
                     . 'FROM pruebaBundle:Dia d '
-                    . "WHERE d.diafecha=' . $dia . '");
+                    . "WHERE d.diafecha=' . $fecha . '");
             $resDia = $queryDia->getResult();
+            //$resDia = $em->getRepository('pruebaBundle:Dia')->findBy(
+            //        array('diafecha' => $fecha)
+            //         );
+
             //************************************************************
             if ($resDia)
                 $diaactivo = 1;
             else
                 $diaactivo = 0;
-            $findseguridad = $this->getDoctrine()
-                    ->getRepository('pruebaBundle:Seguridad')
-                    ->findOneBy(array('idseguridad' => $session->get('idseguridad')));
             
             if ($resDia) {
                 $this->get('session')->getFlashBag()->add(
-                        'Alerta', "*** El dia se encuentra activo ***"
+                        'MensajeAlerta', "*** El dia se encuentra activo ***"
                 );
             } else {
+                $findseguridad = $this->getDoctrine()
+                    ->getRepository('pruebaBundle:Seguridad')
+                    ->findOneBy(array('idseguridad' => $session->get('idseguridad')));
                 $dia = new Dia(); 
                 $fecha=date('Y/m/d');
                 $dia->setDiafecha(new \DateTime($fecha));
@@ -231,7 +235,7 @@ class DefaultController extends Controller
                 $em->flush();
                 $session->set('diaactivo',1);
                 $this->get('session')->getFlashBag()->add(
-                        'Mensaje', "Se a activado el dia de manera correcta"
+                        'MensajeCorrecto', "Se a activado el dia de manera correcta"
                 );
                 
             }

@@ -199,14 +199,45 @@ class SeguridadController extends Controller
             $em = $this->getDoctrine()->getManager();
             $consulta = $em->getRepository('pruebaBundle:Seguridad')->findBy(array('login' => $request->get('login'),'pass'=> md5($request->get('pass'))));
             if ($consulta){
-                /**
-                 * con este query se busca saber si existe un dia activo o no
-                 */
                 $dia=date('Y-m-d');
+                $fecha=date('Y/m/d');
+                /**
+                 * con este query se busca saber si existe el dia actual esta activo o no, pero se debe cerrar dicho
+                 * dia de manera autumatica
+                 */
+                $resDiaActivo = $em->getRepository('pruebaBundle:Dia')->findOneBy(
+                    array('activo' => 1)
+                     );
+                //$queryDiaActivo= $em->createQuery(
+               //     'SELECT d.diafecha '
+               //   . 'FROM pruebaBundle:Dia d '                  
+               //   . "WHERE d.diafecha<'".$dia."' and d.activo=1");
+               // $resDiaActivo=$queryDiaActivo->getResult();
+               // $repository = $this->getDoctrine()
+               //      ->getRepository('pruebaBundle:Dia');
+ 
+                //$query = $repository->createQueryBuilder('d')
+                //    ->where('d.diafecha < :hoy and d.activo=:activo')
+                //    ->setParameter('hoy', $dia)
+                //    ->setParameter('activo', 1)
+                //    ->getData();
+               // $resDiaActivo = $query->getResult();
+                if ($resDiaActivo){
+                      //printf(date_format($resDiaActivo->getDiafecha(),'Y-m-d'));die;
+                    if (date_format($resDiaActivo->getDiafecha(),'Y-m-d')!=$dia){
+                        $resDiaActivo->setActivo(0); 
+                        $em->persist($resDiaActivo);
+                        $em->flush();
+                        $this->get('session')->getFlashBag()->add(
+                            'MensajeAdvertencia', "Se encontro un dia activo dentro del sistema, se procedio a cerrarlo, si necesita realizar un ingreso de datos al sistema en esa fecha se sugiere hablar con el administrador del sistema."
+                        );
+                    }                    
+                }
+                
                 $queryDia= $em->createQuery(
                     'SELECT d.diafecha '
                   . 'FROM pruebaBundle:Dia d '                  
-                  . "WHERE d.diafecha='".$dia."'");
+                  . "WHERE d.diafecha='".$dia."' and d.activo=1");
                  $resDia=$queryDia->getResult();
                 //************************************************************
                 if ($resDia) $diaactivo=1; else $diaactivo=0;

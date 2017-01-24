@@ -4,7 +4,7 @@
     {{ parent() }}
     <style>
         .bg-1 {
-           padding:  30px;
+           padding:  80px;
             background-color: #1abc9c; /* Green */
            color: #ffffff;
         }
@@ -31,27 +31,36 @@
         {{ parent() }}
     {% endblock %}
     {% set existencia = 0 %}
-    <div class="container">
-        {% if app.session.flashbag.get('Mensaje') %}      
-            {% for flashMessage in app.session.flashbag.get('Mensaje') %}
-                <div class="alert alert-success" role="alert">
-                    <span class="glyphicon glyphicon-warning-sign" ></span> 
-                    {{flashMessage}}...
-                </div>
-            {% endfor%}
-        {% endif%}
-        {% if app.session.flashbag.get('Alerta') %}      
-            {% for flashMessage in app.session.flashbag.get('Alerta') %}
-                <div class="alert alert-danger" role="alert">
-                    <span class="glyphicon glyphicon-warning-sign" ></span> 
-                    {{flashMessage}}...
-                </div>
-            {% endfor%}
-        {% endif%}
-    </div>
+    
 <div class="container-fluid bg-1 text-center">
     <div class="bs-docs-section">
         <div class="row">
+                <div class="container">
+                    {% if app.session.flashbag.get('MensajeCorrecto') %}      
+                        {% for flashMessageCorrecto in app.session.flashbag.get('MensajeCorrecto') %}
+                            <div class="alert alert-success" role="alert">
+                                <span class="glyphicon glyphicon-warning-sign" ></span> 
+                                {{flashMessageCorrecto}}...
+                            </div>
+                        {% endfor%}
+                    {% endif%}
+                    {% if app.session.flashbag.get('MensajeAdvertencia') %}      
+                        {% for flashMessageAdvertiencia in app.session.flashbag.get('MensajeAdvertencia') %}
+                            <div class="alert alert-warning" role="alert">
+                                <span class="glyphicon glyphicon-warning-sign" ></span> 
+                                {{flashMessageAdvertiencia}}...
+                            </div>
+                        {% endfor%}
+                    {% endif%}
+                    {% if app.session.flashbag.get('MensajeAlerta') %}      
+                        {% for flashMessageAlerta in app.session.flashbag.get('MensajeAlerta') %}
+                            <div class="alert alert-danger" role="alert">
+                                <span class="glyphicon glyphicon-warning-sign" ></span> 
+                                {{flashMessageAlerta}}...
+                            </div>
+                        {% endfor%}
+                    {% endif%}
+                </div>
             <h3>Transacciones</h3>
             <div class="col-lg-4 col-lg-offset-1 center-block">
                 

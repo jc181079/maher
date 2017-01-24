@@ -98,10 +98,10 @@ class PagosEfectivosPErsonalizadosController extends Controller
     /**
      * Finds and displays a Pagos entity.
      *
-     * @Route("/{id}", name="pagos_show")
+     * @Route("/{id}", name="solicitudesEntregadasEfectivo_show")
      * @Method("GET")
      */
-    public function showAction(Pagos $pago)
+    public function solicitudesEntregadasEfectivoshowAction(Pagos $pago,$idsolicitud)
     {
         $session = $request->getSession();
         if ($session->get('tipousuario') == 'Administrador' or $session->get('tipousuario') == 'Empleado') {
